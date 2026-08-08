@@ -99,13 +99,15 @@ public sealed class MainViewModel : ObservableObject
                          .OrderBy(p => p, StringComparer.OrdinalIgnoreCase))
             {
                 var dir = Path.GetDirectoryName(vcx)!;
-                found.Add(new SampleItem
+                var item = new SampleItem
                 {
                     Name = Path.GetFileNameWithoutExtension(vcx),
                     Category = Path.GetRelativePath(root, dir),
                     Directory = dir,
                     VcxprojPath = vcx,
-                });
+                };
+                item.Rescan();   // detect existing ISO (off the UI thread)
+                found.Add(item);
             }
         }
         Dispatcher.UIThread.Post(() =>
@@ -166,7 +168,7 @@ public sealed class MainViewModel : ObservableObject
         var exit = await ProcessRunner.RunAsync(msbuild, args, s.Directory, Append, ct);
         s.IsBusy = false;
         s.State = exit == 0 ? BuildState.Built : BuildState.Failed;
-        Dispatcher.UIThread.Post(() => s.Refresh());
+        Dispatcher.UIThread.Post(() => s.Rescan());
         return exit;
     }
 
@@ -174,7 +176,7 @@ public sealed class MainViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(_settings.XemuPath) || !File.Exists(_settings.XemuPath))
         { Status = "Set a valid xemu path first."; Append("ERROR: xemu path not set / not found."); return; }
-        var iso = s.IsoPath;
+        var iso = s.IsoFor(_settings.Configuration);
         if (iso is null) { Status = $"{s.Name}: no ISO — build it first."; Append($"ERROR: no ISO for {s.Name} — build it first."); return; }
 
         ClearLog();  // console window is cleared on every new launch
