@@ -42,5 +42,6 @@ namespace RxdkVs.Package.Commands
         public const int CmdOpenSettings = 0x0118;       // rxdk.openSettings
         public const int CmdDeployProject = 0x0119;      // rxdk.deployProject (project context menu)
         public const int CmdImportProject = 0x011A;      // rxdk.importProject (VS2003 importer)
+        public const int CmdLaunchXemu = 0x011B;         // rxdk.launchXemu (build + boot ISO in xemu)
     }
 }

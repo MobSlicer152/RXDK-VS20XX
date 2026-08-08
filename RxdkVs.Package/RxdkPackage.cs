@@ -29,6 +29,7 @@ namespace RxdkVs.Package
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("RXDK for Visual Studio", "Original Xbox development: build, deploy, and debug.", "0.1.0")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideOptionPage(typeof(Options.RxdkOptionsPage), "RXDK", "General", 0, 0, supportsAutomation: true)]
     [ProvideToolWindow(typeof(RxdkToolWindow), Style = VsDockStyle.Tabbed, Window = "DocumentWell", Orientation = ToolWindowOrientation.Left)]
     [ProvideAutoLoad(RxdkPackageGuids.RxdkProjectContextString, PackageAutoLoadFlags.BackgroundLoad)]
     // Also load for any open solution, so the F5 interceptor is registered when a .sln (with

@@ -69,10 +69,20 @@ namespace RxdkVs.Package.Commands
                 ThreadHelper.ThrowIfNotOnUIThread();
                 ((OleMenuCommand)s).Visible = Services.XboxDebugLauncher.TryGetSelectedProject(out var sel) && sel.IsXbox && sel.IsDxt;
             }
+            // "Launch in xemu" is offered for an RXDK Xbox project once an xemu path is set in Options.
+            void OnQueryXemu(object s, EventArgs e)
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                var page = (Options.RxdkOptionsPage)_package.GetDialogPage(typeof(Options.RxdkOptionsPage));
+                var configured = !string.IsNullOrWhiteSpace(page.XemuPath);
+                ((OleMenuCommand)s).Visible = configured
+                    && Services.XboxDebugLauncher.TryGetSelectedProject(out var sel) && sel.IsXbox;
+            }
 
             Add(CommandIds.CmdBuild, () => RunCliAsync("build"));
             Add(CommandIds.CmdDeploy, () => RunCliAsync("deploy"));
             Add(CommandIds.CmdRun, () => RunCliAsync("run"));
+            Add(CommandIds.CmdLaunchXemu, LaunchXemuAsync, OnQueryXemu);
             Add(CommandIds.CmdRebootConsole, () => RunCliAsync("reboot", requiresProject: false));
             Add(CommandIds.CmdRemoveDxt, RemoveDxtAsync, OnQueryRemoveDxt);
             Add(CommandIds.CmdDeployProject, DeployProjectAsync, OnQueryDeploy);
@@ -128,6 +138,21 @@ namespace RxdkVs.Package.Commands
             {
                 await ShowErrorAsync($"RXDK {verb} failed: {ex.Message}");
             }
+        }
+
+        // Build the project and boot the resulting ISO in xemu (no debugging). Routes through the
+        // CLI so xemu's serial console output streams into the RXDK output pane.
+        private async Task LaunchXemuAsync()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            var page = (Options.RxdkOptionsPage)_package.GetDialogPage(typeof(Options.RxdkOptionsPage));
+            if (string.IsNullOrWhiteSpace(page.XemuPath))
+            {
+                await ShowInfoAsync("Set the xemu path first: Tools > Options > RXDK > General.");
+                return;
+            }
+            await RunCliAsync("launch-xemu", requiresProject: true,
+                "--xemu-path", page.XemuPath, "--xemu-params", page.XemuParams ?? "");
         }
 
         // Deploy the selected project's .xbe + media (retry path when the devkit was off at F5).

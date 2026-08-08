@@ -26,6 +26,7 @@ if (args.Length == 0)
     Console.Error.WriteLine("  build --project-root <dir> [--optimize <mode>] [--compile-only]   Compile+link to .xbe");
     Console.Error.WriteLine("  deploy --project-root <dir> [--console <ip>]     Copy build output to the devkit");
     Console.Error.WriteLine("  run --project-root <dir> [--console <ip>] [--reboot]   Launch the deployed title");
+    Console.Error.WriteLine("  launch-xemu --project-root <dir> [--xemu-path <exe>] [--xemu-params <args>]   Build + boot the ISO in xemu");
     Console.Error.WriteLine("  reboot [--console <ip>]     Warm-reboot the devkit");
     Console.Error.WriteLine("  remove-dxt --project-root <dir> [--manifest <p>] [--console <ip>]   Delete the DXT from xe:\\dxt");
     Console.Error.WriteLine("  set-ip --address <ip>       Set the devkit IP/hostname (registry)");
@@ -64,6 +65,8 @@ switch (command)
         return await CmdDeploy(opts);
     case "run":
         return await CmdRun(opts);
+    case "launch-xemu":
+        return await CmdLaunchXemu(opts);
     case "reboot":
         return await CmdReboot(opts);
     case "remove-dxt":
@@ -339,6 +342,63 @@ static async Task<int> CmdRun(Dictionary<string, string> opts)
     if (!result.Ok)
     {
         Console.Error.WriteLine($"run failed: {result.Error}");
+        return 1;
+    }
+    return 0;
+}
+
+static async Task<int> CmdLaunchXemu(Dictionary<string, string> opts)
+{
+    if (!opts.TryGetValue("project-root", out var root) || string.IsNullOrEmpty(root))
+    {
+        Console.Error.WriteLine("missing required --project-root");
+        return 2;
+    }
+    var optimize = RxdkOptimizeMode.Debug;
+    if (opts.TryGetValue("optimize", out var opt) && !string.IsNullOrEmpty(opt)
+        && !OptimizeMode.TryParse(opt, out optimize))
+    {
+        Console.Error.WriteLine($"invalid --optimize '{opt}' (Debug|ReleaseSafe|ReleaseFast|ReleaseSmall)");
+        return 2;
+    }
+    opts.TryGetValue("manifest", out var manifestPath);
+
+    RxdkProjectManifest? manifest;
+    try { manifest = RxdkManifestLoader.Resolve(root, string.IsNullOrEmpty(manifestPath) ? null : manifestPath); }
+    catch { manifest = null; }
+    if (manifest is null)
+    {
+        Console.Error.WriteLine($"no valid manifest for {root}");
+        return 1;
+    }
+
+    // Build a fresh ISO first, then boot it in xemu (no debugging).
+    var build = await XboxBuild.BuildAsync(new BuildOptions
+    {
+        ProjectRoot = root,
+        Optimize = optimize,
+        ManifestPath = string.IsNullOrEmpty(manifestPath) ? null : manifestPath,
+        Log = msg => Console.WriteLine(msg),
+    });
+    if (!build.Ok)
+    {
+        Console.Error.WriteLine("build failed");
+        return 1;
+    }
+
+    opts.TryGetValue("xemu-path", out var xemuPath);
+    opts.TryGetValue("xemu-params", out var xemuParams);
+    var result = await XemuLaunch.LaunchXemuAsync(new XemuLaunch.LaunchOptions
+    {
+        ProjectRoot = root,
+        Manifest = manifest,
+        XemuPath = xemuPath ?? "",
+        XemuParams = xemuParams,
+        Log = msg => Console.WriteLine(msg),
+    });
+    if (!result.Ok)
+    {
+        Console.Error.WriteLine(result.Error ?? "xemu launch failed");
         return 1;
     }
     return 0;

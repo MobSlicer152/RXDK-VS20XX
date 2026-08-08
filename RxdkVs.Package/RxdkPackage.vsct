@@ -59,6 +59,12 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings><ButtonText>Remove DXT &amp; Reboot</ButtonText></Strings>
       </Button>
+      <Button guid="guidRxdkCmdSet" id="CmdLaunchXemu" priority="0x0120" type="Button">
+        <Parent guid="guidRxdkCmdSet" id="RxdkProjectCtxGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings><ButtonText>Launch in xemu</ButtonText></Strings>
+      </Button>
     </Buttons>
 
     <Bitmaps>
@@ -108,6 +114,7 @@
       <IDSymbol name="CmdSetBuildType" value="0x0117" />
       <IDSymbol name="CmdOpenSettings" value="0x0118" />
       <IDSymbol name="CmdDeployProject" value="0x0119" />
+      <IDSymbol name="CmdLaunchXemu" value="0x011B" />
     </GuidSymbol>
 
     <GuidSymbol name="guidRxdkImages" value="{89c8f7ba-434f-466d-b59a-629e92d80e63}">
