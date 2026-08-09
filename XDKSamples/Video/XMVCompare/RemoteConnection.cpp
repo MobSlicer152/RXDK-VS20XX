@@ -22,9 +22,9 @@ static CRITICAL_SECTION g_CriticalSection;
 const REMOTE_COMMAND g_RemoteCommands[] =
 {
     // Command,  Handler,     Help string
-    { "playleft",  RCmdPlayLeft,  " <filename>: Sets the file to be used" },
-    { "playright", RCmdPlayRight, " <filename>: Sets the file to be used" },
-    { "play",      RCmdPlay,      " Plays currently set videos" },
+    { (CHAR*)"playleft",  RCmdPlayLeft,  (CHAR*)" <filename>: Sets the file to be used" },
+    { (CHAR*)"playright", RCmdPlayRight, (CHAR*)" <filename>: Sets the file to be used" },
+    { (CHAR*)"play",      RCmdPlay,      (CHAR*)" Plays currently set videos" },
 };
 
 const DWORD g_dwNumRemoteCommands = (sizeof(g_RemoteCommands)/sizeof(g_RemoteCommands[0]));

@@ -59,7 +59,7 @@ const INT         MAX_SAVE_PATH_SIZE   = 64;
 const FLOAT       ICON_SIZE            = 32.0f;
 const FLOAT       BITMAP_SIZE          = 16.0f;
 const CHAR* const SAVE_DRIVE           = "u:\\";
-static WCHAR*     TEAM_LOGO_FILENAME   = L"logo";
+static WCHAR*     TEAM_LOGO_FILENAME   = (WCHAR*)L"logo";
 
 
 

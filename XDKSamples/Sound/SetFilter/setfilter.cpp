@@ -68,11 +68,11 @@ struct OPTION_STRUCT
 
 OPTION_STRUCT g_aOptions[] =
 {
-    { 1000,  L"DLS2 Filter Freq" },
-    { 10000, L"DLS2 Resonance" },
-    { 1000,  L"ParamEQ Filter Freq" },
-    { 10000, L"ParamEQ Filter Gain" },
-    { 10000, L"ParamEQ Filter Q" },
+    { 1000,  (WCHAR*)L"DLS2 Filter Freq" },
+    { 10000, (WCHAR*)L"DLS2 Resonance" },
+    { 1000,  (WCHAR*)L"ParamEQ Filter Freq" },
+    { 10000, (WCHAR*)L"ParamEQ Filter Gain" },
+    { 10000, (WCHAR*)L"ParamEQ Filter Q" },
 };
 
 enum FILTER_OPTION

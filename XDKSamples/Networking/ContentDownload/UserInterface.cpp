@@ -78,13 +78,13 @@ VOID UserInterface::RenderCreateAccount( BOOL bHasMachineAccount )
     WCHAR* strInfo;
     if( bHasMachineAccount )
     {
-        strInfo = L"No online accounts exist on this Xbox.\n\n"
+        strInfo = (WCHAR*)L"No online accounts exist on this Xbox.\n\n"
                   L"Run the XDK Launcher or Xbox OnlineDash\nto create accounts.\n\n"
                   L"Press " GLYPH_A_BUTTON L" to continue.";
     }
     else
     {
-        strInfo = L"This Xbox does not have a machine account.\n\n"
+        strInfo = (WCHAR*)L"This Xbox does not have a machine account.\n\n"
                   L"Run the XDK Launcher or Xbox OnlineDash\nto create accounts.\n\n"
                   L"Press " GLYPH_A_BUTTON L" to continue.";
     }
@@ -244,19 +244,19 @@ VOID UserInterface::RenderContentDetails( ContentInfo& content,
 
     // offing ID and free or pay
     if( content.GetPrice().fOfferingIsFree )
-        strOfferingCost = L"Free";
+        strOfferingCost = (WCHAR*)L"Free";
     else
-        strOfferingCost = L"Pay";
+        strOfferingCost = (WCHAR*)L"Pay";
     wsprintfW( strOfferingID, L"0x%I64X, %s ", 
                content.GetId(), strOfferingCost );
 
     // offering type
     if( XONLINE_OFFERING_SUBSCRIPTION == content.GetOfferingType() )
-        strOfferingTypeDesc = L"Subscription";
+        strOfferingTypeDesc = (WCHAR*)L"Subscription";
     else if( XONLINE_OFFERING_CONTENT == content.GetOfferingType() )
-            strOfferingTypeDesc = L"Content";
+            strOfferingTypeDesc = (WCHAR*)L"Content";
     else
-        strOfferingTypeDesc = L"Title Defined";
+        strOfferingTypeDesc = (WCHAR*)L"Title Defined";
     wsprintfW( strOfferingType, L"0x%08X, %s", content.GetOfferingType(),
         strOfferingTypeDesc );
 
@@ -333,19 +333,19 @@ VOID UserInterface::RenderContentDetails( ContentInfo& content,
         switch( content.GetFrequency() )
         {
             case ONE_TIME_CHARGE:
-                strFrequency = L"One Time Change";
+                strFrequency = (WCHAR*)L"One Time Change";
                 break;
             case MONTHLY:
-                strFrequency = L"Monthly";
+                strFrequency = (WCHAR*)L"Monthly";
                 break;
             case QUARTERLY:
-                strFrequency = L"Quarterly";
+                strFrequency = (WCHAR*)L"Quarterly";
                 break;
             case BIANNUALLY:
-                strFrequency = L"Biannually";
+                strFrequency = (WCHAR*)L"Biannually";
                 break;
             case ANNUALLY:
-                strFrequency = L"Annually";
+                strFrequency = (WCHAR*)L"Annually";
                 break;
             default:
                 assert( FALSE );

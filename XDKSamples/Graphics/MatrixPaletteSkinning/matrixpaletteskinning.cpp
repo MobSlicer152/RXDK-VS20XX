@@ -232,7 +232,7 @@ HRESULT CXBoxSample::Initialize()
         return XBAPPERR_MEDIANOTFOUND;
 
     // Load the snake.
-    if( FAILED( m_Snake.Create( "Models\\Snake.xbg", &m_xprResource ) ) )
+    if( FAILED( m_Snake.Create( (CHAR*)"Models\\Snake.xbg", &m_xprResource ) ) )
         return XBAPPERR_MEDIANOTFOUND;
 
     // Create vertex shader.

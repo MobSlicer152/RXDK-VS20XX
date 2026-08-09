@@ -70,9 +70,9 @@ struct VehicleData
 VehicleData g_Vehicles[] =
 {
     {
-        "D:\\Media\\Models\\Buggy.sgm",
-        "D:\\Media\\Models\\FrontTire.sgm",
-        "D:\\Media\\Models\\RearTire.sgm",
+        (CHAR*)"D:\\Media\\Models\\Buggy.sgm",
+        (CHAR*)"D:\\Media\\Models\\FrontTire.sgm",
+        (CHAR*)"D:\\Media\\Models\\RearTire.sgm",
 
         {
             {  0.55f,   0.05f,  1.59f },

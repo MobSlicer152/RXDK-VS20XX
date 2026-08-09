@@ -579,7 +579,7 @@ VOID CXBoxSample::DrawStartScreen()
     m_pDSBuffer->Stop();
 
     // Render instructions in an outlined, semi-transparent box
-    DrawTextBox( 64, 50, 576, 135, L"Turn up the CONTRAST to full, then turn up the\n"
+    DrawTextBox( 64, 50, 576, 135, (WCHAR*)L"Turn up the CONTRAST to full, then turn up the\n"
                                    L"BRIGHTNESS until you can see five separate\n"
                                    L"black regions between these lines." );
 
@@ -603,7 +603,7 @@ VOID CXBoxSample::DrawStage1Screen()
     DrawTestPattern();
 
     // Render instructions in an outlined, semi-transparent box
-    DrawTextBox( 64, 50, 576, 135, L"Now reduce the BRIGHTNESS until the gray bar\n"
+    DrawTextBox( 64, 50, 576, 135, (WCHAR*)L"Now reduce the BRIGHTNESS until the gray bar\n"
                                    L"disappears, then turn the BRIGHTNESS back up\n"
                                    L"until it becomes just visible." );
 
@@ -627,7 +627,7 @@ VOID CXBoxSample::DrawStage2Screen()
     DrawTestPattern();
 
     // Render instructions in an outlined, semi-transparent box
-    DrawTextBox( 64, 50, 576, 160, L"Set the CONTRAST by lowering it until the edges\n"
+    DrawTextBox( 64, 50, 576, 160, (WCHAR*)L"Set the CONTRAST by lowering it until the edges\n"
                                    L"of the white bar look sharp, continue lowering\n"
                                    L"until white bar begins to look not-white, then turn\n"
                                    L"back up until white bar looks white again." );
@@ -652,7 +652,7 @@ VOID CXBoxSample::DrawStage3Screen()
     DrawTestPattern();
 
     // Render instructions in an outlined, semi-transparent box
-    DrawTextBox( 64, 50, 576, 110, L"Now adjust COLOR to minimize bleeding, using\n"
+    DrawTextBox( 64, 50, 576, 110, (WCHAR*)L"Now adjust COLOR to minimize bleeding, using\n"
                                    L"the red bar as your main reference." );
 }
 
@@ -672,7 +672,7 @@ VOID CXBoxSample::DrawStage4Screen()
     RenderGradientBackground( DARK_GREEN, BLACK );
 
     // Render instructions in an outlined, semi-transparent box
-    DrawTextBox( 64, 50, 576, 160, L"Adjust TV sound to desired level. Use UP/DOWN\n"
+    DrawTextBox( 64, 50, 576, 160, (WCHAR*)L"Adjust TV sound to desired level. Use UP/DOWN\n"
                                    L"to control program volume for testing and use\n"
                                    L"the left thumbstick to move the direction of the\n"
                                    L"sound to test speakers." );

@@ -44,10 +44,10 @@ static CRITICAL_SECTION g_CriticalSection;
 const REMOTE_COMMAND g_RemoteCommands[] =
 {
     // Command,  Handler,     Help string
-    { "help",    RCmdHelp,    " [CMD]: List commands / usage" },
-    { "set",     RCmdSet,     " var [=] <val>: set a variable" },
-    { "texture", RCmdTexture, " <filename>: Sets the texture to be used" },
-    { "spin",    RCmdSpin,    " <rad/s>: Sets spin velocity in radians per second" },
+    { (CHAR*)"help",    RCmdHelp,    (CHAR*)" [CMD]: List commands / usage" },
+    { (CHAR*)"set",     RCmdSet,     (CHAR*)" var [=] <val>: set a variable" },
+    { (CHAR*)"texture", RCmdTexture, (CHAR*)" <filename>: Sets the texture to be used" },
+    { (CHAR*)"spin",    RCmdSpin,    (CHAR*)" <rad/s>: Sets spin velocity in radians per second" },
 };
 
 const DWORD g_dwNumRemoteCommands = (sizeof(g_RemoteCommands)/sizeof(g_RemoteCommands[0]));

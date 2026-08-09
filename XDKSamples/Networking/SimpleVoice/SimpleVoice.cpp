@@ -31,8 +31,8 @@ struct VOICE_MASK_PRESET
 
 const VOICE_MASK_PRESET g_VoiceMasks[] =
 {
-    { L"None",      XHV_VOICE_MASK_NONE },
-    { L"Anonymous", XHV_VOICE_MASK_ANONYMOUS },
+    { (WCHAR*)L"None",      XHV_VOICE_MASK_NONE },
+    { (WCHAR*)L"Anonymous", XHV_VOICE_MASK_ANONYMOUS },
     // Add your own voice masks here...
 };
 const DWORD NUM_VOICEMASKS = sizeof( g_VoiceMasks ) / sizeof( g_VoiceMasks[0] );

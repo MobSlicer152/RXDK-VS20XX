@@ -109,13 +109,13 @@ struct CUE_METADATA
 // use the enumeration tags.
 static CUE_METADATA g_aCueMetaData[] =
 {
-    { L"Ambient Sound", XACT_SOUNDBANK_SAMPLE_AMBIENT,      FALSE,  SOURCE_DEFAULT,     NULL    },
-    { L"BG Music 1",    XACT_SOUNDBANK_SAMPLE_MUSIC1,       TRUE,   SOURCE_DEFAULT,     NULL    },
-    { L"BG Music 2",    XACT_SOUNDBANK_SAMPLE_MUSIC2,       TRUE,   SOURCE_DEFAULT,     NULL    },
-    { L"Helicopter",    XACT_SOUNDBANK_SAMPLE_HELICOPTER,   FALSE,  SOURCE_HELICOPTER,  NULL    },
-    { L"Weapon",        XACT_SOUNDBANK_SAMPLE_GUNSHOT,      TRUE,   SOURCE_HELICOPTER,  NULL    },
-    { L"Oh Yeah!",      XACT_SOUNDBANK_SAMPLE_OHYEAH,       FALSE,  SOURCE_BYSTANDER,   NULL    },
-    { L"Explosion",     XACT_SOUNDBANK_SAMPLE_EXPLOSION,    TRUE,   SOURCE_TARGET,      NULL    },
+    { (WCHAR*)L"Ambient Sound", XACT_SOUNDBANK_SAMPLE_AMBIENT,      FALSE,  SOURCE_DEFAULT,     NULL    },
+    { (WCHAR*)L"BG Music 1",    XACT_SOUNDBANK_SAMPLE_MUSIC1,       TRUE,   SOURCE_DEFAULT,     NULL    },
+    { (WCHAR*)L"BG Music 2",    XACT_SOUNDBANK_SAMPLE_MUSIC2,       TRUE,   SOURCE_DEFAULT,     NULL    },
+    { (WCHAR*)L"Helicopter",    XACT_SOUNDBANK_SAMPLE_HELICOPTER,   FALSE,  SOURCE_HELICOPTER,  NULL    },
+    { (WCHAR*)L"Weapon",        XACT_SOUNDBANK_SAMPLE_GUNSHOT,      TRUE,   SOURCE_HELICOPTER,  NULL    },
+    { (WCHAR*)L"Oh Yeah!",      XACT_SOUNDBANK_SAMPLE_OHYEAH,       FALSE,  SOURCE_BYSTANDER,   NULL    },
+    { (WCHAR*)L"Explosion",     XACT_SOUNDBANK_SAMPLE_EXPLOSION,    TRUE,   SOURCE_TARGET,      NULL    },
 };
 
 // Object names

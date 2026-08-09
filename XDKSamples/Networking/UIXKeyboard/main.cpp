@@ -152,8 +152,8 @@ HRESULT CXBoxSample::Initialize()
         return XBAPPERR_MEDIANOTFOUND;
 
     // Load app sounds using Xact
-    if( FAILED( CreateSoundSystem( "d:\\Media\\UIXKeyboard.xsb", 
-                                   "d:\\Media\\UIXKeyboard.xwb" ) ) )
+    if( FAILED( CreateSoundSystem( (CHAR*)"d:\\Media\\UIXKeyboard.xsb", 
+                                   (CHAR*)"d:\\Media\\UIXKeyboard.xwb" ) ) )
         return XBAPPERR_MEDIANOTFOUND;
 
     // Initialize UIX stuff

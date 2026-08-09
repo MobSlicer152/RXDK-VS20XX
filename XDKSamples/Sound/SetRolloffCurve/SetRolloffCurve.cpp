@@ -229,7 +229,7 @@ HRESULT CXBoxSample::Initialize()
     DirectSoundUseFullHRTF();
 
     // Download the standard DirectSound effects image
-    if( FAILED( hr = DownloadEffectsImage( "D:\\Media\\dsstdfx.bin" ) ) )
+    if( FAILED( hr = DownloadEffectsImage( (CHAR*)"D:\\Media\\dsstdfx.bin" ) ) )
         return hr;
 
     // Initialize DirectSound objects

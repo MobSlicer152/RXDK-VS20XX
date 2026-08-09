@@ -42,9 +42,9 @@ XBHELP_CALLOUT g_HelpCallouts[] =
 //-----------------------------------------------------------------------------
 CHAR* g_strLevels[] = 
 {
-    "Resource0",
-    "Resource1",
-    "Resource2"
+    (CHAR*)"Resource0",
+    (CHAR*)"Resource1",
+    (CHAR*)"Resource2"
 };
 #define NUM_LEVELS ( sizeof(g_strLevels) / sizeof(g_strLevels[0]) )
 

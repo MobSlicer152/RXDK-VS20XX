@@ -351,19 +351,19 @@ HRESULT CXBoxSample::StartScript()
                                             (VOID**)&m_pMusicScript );
         if( FAILED(hr) )
         {
-            m_strScriptName = L"Could not load script";
+            m_strScriptName = (WCHAR*)L"Could not load script";
             return hr;
         }
 
         hr = m_pMusicScript->Init( m_pPerformance, NULL );
         if( FAILED(hr) )
         {
-            m_strScriptName = L"Could not Initialize script";
+            m_strScriptName = (WCHAR*)L"Could not Initialize script";
             return hr;
         }
     }
 
-    m_strScriptName = L"Baseball";
+    m_strScriptName = (WCHAR*)L"Baseball";
 
     UpdateScriptFromScore( TRUE );  // For home team
     UpdateScriptFromScore( FALSE ); // For away team

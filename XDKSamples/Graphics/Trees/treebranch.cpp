@@ -112,11 +112,11 @@ HRESULT CTreeBranch::Slice()
     SliceInfo rSliceInfo[3] = 
     {
         { 8, 256, 256, D3DTADDRESS_CLAMP, D3DTADDRESS_CLAMP, D3DFMT_DXT4,
-          { 1.f, 0.f, 0.f }, { 0.f, 1.f, 0.f }, 0.4f, 0.6f, "BranchX" },
+          { 1.f, 0.f, 0.f }, { 0.f, 1.f, 0.f }, 0.4f, 0.6f, (CHAR*)"BranchX" },
         { 8, 256, 256, D3DTADDRESS_CLAMP, D3DTADDRESS_CLAMP, D3DFMT_DXT4,
-          { 0.f, 1.f, 0.f }, { 1.f, 0.f, 0.f }, 0.4f, 0.6f, "BranchY" },
+          { 0.f, 1.f, 0.f }, { 1.f, 0.f, 0.f }, 0.4f, 0.6f, (CHAR*)"BranchY" },
         { 8, 256, 256, D3DTADDRESS_CLAMP, D3DTADDRESS_CLAMP, D3DFMT_DXT4,
-          { 0.f, 0.f, 1.f }, { -1.f, 0.f, 0.f }, 0.4f, 0.6f, "BranchZ" },
+          { 0.f, 0.f, 1.f }, { -1.f, 0.f, 0.f }, 0.4f, 0.6f, (CHAR*)"BranchZ" },
     };
     return CSliceObject::Slice(3, rSliceInfo);
 }

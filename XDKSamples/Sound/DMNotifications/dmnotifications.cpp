@@ -45,10 +45,10 @@ typedef struct
 // List of supported boundaries
 BOUNDARY g_aBoundaries[] =
 {
-    { DMUS_SEGF_FLAGS(0), L"Immediately" },
-    { DMUS_SEGF_GRID,     L"Grid Boundary" },
-    { DMUS_SEGF_BEAT,     L"Beat Boundary" },
-    { DMUS_SEGF_MEASURE,  L"Measure Boundary" },
+    { DMUS_SEGF_FLAGS(0), (WCHAR*)L"Immediately" },
+    { DMUS_SEGF_GRID,     (WCHAR*)L"Grid Boundary" },
+    { DMUS_SEGF_BEAT,     (WCHAR*)L"Beat Boundary" },
+    { DMUS_SEGF_MEASURE,  (WCHAR*)L"Measure Boundary" },
 };
 static const DWORD NUM_BOUNDARIES = sizeof( g_aBoundaries ) / sizeof( g_aBoundaries[0] );
 

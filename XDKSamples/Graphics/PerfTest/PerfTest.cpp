@@ -40,9 +40,9 @@ struct MenuItem
 
 MenuItem g_Menus[] = 
 {
-    { L"Test duration:",        2, { L"1 second", L"2 seconds", L"5 seconds", NULL }, },
-    { L"Output method:",        0, { L"Onscreen", L"Debug port", NULL }, },
-    { L"Enable perf profiler:", 0, { L"Yes", L"No", NULL }, },
+    { (WCHAR*)L"Test duration:",        2, { (WCHAR*)L"1 second", (WCHAR*)L"2 seconds", (WCHAR*)L"5 seconds", NULL }, },
+    { (WCHAR*)L"Output method:",        0, { (WCHAR*)L"Onscreen", (WCHAR*)L"Debug port", NULL }, },
+    { (WCHAR*)L"Enable perf profiler:", 0, { (WCHAR*)L"Yes", (WCHAR*)L"No", NULL }, },
     { NULL }
 };
 

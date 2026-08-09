@@ -68,12 +68,12 @@ struct OPTION_STRUCT
 // List of speakers/mixbins we can configure
 OPTION_STRUCT g_aOptions[] =
 {
-    { DSMIXBIN_FRONT_LEFT,      DSBVOLUME_MAX,  L"Front Left" },
-    { DSMIXBIN_FRONT_RIGHT,     DSBVOLUME_MAX,  L"Front Right" },
-    { DSMIXBIN_FRONT_CENTER,    DSBVOLUME_MAX,  L"Front Center" },
-    { DSMIXBIN_LOW_FREQUENCY,   DSBVOLUME_MAX,  L"Low Frequency" },
-    { DSMIXBIN_BACK_LEFT,       DSBVOLUME_MAX,  L"Back Left" },
-    { DSMIXBIN_BACK_RIGHT,      DSBVOLUME_MAX,  L"Back Right" },
+    { DSMIXBIN_FRONT_LEFT,      DSBVOLUME_MAX,  (WCHAR*)L"Front Left" },
+    { DSMIXBIN_FRONT_RIGHT,     DSBVOLUME_MAX,  (WCHAR*)L"Front Right" },
+    { DSMIXBIN_FRONT_CENTER,    DSBVOLUME_MAX,  (WCHAR*)L"Front Center" },
+    { DSMIXBIN_LOW_FREQUENCY,   DSBVOLUME_MAX,  (WCHAR*)L"Low Frequency" },
+    { DSMIXBIN_BACK_LEFT,       DSBVOLUME_MAX,  (WCHAR*)L"Back Left" },
+    { DSMIXBIN_BACK_RIGHT,      DSBVOLUME_MAX,  (WCHAR*)L"Back Right" },
 };
 static const DWORD NUM_OPTIONS = sizeof( g_aOptions ) / sizeof( g_aOptions[0] );
 

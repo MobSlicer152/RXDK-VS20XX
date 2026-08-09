@@ -354,7 +354,7 @@ HRESULT CVoiceManager::Initialize( VOICE_MANAGER_CONFIG* pConfig )
     dwExpectedLatency += 100;               // Guess at queue high water mark
     dwExpectedLatency += m_cfg.dwVoicePacketTime * NUM_PACKETS;   // Stream buffer
     dwExpectedLatency += m_cfg.dwVoicePacketTime * NUM_PACKETS;   // Headphone buffer
-    VoiceLog( L"Initialized - Expected latency is %dms", dwExpectedLatency );
+    VoiceLog( (WCHAR*)L"Initialized - Expected latency is %dms", dwExpectedLatency );
 
 Cleanup:
     if( FAILED( hr ) )
@@ -449,7 +449,7 @@ HRESULT CVoiceManager::AddChatter( XUID xuidPlayer )
     assert( IsInChatSession() );
     assert( ChatterIndexFromXUID( xuidPlayer ) == m_cfg.dwMaxRemotePlayers );
 
-    VoiceLog( L"Adding new chatter %I64x", xuidPlayer.qwUserID );
+    VoiceLog( (WCHAR*)L"Adding new chatter %I64x", xuidPlayer.qwUserID );
 
     // Find an open slot to use for this chatter
     DWORD dwNewChatterIndex;
@@ -480,7 +480,7 @@ HRESULT CVoiceManager::RemoveChatter( XUID xuidPlayer )
     assert( IsInChatSession() );
     assert( ChatterIndexFromXUID( xuidPlayer ) < m_cfg.dwMaxRemotePlayers );
 
-    VoiceLog( L"Removing chatter %I64x", xuidPlayer.qwUserID );
+    VoiceLog( (WCHAR*)L"Removing chatter %I64x", xuidPlayer.qwUserID );
 
     // If we've muted them, or they've muted us, pull them
     // out of the list.  Game code is responsible for
@@ -521,7 +521,7 @@ HRESULT CVoiceManager::ResetChatter( XUID xuidPlayer )
     assert( IsInChatSession() );
     assert( ChatterIndexFromXUID( xuidPlayer ) < m_cfg.dwMaxRemotePlayers );
 
-    VoiceLog( L"Resetting chatter %I64x", xuidPlayer.qwUserID );
+    VoiceLog( (WCHAR*)L"Resetting chatter %I64x", xuidPlayer.qwUserID );
 
     // Find the specified chatter
     DWORD chatterIndex = ChatterIndexFromXUID( xuidPlayer );
@@ -625,7 +625,7 @@ HRESULT CVoiceManager::OnCompletedPacket( DWORD dwControllerPort, VOID* pvData, 
             }
             else
             {
-                VoiceLog( L"No space to store encoded packet - need to call ProcessVoice() more frequently!" );
+                VoiceLog( (WCHAR*)L"No space to store encoded packet - need to call ProcessVoice() more frequently!" );
             }
         }
     }
@@ -777,7 +777,7 @@ DWORD CVoiceManager::ChatterIndexFromXUID( XUID xuidPlayer )
 //-----------------------------------------------------------------------------
 HRESULT CVoiceManager::MutePlayer( XUID xuidPlayer, DWORD dwControllerPort )
 {
-    VoiceLog( L"Muting player %I64x for port %d", xuidPlayer.qwUserID, dwControllerPort );
+    VoiceLog( (WCHAR*)L"Muting player %I64x for port %d", xuidPlayer.qwUserID, dwControllerPort );
 
     assert( IsInChatSession() );
     assert( !IsPlayerMuted( xuidPlayer, dwControllerPort ) );
@@ -803,7 +803,7 @@ HRESULT CVoiceManager::MutePlayer( XUID xuidPlayer, DWORD dwControllerPort )
 //-----------------------------------------------------------------------------
 HRESULT CVoiceManager::UnMutePlayer( XUID xuidPlayer, DWORD dwControllerPort )
 {
-    VoiceLog( L"UnMuting player %I64x for port %d", xuidPlayer.qwUserID, dwControllerPort );
+    VoiceLog( (WCHAR*)L"UnMuting player %I64x for port %d", xuidPlayer.qwUserID, dwControllerPort );
 
     assert( IsInChatSession() );
     assert( IsPlayerMuted( xuidPlayer, dwControllerPort ) );
@@ -856,7 +856,7 @@ BOOL CVoiceManager::IsPlayerMuted( XUID xuidPlayer, DWORD dwControllerPort )
 //-----------------------------------------------------------------------------
 HRESULT CVoiceManager::RemoteMutePlayer( XUID xuidPlayer, DWORD dwControllerPort )
 {
-    VoiceLog( L"Remote muted port %d by player %I64x", dwControllerPort, xuidPlayer.qwUserID );
+    VoiceLog( (WCHAR*)L"Remote muted port %d by player %I64x", dwControllerPort, xuidPlayer.qwUserID );
 
     assert( IsInChatSession() );
     assert( !IsPlayerRemoteMuted( xuidPlayer, dwControllerPort ) );
@@ -882,7 +882,7 @@ HRESULT CVoiceManager::RemoteMutePlayer( XUID xuidPlayer, DWORD dwControllerPort
 //-----------------------------------------------------------------------------
 HRESULT CVoiceManager::UnRemoteMutePlayer( XUID xuidPlayer, DWORD dwControllerPort )
 {
-    VoiceLog( L"Remote UnMuted port %d by player %I64x", dwControllerPort, xuidPlayer.qwUserID );
+    VoiceLog( (WCHAR*)L"Remote UnMuted port %d by player %I64x", dwControllerPort, xuidPlayer.qwUserID );
 
     assert( IsInChatSession() );
     assert( IsPlayerRemoteMuted( xuidPlayer, dwControllerPort ) );
@@ -967,7 +967,7 @@ HRESULT CVoiceManager::ReceivePacket( XUID xuidFromPlayer, VOID* pvData, INT nSi
         // and starts sending us voice, all before we get an ADD_CHATTER
         // message from them.  If it happens for a long period of time, it
         // probably means that an ADD_CHATTER message got lost somewhere.
-        VoiceLog( L"Got packet from player %I64x, but no queue set up for them", xuidFromPlayer.qwUserID );
+        VoiceLog( (WCHAR*)L"Got packet from player %I64x, but no queue set up for them", xuidFromPlayer.qwUserID );
     }
 
     return S_OK;

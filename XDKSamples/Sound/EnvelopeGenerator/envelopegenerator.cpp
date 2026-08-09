@@ -69,14 +69,14 @@ struct OPTION_STRUCT
 // List of parameters we can change
 OPTION_STRUCT g_aOptions[] =
 {
-    { offsetof( DSENVELOPEDESC, dwDelay ),      0,  0xFFF, FALSE,  L"Delay" },
-    { offsetof( DSENVELOPEDESC, dwAttack ),     0,  0xFFF, FALSE,  L"Attack" },
-    { offsetof( DSENVELOPEDESC, dwHold ),       0,  0xFFF, FALSE,  L"Hold" },
-    { offsetof( DSENVELOPEDESC, dwDecay ),      0,  0xFFF, FALSE,  L"Decay" },
-    { offsetof( DSENVELOPEDESC, dwSustain ),    0,  0xFF,  FALSE,  L"Sustain" },
-    { offsetof( DSENVELOPEDESC, dwRelease ),    0,  0xFFF, FALSE,  L"Release" },
-    { offsetof( DSENVELOPEDESC, lPitchScale ),  -128, 127, TRUE,   L"Pitch Scale" },
-    { offsetof( DSENVELOPEDESC, lFilterCutOff), -128, 127, TRUE,   L"Filter Cutoff" },
+    { offsetof( DSENVELOPEDESC, dwDelay ),      0,  0xFFF, FALSE,  (WCHAR*)L"Delay" },
+    { offsetof( DSENVELOPEDESC, dwAttack ),     0,  0xFFF, FALSE,  (WCHAR*)L"Attack" },
+    { offsetof( DSENVELOPEDESC, dwHold ),       0,  0xFFF, FALSE,  (WCHAR*)L"Hold" },
+    { offsetof( DSENVELOPEDESC, dwDecay ),      0,  0xFFF, FALSE,  (WCHAR*)L"Decay" },
+    { offsetof( DSENVELOPEDESC, dwSustain ),    0,  0xFF,  FALSE,  (WCHAR*)L"Sustain" },
+    { offsetof( DSENVELOPEDESC, dwRelease ),    0,  0xFFF, FALSE,  (WCHAR*)L"Release" },
+    { offsetof( DSENVELOPEDESC, lPitchScale ),  -128, 127, TRUE,   (WCHAR*)L"Pitch Scale" },
+    { offsetof( DSENVELOPEDESC, lFilterCutOff), -128, 127, TRUE,   (WCHAR*)L"Filter Cutoff" },
 };
 static const DWORD NUM_OPTIONS = sizeof( g_aOptions ) / sizeof( g_aOptions[0] );
     

@@ -1301,11 +1301,11 @@ HRESULT CXBoxSample::Render()
 
     WCHAR* TeamsText = 0;
     if( m_FilterFlags == BIT_FLAGS_BLUE_TEAM )
-        TeamsText = L"Blue Team";
+        TeamsText = (WCHAR*)L"Blue Team";
     if( m_FilterFlags == BIT_FLAGS_RED_TEAM )
-        TeamsText = L"Red Team";
+        TeamsText = (WCHAR*)L"Red Team";
     if( m_FilterFlags == BIT_FLAGS_TEAMS )
-        TeamsText = L"Both Teams";
+        TeamsText = (WCHAR*)L"Both Teams";
     // Optionally draw text describing which team is being displayed.
     // m_ScreenFooter shouldn't be set when using the filter, since
     // it is drawn in the same place.

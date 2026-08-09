@@ -47,20 +47,20 @@ const struct TEXTUREFORMAT
     DWORD  type;
 } g_TextureFormats[] = 
 {
-    { L"D3DFMT_A8R8G8B8",        D3DFMT_A8R8G8B8,      FMT_SWIZZLED    },
-    { L"D3DFMT_LIN_A8R8G8B8",    D3DFMT_LIN_A8R8G8B8,  FMT_LINEAR      },
-    { L"D3DFMT_X8R8G8B8",        D3DFMT_X8R8G8B8,      FMT_SWIZZLED    },
-    { L"D3DFMT_LIN_X8R8G8B8",    D3DFMT_LIN_X8R8G8B8,  FMT_LINEAR      },
-    { L"D3DFMT_R5G6B5",          D3DFMT_R5G6B5,        FMT_SWIZZLED    },
-    { L"D3DFMT_LIN_R5G6B5",      D3DFMT_LIN_R5G6B5,    FMT_LINEAR      },
-    { L"D3DFMT_A1R5G5B5",        D3DFMT_A1R5G5B5,      FMT_SWIZZLED    },
-    { L"D3DFMT_LIN_A1R5G5B5",    D3DFMT_LIN_A1R5G5B5,  FMT_LINEAR      },
-    { L"D3DFMT_A4R4G4B4",        D3DFMT_A4R4G4B4,      FMT_SWIZZLED    },
-    { L"D3DFMT_LIN_A4R4G4B4",    D3DFMT_LIN_A4R4G4B4,  FMT_LINEAR      },
-    { L"D3DFMT_DXT1",            D3DFMT_DXT1,          FMT_COMPRESSED  },
-    { L"D3DFMT_DXT2",            D3DFMT_DXT2,          FMT_COMPRESSED  },
-    { L"D3DFMT_DXT4",            D3DFMT_DXT4,          FMT_COMPRESSED  },
-    { L"",                       0,                    0               },
+    { (WCHAR*)L"D3DFMT_A8R8G8B8",        D3DFMT_A8R8G8B8,      FMT_SWIZZLED    },
+    { (WCHAR*)L"D3DFMT_LIN_A8R8G8B8",    D3DFMT_LIN_A8R8G8B8,  FMT_LINEAR      },
+    { (WCHAR*)L"D3DFMT_X8R8G8B8",        D3DFMT_X8R8G8B8,      FMT_SWIZZLED    },
+    { (WCHAR*)L"D3DFMT_LIN_X8R8G8B8",    D3DFMT_LIN_X8R8G8B8,  FMT_LINEAR      },
+    { (WCHAR*)L"D3DFMT_R5G6B5",          D3DFMT_R5G6B5,        FMT_SWIZZLED    },
+    { (WCHAR*)L"D3DFMT_LIN_R5G6B5",      D3DFMT_LIN_R5G6B5,    FMT_LINEAR      },
+    { (WCHAR*)L"D3DFMT_A1R5G5B5",        D3DFMT_A1R5G5B5,      FMT_SWIZZLED    },
+    { (WCHAR*)L"D3DFMT_LIN_A1R5G5B5",    D3DFMT_LIN_A1R5G5B5,  FMT_LINEAR      },
+    { (WCHAR*)L"D3DFMT_A4R4G4B4",        D3DFMT_A4R4G4B4,      FMT_SWIZZLED    },
+    { (WCHAR*)L"D3DFMT_LIN_A4R4G4B4",    D3DFMT_LIN_A4R4G4B4,  FMT_LINEAR      },
+    { (WCHAR*)L"D3DFMT_DXT1",            D3DFMT_DXT1,          FMT_COMPRESSED  },
+    { (WCHAR*)L"D3DFMT_DXT2",            D3DFMT_DXT2,          FMT_COMPRESSED  },
+    { (WCHAR*)L"D3DFMT_DXT4",            D3DFMT_DXT4,          FMT_COMPRESSED  },
+    { (WCHAR*)L"",                       0,                    0               },
 };
 
 
@@ -396,16 +396,16 @@ HRESULT CXBoxSample::Render()
                     if(dwDim == 2)
                     {
                         swprintf( strRes, L"%dx%d", dwU, dwV );
-                        pTexType = L"2D Texture";
+                        pTexType = (WCHAR*)L"2D Texture";
                     }
                     else if(dwCube)
                     {
                         swprintf( strRes, L"%dx%d", dwU, dwV );
-                        pTexType = L"Cubemap";
+                        pTexType = (WCHAR*)L"Cubemap";
                     }
                     else
                     {
-                        pTexType = L"3D Texture";
+                        pTexType = (WCHAR*)L"3D Texture";
                         swprintf( strRes, L"%dx%dx%d", dwU, dwV, dwP );
                     }
 

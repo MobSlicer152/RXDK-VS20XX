@@ -91,13 +91,13 @@ VOID UserInterface::RenderCreateAccount( BOOL bHasMachineAccount )
     WCHAR* strInfo;
     if( bHasMachineAccount )
     {
-        strInfo = L"No online accounts exist on this Xbox.\n\n"
+        strInfo = (WCHAR*)L"No online accounts exist on this Xbox.\n\n"
                   L"Run the XDK Launcher or Xbox OnlineDash\nto create accounts.\n\n"
                   L"Press " GLYPH_A_BUTTON L" to continue.";
     }
     else
     {
-        strInfo = L"This Xbox does not have a machine account.\n\n"
+        strInfo = (WCHAR*)L"This Xbox does not have a machine account.\n\n"
                   L"Run the XDK Launcher or Xbox OnlineDash\nto create accounts.\n\n"
                   L"Press " GLYPH_A_BUTTON L" to continue.";
     }
@@ -363,9 +363,9 @@ VOID UserInterface::RenderUserWaitForOthers( DWORD dwUserIndex,
 
     WCHAR* strText;
     if( bReadyForSignOn )
-        strText = L"Press " GLYPH_A_BUTTON L" to Sign On";
+        strText = (WCHAR*)L"Press " GLYPH_A_BUTTON L" to Sign On";
     else
-        strText = L"Waiting for others...";
+        strText = (WCHAR*)L"Waiting for others...";
 
     m_Font.DrawText( fXtop + REGION_WIDTH / 2, fYtop + REGION_HEIGHT / 2,
                      COLOR_NORMAL, strText, XBFONT_CENTER_X );

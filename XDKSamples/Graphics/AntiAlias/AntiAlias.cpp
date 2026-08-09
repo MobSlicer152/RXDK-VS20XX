@@ -55,18 +55,18 @@ struct AntiAliasMode
 
 AntiAliasMode g_AntiAliasModes[] =
 {
-    { D3DMULTISAMPLE_NONE,                                    L"None",                                    TRUE },
-    { D3DMULTISAMPLE_NONE,                                    L"Edge Anti-Alias",                         TRUE },
-    { D3DMULTISAMPLE_2_SAMPLES_MULTISAMPLE_LINEAR,            L"2x MultiSample Linear Filter",            TRUE },
-    { D3DMULTISAMPLE_2_SAMPLES_MULTISAMPLE_QUINCUNX,          L"2x MultiSample Quincunx Filter",          FALSE },
-    { D3DMULTISAMPLE_2_SAMPLES_SUPERSAMPLE_HORIZONTAL_LINEAR, L"2x SuperSample Linear Horizontal Filter", TRUE },
-    { D3DMULTISAMPLE_2_SAMPLES_SUPERSAMPLE_VERTICAL_LINEAR,   L"2x SuperSample Linear Vertical Filter",   TRUE },
-    { D3DMULTISAMPLE_4_SAMPLES_MULTISAMPLE_LINEAR,            L"4x MultiSample Linear Filter",            TRUE },
-    { D3DMULTISAMPLE_4_SAMPLES_MULTISAMPLE_GAUSSIAN,          L"4x MultiSample Gaussian Filter",          FALSE },
-    { D3DMULTISAMPLE_4_SAMPLES_SUPERSAMPLE_LINEAR,            L"4x SuperSample Linear Filter",            TRUE },
-    { D3DMULTISAMPLE_4_SAMPLES_SUPERSAMPLE_GAUSSIAN,          L"4x SuperSample Gaussian Filter",          FALSE },
-    { D3DMULTISAMPLE_9_SAMPLES_MULTISAMPLE_GAUSSIAN,          L"9x MultiSample Gaussian Filter",          FALSE },
-    { D3DMULTISAMPLE_9_SAMPLES_SUPERSAMPLE_GAUSSIAN,          L"9x SuperSample Gaussian Filter",          FALSE },
+    { D3DMULTISAMPLE_NONE,                                    (WCHAR*)L"None",                                    TRUE },
+    { D3DMULTISAMPLE_NONE,                                    (WCHAR*)L"Edge Anti-Alias",                         TRUE },
+    { D3DMULTISAMPLE_2_SAMPLES_MULTISAMPLE_LINEAR,            (WCHAR*)L"2x MultiSample Linear Filter",            TRUE },
+    { D3DMULTISAMPLE_2_SAMPLES_MULTISAMPLE_QUINCUNX,          (WCHAR*)L"2x MultiSample Quincunx Filter",          FALSE },
+    { D3DMULTISAMPLE_2_SAMPLES_SUPERSAMPLE_HORIZONTAL_LINEAR, (WCHAR*)L"2x SuperSample Linear Horizontal Filter", TRUE },
+    { D3DMULTISAMPLE_2_SAMPLES_SUPERSAMPLE_VERTICAL_LINEAR,   (WCHAR*)L"2x SuperSample Linear Vertical Filter",   TRUE },
+    { D3DMULTISAMPLE_4_SAMPLES_MULTISAMPLE_LINEAR,            (WCHAR*)L"4x MultiSample Linear Filter",            TRUE },
+    { D3DMULTISAMPLE_4_SAMPLES_MULTISAMPLE_GAUSSIAN,          (WCHAR*)L"4x MultiSample Gaussian Filter",          FALSE },
+    { D3DMULTISAMPLE_4_SAMPLES_SUPERSAMPLE_LINEAR,            (WCHAR*)L"4x SuperSample Linear Filter",            TRUE },
+    { D3DMULTISAMPLE_4_SAMPLES_SUPERSAMPLE_GAUSSIAN,          (WCHAR*)L"4x SuperSample Gaussian Filter",          FALSE },
+    { D3DMULTISAMPLE_9_SAMPLES_MULTISAMPLE_GAUSSIAN,          (WCHAR*)L"9x MultiSample Gaussian Filter",          FALSE },
+    { D3DMULTISAMPLE_9_SAMPLES_SUPERSAMPLE_GAUSSIAN,          (WCHAR*)L"9x SuperSample Gaussian Filter",          FALSE },
 };
 
 #define NUM_ANTIALIAS_MODES ( sizeof(g_AntiAliasModes) / sizeof(g_AntiAliasModes[0]) )

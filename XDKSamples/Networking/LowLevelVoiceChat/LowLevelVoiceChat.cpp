@@ -34,14 +34,14 @@ struct VOICE_MASK_PRESET
 
 const VOICE_MASK_PRESET g_VoiceMasks[] =
 {
-    { L"None",        XVOICE_MASK_NONE },
-    { L"Anonymous",   XVOICE_MASK_ANONYMOUS   },
-    { L"Cartoon",     XVOICE_MASK_CARTOON },
-    { L"Big Guy",     XVOICE_MASK_BIGGUY },
-    { L"Child",       XVOICE_MASK_CHILD },
-    { L"Robot",       XVOICE_MASK_ROBOT },
-    { L"Dark Master", XVOICE_MASK_DARKMASTER },
-    { L"Whisper",     XVOICE_MASK_WHISPER },
+    { (WCHAR*)L"None",        XVOICE_MASK_NONE },
+    { (WCHAR*)L"Anonymous",   XVOICE_MASK_ANONYMOUS   },
+    { (WCHAR*)L"Cartoon",     XVOICE_MASK_CARTOON },
+    { (WCHAR*)L"Big Guy",     XVOICE_MASK_BIGGUY },
+    { (WCHAR*)L"Child",       XVOICE_MASK_CHILD },
+    { (WCHAR*)L"Robot",       XVOICE_MASK_ROBOT },
+    { (WCHAR*)L"Dark Master", XVOICE_MASK_DARKMASTER },
+    { (WCHAR*)L"Whisper",     XVOICE_MASK_WHISPER },
 };
 const DWORD NUM_VOICEMASKS = sizeof( g_VoiceMasks ) / sizeof( g_VoiceMasks[0] );
 

@@ -187,18 +187,18 @@ HRESULT CXBoxSample::SelectNextVideoMode()
     // Build a display mode string
     WCHAR* strMode;
     if( m_DisplayMode.Height == 1080 )
-        strMode = L"1080i";
+        strMode = (WCHAR*)L"1080i";
     else if( m_DisplayMode.Flags & D3DPRESENTFLAG_PROGRESSIVE )
     {
         if( m_DisplayMode.Height == 480 )
-            strMode = L"480p";
+            strMode = (WCHAR*)L"480p";
         else
-            strMode = L"720p";
+            strMode = (WCHAR*)L"720p";
     }
     else if( XGetVideoStandard() == XC_VIDEO_STANDARD_PAL_I )
-        strMode = L"PAL";
+        strMode = (WCHAR*)L"PAL";
     else
-        strMode = L"NTSC";
+        strMode = (WCHAR*)L"NTSC";
 
     swprintf( m_strDisplayMode, L"Mode = %d x %d %s @%dHz%s%s", 
                                 m_DisplayMode.Width, m_DisplayMode.Height, 
@@ -265,7 +265,7 @@ HRESULT CXBoxSample::Initialize()
     m_pBulletHolesTexture = m_xprResource.GetTexture( "BulletHole" );
 
     // Load the lightgun object
-    if( FAILED( m_LightGunMesh.Create( "Models\\LightGun.xbg", &m_xprResource ) ) )
+    if( FAILED( m_LightGunMesh.Create( (CHAR*)"Models\\LightGun.xbg", &m_xprResource ) ) )
         return XBAPPERR_MEDIANOTFOUND;
 
     // Start off in the control test page

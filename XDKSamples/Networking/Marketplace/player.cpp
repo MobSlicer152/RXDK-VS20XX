@@ -335,7 +335,7 @@ Player::Player()
     m_dObj.SetVoiceSound( g_AudioMgr.CreatePositionedVoiceSound() );   
     
     pSound = g_AudioMgr.CreatePositionedWaveBankSound();
-    pSound->Initialize("walla", D3DXVECTOR3(0.f, 0.f, 0.f) );   
+    pSound->Initialize((CHAR*)"walla", D3DXVECTOR3(0.f, 0.f, 0.f) );   
     pSound->SetAutoEnable( false );
     m_dObj.SetWavSound( pSound );
 }
@@ -476,7 +476,7 @@ VOID Player::UpdateAnimation( FLOAT fDt )
             glyph = GLYPH_PLAYER_ICON;
 
         if ( m_dwPlayerFlags & PLAYERFLAG_ONPRIVATECHANNEL )
-            m_dObj.SetSublabel( L"P", 0xffa03030 ) ;
+            m_dObj.SetSublabel( (WCHAR*)L"P", 0xffa03030 ) ;
         else if ( m_dwPlayerFlags & PLAYERFLAG_BOT )
             m_dObj.SetSublabel( GLYPH_BOT_ICON , 0xffa0a0a0 );
         else

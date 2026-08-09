@@ -956,9 +956,9 @@ VOID CXBoxSample::RenderSignedOn( DWORD dwControllerIndex,
     // Draw signed on text
     WCHAR* strSignedOn;
     if( bGuest )
-        strSignedOn = L"Guest Signed On";
+        strSignedOn = (WCHAR*)L"Guest Signed On";
     else
-        strSignedOn = L"Signed On";
+        strSignedOn = (WCHAR*)L"Signed On";
     m_Font.DrawText( (x1+x2)/2, (y1+y2)/2, COLOR_NORMAL, strSignedOn, XBFONT_CENTER_X );
 
     if( bSignedOn )

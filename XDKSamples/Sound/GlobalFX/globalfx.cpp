@@ -132,7 +132,7 @@ DSFX_ECHO_STEREO_PARAMS g_fxEcho;
 EFFECTPARAM g_aEchoParams[] =
 {
     { 
-        L"Gain",                                                                  // Description
+        (WCHAR*)L"Gain",                                                                  // Description
         PARAM_FLOAT,                                                              // Value type
         UserStereoEcho_StereoEcho,                                                // Effect index
         &g_fxEcho,                                                                // pvFXParam
@@ -158,7 +158,7 @@ DSFX_DISTORTION_PARAMS g_fxDistortionR;
 EFFECTPARAM g_aDistortionParams[] =
 {
     { 
-        L"Gain L",                                                                // Description
+        (WCHAR*)L"Gain L",                                                                // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -168,7 +168,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter B0 L",                                                        // Description
+        (WCHAR*)L"PreFilter B0 L",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -178,7 +178,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter B1 L",                                                        // Description
+        (WCHAR*)L"PreFilter B1 L",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -188,7 +188,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter B2 L",                                                        // Description
+        (WCHAR*)L"PreFilter B2 L",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -198,7 +198,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter A1 L",                                                        // Description
+        (WCHAR*)L"PreFilter A1 L",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -208,7 +208,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter A2 L",                                                        // Description
+        (WCHAR*)L"PreFilter A2 L",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -218,7 +218,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter B0 L",                                                       // Description
+        (WCHAR*)L"PostFilter B0 L",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                             // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -228,7 +228,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter B1 L",                                                       // Description
+        (WCHAR*)L"PostFilter B1 L",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                           // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -238,7 +238,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter B2 L",                                                       // Description
+        (WCHAR*)L"PostFilter B2 L",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -248,7 +248,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter A1 L",                                                       // Description
+        (WCHAR*)L"PostFilter A1 L",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -258,7 +258,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter A2 L",                                                       // Description
+        (WCHAR*)L"PostFilter A2 L",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_1_Distortion_1,                                            // Effect index
         &g_fxDistortionL,                                                         // pvFXParam
@@ -268,7 +268,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"Gain R",                                                                // Description
+        (WCHAR*)L"Gain R",                                                                // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -278,7 +278,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter B0 R",                                                        // Description
+        (WCHAR*)L"PreFilter B0 R",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -288,7 +288,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter B1 R",                                                        // Description
+        (WCHAR*)L"PreFilter B1 R",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -298,7 +298,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter B2 R",                                                        // Description
+        (WCHAR*)L"PreFilter B2 R",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -308,7 +308,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter A1 R",                                                        // Description
+        (WCHAR*)L"PreFilter A1 R",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -318,7 +318,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PreFilter A2 R",                                                        // Description
+        (WCHAR*)L"PreFilter A2 R",                                                        // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -328,7 +328,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter B0 R",                                                       // Description
+        (WCHAR*)L"PostFilter B0 R",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -338,7 +338,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter B1 R",                                                       // Description
+        (WCHAR*)L"PostFilter B1 R",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -348,7 +348,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter B2 R",                                                       // Description
+        (WCHAR*)L"PostFilter B2 R",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -358,7 +358,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter A1 R",                                                       // Description
+        (WCHAR*)L"PostFilter A1 R",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -368,7 +368,7 @@ EFFECTPARAM g_aDistortionParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"PostFilter A2 R",                                                       // Description
+        (WCHAR*)L"PostFilter A2 R",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserDistortion_2_Distortion_2,                                            // Effect index
         &g_fxDistortionR,                                                         // pvFXParam
@@ -393,7 +393,7 @@ DSFX_CHORUS_STEREO_PARAMS g_fxChorus;
 EFFECTPARAM g_aChorusParams[] =
 {
     { 
-        L"Gain",                                                                  // Description
+        (WCHAR*)L"Gain",                                                                  // Description
         PARAM_FLOAT,                                                              // Value type
         UserStereoChorus_StereoChorus,                                            // Effect index
         &g_fxChorus,                                                              // pvFXParam
@@ -403,7 +403,7 @@ EFFECTPARAM g_aChorusParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"ModScale",                                                              // Description
+        (WCHAR*)L"ModScale",                                                              // Description
         PARAM_DWORD,                                                              // Value type
         UserStereoChorus_StereoChorus,                                            // Effect index
         &g_fxChorus,                                                              // pvFXParam
@@ -428,7 +428,7 @@ DSFX_FLANGE_STEREO_PARAMS g_fxFlange;
 EFFECTPARAM g_aAmpModFlangeParams[] =
 {
     {
-        L"Flange Feedback",                                                       // Description
+        (WCHAR*)L"Flange Feedback",                                                       // Description
         PARAM_FLOAT,                                                              // Value type
         UserStereoFlange_StereoFlange,                                            // Effect index
         &g_fxFlange,                                                              // pvFXParam
@@ -438,7 +438,7 @@ EFFECTPARAM g_aAmpModFlangeParams[] =
         1.0f                                                                      // Max
     },
     { 
-        L"Flange Scale",                                                          // Description
+        (WCHAR*)L"Flange Scale",                                                          // Description
         PARAM_DWORD,                                                              // Value type
         UserStereoFlange_StereoFlange,                                            // Effect index
         &g_fxFlange,                                                              // pvFXParam
@@ -474,11 +474,11 @@ enum EFFECT_CHAINS
 OPTION_STRUCT g_aOptions[] =
 {
 // Name, # bins, mixbin assignments, # params, param structure, # outputs, output struct
-    { L"None",              6, { DSMIXBIN_FRONT_LEFT, DSMIXBIN_FRONT_RIGHT, DSMIXBIN_FRONT_CENTER, DSMIXBIN_BACK_LEFT, DSMIXBIN_BACK_RIGHT, DSMIXBIN_LOW_FREQUENCY }, 0, NULL, 0, NULL },
-    { L"Echo",              2, { DSMIXBIN_FXSEND_0, DSMIXBIN_FXSEND_1 }, 1, g_aEchoParams, 2, g_aEchoOutputs },
-    { L"Distortion",        2, { DSMIXBIN_FXSEND_2, DSMIXBIN_FXSEND_3 }, 22, g_aDistortionParams, 2, g_aDistortionOutputs },
-    { L"Chorus",            2, { DSMIXBIN_FXSEND_4, DSMIXBIN_FXSEND_5 }, 2, g_aChorusParams, 2, g_aChorusOutputs },
-    { L"AmpMod->Flange",    2, { DSMIXBIN_FXSEND_6, DSMIXBIN_FXSEND_7 }, 2, g_aAmpModFlangeParams, 2, g_aAmpModFlangeOutputs },
+    { (WCHAR*)L"None",              6, { DSMIXBIN_FRONT_LEFT, DSMIXBIN_FRONT_RIGHT, DSMIXBIN_FRONT_CENTER, DSMIXBIN_BACK_LEFT, DSMIXBIN_BACK_RIGHT, DSMIXBIN_LOW_FREQUENCY }, 0, NULL, 0, NULL },
+    { (WCHAR*)L"Echo",              2, { DSMIXBIN_FXSEND_0, DSMIXBIN_FXSEND_1 }, 1, g_aEchoParams, 2, g_aEchoOutputs },
+    { (WCHAR*)L"Distortion",        2, { DSMIXBIN_FXSEND_2, DSMIXBIN_FXSEND_3 }, 22, g_aDistortionParams, 2, g_aDistortionOutputs },
+    { (WCHAR*)L"Chorus",            2, { DSMIXBIN_FXSEND_4, DSMIXBIN_FXSEND_5 }, 2, g_aChorusParams, 2, g_aChorusOutputs },
+    { (WCHAR*)L"AmpMod->Flange",    2, { DSMIXBIN_FXSEND_6, DSMIXBIN_FXSEND_7 }, 2, g_aAmpModFlangeParams, 2, g_aAmpModFlangeOutputs },
 };
 
 
@@ -674,7 +674,7 @@ HRESULT CXBoxSample::Initialize()
         return E_FAIL;
 
     // Download a scratch image that contains our effects graphs
-    if( FAILED( DownloadEffectsImage( "d:\\media\\image.bin" ) ) )
+    if( FAILED( DownloadEffectsImage( (CHAR*)"d:\\media\\image.bin" ) ) )
         return E_FAIL;
 
     // Load all of the initial effect parameters from the DSP

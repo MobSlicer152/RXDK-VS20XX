@@ -54,8 +54,8 @@ struct LANGUAGE
 
 static const LANGUAGE g_aLanguages[] = 
 {
-    { L"English",       "SampleSRBank_en.xsr", "SampleSRBank_en.txt", "font.xpr" },
-    { L"Japanese",      "SampleSRBank_jp.xsr", "SampleSRBank_jp.txt", "font_jp.xpr" },
+    { (WCHAR*)L"English",       (CHAR*)"SampleSRBank_en.xsr", (CHAR*)"SampleSRBank_en.txt", (CHAR*)"font.xpr" },
+    { (WCHAR*)L"Japanese",      (CHAR*)"SampleSRBank_jp.xsr", (CHAR*)"SampleSRBank_jp.txt", (CHAR*)"font_jp.xpr" },
 //    { L"French",        "SampleSRBank_fr.xsr", "SampleSRBank_fr.txt", "font.xpr" },
 //    { L"German",        "SampleSRBank_de.xsr", "SampleSRBank_de.txt", "font.xpr" },
 //    { L"UK English",    "SampleSRBank_uk.xsr", "SampleSRBank_uk.txt", "font.xpr" },
@@ -73,8 +73,8 @@ struct VOCABULARY
 
 static VOCABULARY g_aVocabularies[] = 
 {
-    { L"Weapons",   XHV_SR_VOCAB_WEAPONS, TRUE },
-    { L"Foods",     XHV_SR_VOCAB_FOODS, FALSE },
+    { (WCHAR*)L"Weapons",   XHV_SR_VOCAB_WEAPONS, TRUE },
+    { (WCHAR*)L"Foods",     XHV_SR_VOCAB_FOODS, FALSE },
 };
 static const DWORD NUM_VOCABULARIES = sizeof( g_aVocabularies ) / sizeof( g_aVocabularies[0] );
 

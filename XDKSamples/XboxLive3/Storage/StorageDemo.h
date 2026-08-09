@@ -93,7 +93,7 @@ const INT    MAX_NETWORK_RESULTS    = 10; // Max number of network files to enum
 // File name constants used for content
 // downloading and uploading
 
-WCHAR*       TEAM_LOGO_FILENAME     = L"logo";    // Name of team logo file on network
+WCHAR*       TEAM_LOGO_FILENAME     = (WCHAR*)L"logo";    // Name of team logo file on network
 const WCHAR* INSTALL_LOCATION_FILE  = L"install"; // Name of file containing the save name
 
 const CHAR* const FILENAME_SAVEMETA = "savemeta.xbx";

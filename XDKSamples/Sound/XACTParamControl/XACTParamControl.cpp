@@ -397,7 +397,7 @@ HRESULT CXBoxSample::FrameMove()
     }
 
     // Set the RPM parameter control values with XACT
-    AdjustParamControl( ( 1.0f / RPM_REDLINE_MAX ) * m_fRPMs , "RPM" );
+    AdjustParamControl( ( 1.0f / RPM_REDLINE_MAX ) * m_fRPMs , (CHAR*)"RPM" );
 
     // Pump XACT's work queue
     XACTEngineDoWork();
@@ -571,7 +571,7 @@ HRESULT CXBoxSample::ResetEngineState()
     m_pSoundBank->Prepare( m_dwGear, XACT_FLAG_SOUNDCUE_PRIME, &m_pSoundCue );
 
     // Set initial RPM parameter control value with XACT
-    AdjustParamControl( 1, "RPM" );
+    AdjustParamControl( 1, (CHAR*)"RPM" );
 
     // Pump XACT's work queue to prime the starting sound cue parameters
     XACTEngineDoWork();

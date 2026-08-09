@@ -868,11 +868,11 @@ VOID CXBoxSample::RenderSignedOn( DWORD dwControllerIndex, DWORD iPane,
     // Draw signed on text
     WCHAR* strSignedOn;
     if( FALSE == bSignedOn )
-        strSignedOn = L"Not Signed On";
+        strSignedOn = (WCHAR*)L"Not Signed On";
     else if( bGuest )
-        strSignedOn = L"Guest Signed On";
+        strSignedOn = (WCHAR*)L"Guest Signed On";
     else
-        strSignedOn = L"Signed On";
+        strSignedOn = (WCHAR*)L"Signed On";
     m_Font.DrawText( (x1+x2)/2, (y1+y2)/2, COLOR_NORMAL, strSignedOn, XBFONT_CENTER_X );
 
     if( bSignedOn )

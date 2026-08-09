@@ -114,7 +114,7 @@ HRESULT CVoiceCommunicator::Shutdown()
 //-----------------------------------------------------------------------------
 HRESULT CVoiceCommunicator::ResetMicrophone()
 {
-    m_pManager->VoiceLog( L"Resetting microphone %d", m_lSlot );
+    m_pManager->VoiceLog( (WCHAR*)L"Resetting microphone %d", m_lSlot );
     
     // To reset the microphone, we just need to submit all our packets
     XMEDIAPACKET xmp;
@@ -142,7 +142,7 @@ HRESULT CVoiceCommunicator::ResetMicrophone()
 //-----------------------------------------------------------------------------
 HRESULT CVoiceCommunicator::ResetHeadphone()
 {
-    m_pManager->VoiceLog( L"Resetting headphone %d", m_lSlot );
+    m_pManager->VoiceLog( (WCHAR*)L"Resetting headphone %d", m_lSlot );
     
     // Reset our SRC pointer
     m_pManager->GetSRCInfo( (WORD)m_lSlot, NULL, NULL, &m_dwSRCReadPosition );
@@ -205,7 +205,7 @@ VOID CALLBACK HeadphoneCallback( LPVOID pContext, LPVOID pPacketContext, DWORD d
 //-----------------------------------------------------------------------------
 HRESULT CVoiceCommunicator::OnInsertion( DWORD dwSlot )
 {
-    m_pManager->VoiceLog( L"Communicator inserted into slot %d", dwSlot );
+    m_pManager->VoiceLog( (WCHAR*)L"Communicator inserted into slot %d", dwSlot );
 
     m_lSlot = LONG( dwSlot );
 
@@ -245,7 +245,7 @@ HRESULT CVoiceCommunicator::OnInsertion( DWORD dwSlot )
 //-----------------------------------------------------------------------------
 HRESULT CVoiceCommunicator::OnRemoval()
 {
-    m_pManager->VoiceLog( L"Communicator removed from slot %d", m_lSlot );
+    m_pManager->VoiceLog( (WCHAR*)L"Communicator removed from slot %d", m_lSlot );
 
     if( m_pMicrophoneXMO )
     {

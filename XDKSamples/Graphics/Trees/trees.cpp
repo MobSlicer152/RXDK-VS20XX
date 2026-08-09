@@ -279,7 +279,7 @@ HRESULT CXBoxSample::Initialize()
     };
     static TreeLibraryData rTreeLibraryData[NTREELIBRARY] =  
     {
-        { "tree1",  0,  { 1.0f, 1.0f, 1.0f} },   // Use tree's bbox
+        { (CHAR*)"tree1",  0,  { 1.0f, 1.0f, 1.0f} },   // Use tree's bbox
     };
     for( UINT iTreeLibrary = 0; iTreeLibrary < NTREELIBRARY; iTreeLibrary++ )
     {

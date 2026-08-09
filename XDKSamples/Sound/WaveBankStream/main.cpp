@@ -38,7 +38,7 @@ const DWORD NUM_HELP_CALLOUTS = sizeof(g_HelpCallouts) / sizeof(g_HelpCallouts[0
 
 static const DWORD NUM_STREAMS = 7;
 
-CHAR* g_strWaveBankFileName = "d:\\media\\sounds\\XactSounds_streaming.xwb";
+CHAR* g_strWaveBankFileName = (CHAR*)"d:\\media\\sounds\\XactSounds_streaming.xwb";
 
 
 

@@ -89,7 +89,7 @@ struct MM_GAMESOUNDTRACK
 // FindFirstFile() and FindNextFile() at runtime
 MM_GAMESOUNDTRACK g_aGameSoundtracks[] =
 {
-    { L"Game Soundtrack 1", "d:\\media\\sounds\\soundtrack", 1 },
+    { (WCHAR*)L"Game Soundtrack 1", (CHAR*)"d:\\media\\sounds\\soundtrack", 1 },
 };
 
 #define NUM_GAME_SOUNDTRACKS ( sizeof(g_aGameSoundtracks) / sizeof(g_aGameSoundtracks[0]) )

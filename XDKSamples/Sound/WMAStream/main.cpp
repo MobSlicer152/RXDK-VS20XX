@@ -176,7 +176,7 @@ HRESULT CXBoxSample::Initialize()
         return E_FAIL;
 
     // download the standard DirectSound effects image
-    if( FAILED( DownloadEffectsImage("d:\\media\\dsstdfx.bin") ) )
+    if( FAILED( DownloadEffectsImage((CHAR*)"d:\\media\\dsstdfx.bin") ) )
         return E_FAIL;
 
     m_bDrawHelp = FALSE;

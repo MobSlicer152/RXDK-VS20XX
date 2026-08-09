@@ -27,7 +27,7 @@ typedef struct {
 // XFindFirstFile() and XFindNextFile() at runtime
 MM_GAMESOUNDTRACK   g_aGameSoundtracks[] =
 {
-    { L"Game Soundtrack 1", "d:\\media\\sounds\\soundtrack", 1 },
+    { (WCHAR*)L"Game Soundtrack 1", (CHAR*)"d:\\media\\sounds\\soundtrack", 1 },
 };
 
 #define NUM_GAME_SOUNDTRACKS    ( sizeof( g_aGameSoundtracks ) / sizeof( g_aGameSoundtracks[0] ) )
@@ -95,20 +95,20 @@ HRESULT AudioEngine::Initialize()
 
     // Register our soundbank with XACT
     DWORD dwFileSize;
-    if( FAILED( LoadFile( "d:\\media\\sounds\\XactSounds.xsb", (VOID **)&m_pbSoundBank, &dwFileSize ) ) )
+    if( FAILED( LoadFile( (CHAR*)"d:\\media\\sounds\\XactSounds.xsb", (VOID **)&m_pbSoundBank, &dwFileSize ) ) )
         return E_FAIL;
     if( FAILED( m_pXACT->CreateSoundBank( m_pbSoundBank, dwFileSize, &m_pSoundBank ) ) )
         return E_FAIL;
 
     // Register our in-memory wavebank with XACT
-    if( FAILED( LoadFile( "d:\\media\\sounds\\XactSounds_memory.xwb", (VOID **)&m_pbWaveBank, &dwFileSize ) ) )
+    if( FAILED( LoadFile( (CHAR*)"d:\\media\\sounds\\XactSounds_memory.xwb", (VOID **)&m_pbWaveBank, &dwFileSize ) ) )
         return E_FAIL;
     if( FAILED( m_pXACT->RegisterWaveBank( m_pbWaveBank, dwFileSize, &m_pWaveBank ) ) )
         return E_FAIL;
 
     // Load our DSP image and register it with XACT
     VOID* pDSPImage = NULL;
-    if( FAILED( LoadFile( "d:\\media\\dsstdfx.bin", &pDSPImage, &dwFileSize ) ) )
+    if( FAILED( LoadFile( (CHAR*)"d:\\media\\dsstdfx.bin", &pDSPImage, &dwFileSize ) ) )
         return E_FAIL;
 
     DSEFFECTIMAGELOC dseil;

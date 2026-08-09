@@ -63,9 +63,9 @@ VOID InitConsole( CXBFont* pFont )
 
     // Setup command structure for holding commands and functions to call
     InitCommands();
-    AddCommand( L"reboot", RebootFunction );
-    AddCommand( L"clear",  ClearFunction );
-    AddCommand( L"help",   HelpFunction );
+    AddCommand( (WCHAR*)L"reboot", RebootFunction );
+    AddCommand( (WCHAR*)L"clear",  ClearFunction );
+    AddCommand( (WCHAR*)L"help",   HelpFunction );
 }
 
 

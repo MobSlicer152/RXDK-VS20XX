@@ -31,8 +31,8 @@ struct MM_SONG
 
 MM_SONG g_aGameSoundtrack[] =
 {
-    { L"Becky",       "D:\\Media\\Sounds\\Becky.wma", 165000 },
-    { L"Becky remix", "D:\\Media\\Sounds\\Becky.wma", 165000 },
+    { (WCHAR*)L"Becky",       (CHAR*)"D:\\Media\\Sounds\\Becky.wma", 165000 },
+    { (WCHAR*)L"Becky remix", (CHAR*)"D:\\Media\\Sounds\\Becky.wma", 165000 },
 };
 
 const DWORD NUM_GAME_SONGS = sizeof( g_aGameSoundtrack ) / sizeof( g_aGameSoundtrack[0] );

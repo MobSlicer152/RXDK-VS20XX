@@ -174,18 +174,18 @@ HRESULT Marketplace::Initialize()
     
     // initialize the audio manager with the dsp image, the wavebank, and the sound effect files for Xact.
 
-    g_AudioMgr.Initialize("D:\\media\\sounds\\xactsounds_memory.xwb", "D:\\media\\sounds\\xactsounds.xsb", "D:\\media\\dsstdfx.bin");
+    g_AudioMgr.Initialize((CHAR*)"D:\\media\\sounds\\xactsounds_memory.xwb", (CHAR*)"D:\\media\\sounds\\xactsounds.xsb", (CHAR*)"D:\\media\\dsstdfx.bin");
     
 
     // create the ambient crowd noise- the volume of this will scale based on how many people are talking at once
 
     m_pCrowdAmbient = g_AudioMgr.CreateAmbientSound();    
-    m_pCrowdAmbient->Initialize( "MarketplaceAmbience" );
+    m_pCrowdAmbient->Initialize( (CHAR*)"MarketplaceAmbience" );
 
     // create the doorbell as an ambient sound- it gets played everytime someone joins
 
     m_pDoorbell = g_AudioMgr.CreateAmbientSound();
-    m_pDoorbell->Initialize( "chimes" );
+    m_pDoorbell->Initialize( (CHAR*)"chimes" );
 
     // create the objects (trees, fountain, podium, etc)
     CreateObjects();
@@ -193,7 +193,7 @@ HRESULT Marketplace::Initialize()
     g_AudioMgr.CommitSettings();
 
     // pull in the voice db for the bots
-    g_SoundbitDB.ReadFromFile("D:\\media\\marketplace.sdb");
+    g_SoundbitDB.ReadFromFile((CHAR*)"D:\\media\\marketplace.sdb");
 
     return S_OK;
 }
@@ -214,7 +214,7 @@ VOID Marketplace::CreateObjects()
     
     PositionedWaveBankSound *pSound;
     pSound = g_AudioMgr.CreatePositionedWaveBankSound();
-    pSound->Initialize("Fountain", pObj->GetPosition() );  // fountain loops, so no problem
+    pSound->Initialize((CHAR*)"Fountain", pObj->GetPosition() );  // fountain loops, so no problem
     pObj->SetWavSound( pSound );
 
     pObj = new DisplayedObject;
@@ -1623,10 +1623,10 @@ VOID Marketplace::UpdateSoundbitEditor()
     }
 
     if ( m_DefaultGamepad.bPressedAnalogButtons[ XINPUT_GAMEPAD_Y ] )
-        g_SoundbitDB.WriteToFile("D:\\media\\marketplace.sdb");
+        g_SoundbitDB.WriteToFile((CHAR*)"D:\\media\\marketplace.sdb");
 
     if ( m_DefaultGamepad.bPressedAnalogButtons[ XINPUT_GAMEPAD_B ] )
-        g_SoundbitDB.ReadFromFile("D:\\media\\marketplace.sdb");
+        g_SoundbitDB.ReadFromFile((CHAR*)"D:\\media\\marketplace.sdb");
 
     if (( m_DefaultGamepad.bPressedAnalogButtons[ XINPUT_GAMEPAD_Y ] ) || 
         ( m_DefaultGamepad.bPressedAnalogButtons[ XINPUT_GAMEPAD_B ] ))

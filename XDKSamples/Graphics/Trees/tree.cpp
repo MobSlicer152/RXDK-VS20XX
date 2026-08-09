@@ -58,7 +58,7 @@ HRESULT CTree::Create(CHAR *strName, CXBPackedResource *pResource)
     }
 
     // Load the tree branch
-    CHAR *strBranch = "Models\\branch4.xbg";
+    CHAR *strBranch = (CHAR*)"Models\\branch4.xbg";
     hr = m_TreeBranch.Create(strBranch, pResource);
     if (FAILED(hr))
         return hr;
@@ -78,7 +78,7 @@ HRESULT CTree::Create(CHAR *strName, CXBPackedResource *pResource)
     }
 
     // Load the trunk
-    CHAR *strTrunk = "Models\\trunk.xbg";
+    CHAR *strTrunk = (CHAR*)"Models\\trunk.xbg";
     m_pMeshTrunk = NULL;
     m_pMeshTrunk = new CTreeShaderMesh;
     if (!m_pMeshTrunk)
@@ -173,11 +173,11 @@ HRESULT CTree::Slice()
 {
     SliceInfo rSliceInfo[3] = {
         { 8, 128, 128, D3DTADDRESS_CLAMP, D3DTADDRESS_CLAMP, D3DFMT_DXT4,
-          { 1.f, 0.f, 0.f }, { 0.f, 1.f, 0.f }, 0.4f, 0.6f, "TreeX" },
+          { 1.f, 0.f, 0.f }, { 0.f, 1.f, 0.f }, 0.4f, 0.6f, (CHAR*)"TreeX" },
         { 8, 128, 128, D3DTADDRESS_CLAMP, D3DTADDRESS_CLAMP, D3DFMT_DXT4,
-          { 0.f, 1.f, 0.f }, { 1.f, 0.f, 0.f }, 0.4f, 0.6f, "TreeY" },
+          { 0.f, 1.f, 0.f }, { 1.f, 0.f, 0.f }, 0.4f, 0.6f, (CHAR*)"TreeY" },
         { 8, 128, 128, D3DTADDRESS_CLAMP, D3DTADDRESS_CLAMP, D3DFMT_DXT4,
-          { 0.f, 0.f, 1.f }, { -1.f, 0.f, 0.f }, 0.4f, 0.6f, "TreeZ" },
+          { 0.f, 0.f, 1.f }, { -1.f, 0.f, 0.f }, 0.4f, 0.6f, (CHAR*)"TreeZ" },
     };
     return CSliceObject::Slice(3, rSliceInfo);
 }

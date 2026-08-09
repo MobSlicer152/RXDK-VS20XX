@@ -2823,22 +2823,22 @@ VOID CXBLoadSave::GenerateSavedGameName( WCHAR* strName ) // static
     const INT MAX_NAME = 16;
     GameName NameList[ MAX_NAME ] =
     {
-        { L"Hydro",    L"Fortress" },
-        { L"Roller",   L"Castle"   },
-        { L"Opposing", L"Level"    },
-        { L"Final",    L"Ruins"    },
-        { L"Monkey",   L"Island"   },
-        { L"Wicked",   L"Hamster"  },
-        { L"Battle",   L"Zone"     },
-        { L"Dark",     L"Corridor" },   
-        { L"Delta",    L"Tundra"   },
-        { L"Evil",     L"Core"     },
-        { L"Galactic", L"Patrol"   },
-        { L"Mech",     L"Fields"   },
-        { L"Red",      L"Vista"    },
-        { L"Shadow",   L"Company"  },
-        { L"Hamster",  L"Sewers"   },
-        { L"Power",    L"Outpost"  }   
+        { (WCHAR*)L"Hydro",    (WCHAR*)L"Fortress" },
+        { (WCHAR*)L"Roller",   (WCHAR*)L"Castle"   },
+        { (WCHAR*)L"Opposing", (WCHAR*)L"Level"    },
+        { (WCHAR*)L"Final",    (WCHAR*)L"Ruins"    },
+        { (WCHAR*)L"Monkey",   (WCHAR*)L"Island"   },
+        { (WCHAR*)L"Wicked",   (WCHAR*)L"Hamster"  },
+        { (WCHAR*)L"Battle",   (WCHAR*)L"Zone"     },
+        { (WCHAR*)L"Dark",     (WCHAR*)L"Corridor" },   
+        { (WCHAR*)L"Delta",    (WCHAR*)L"Tundra"   },
+        { (WCHAR*)L"Evil",     (WCHAR*)L"Core"     },
+        { (WCHAR*)L"Galactic", (WCHAR*)L"Patrol"   },
+        { (WCHAR*)L"Mech",     (WCHAR*)L"Fields"   },
+        { (WCHAR*)L"Red",      (WCHAR*)L"Vista"    },
+        { (WCHAR*)L"Shadow",   (WCHAR*)L"Company"  },
+        { (WCHAR*)L"Hamster",  (WCHAR*)L"Sewers"   },
+        { (WCHAR*)L"Power",    (WCHAR*)L"Outpost"  }   
     };
 
     // Choose one word from each column

@@ -1054,8 +1054,8 @@ HRESULT CXBoxSample::Blur()
     {
         case FM_IDENTITY:
         {
-            m_strFilterName        = L"IDENTITY";
-            m_strFilterDescription = L"Identity filter.";
+            m_strFilterName        = (WCHAR*)L"IDENTITY";
+            m_strFilterDescription = (WCHAR*)L"Identity filter.";
 
             // Blur from the backbuffer to the blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
@@ -1068,8 +1068,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_BOX:
         {
-            m_strFilterName        = L"BOX";
-            m_strFilterDescription = L"2x2 box filter, no decimation";
+            m_strFilterName        = (WCHAR*)L"BOX";
+            m_strFilterDescription = (WCHAR*)L"2x2 box filter, no decimation";
 
             // Blur from the backbuffer to the blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
@@ -1082,8 +1082,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_VERT:
         {
-            m_strFilterName        = L"VERT";
-            m_strFilterDescription = L"Vertical Gaussian (1221), no decimation";
+            m_strFilterName        = (WCHAR*)L"VERT";
+            m_strFilterDescription = (WCHAR*)L"Vertical Gaussian (1221), no decimation";
 
             // Blur from the backbuffer to the blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
@@ -1096,8 +1096,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_HORIZ:
         {
-            m_strFilterName        = L"HORIZ";
-            m_strFilterDescription = L"Horizontal Gaussian (1221), no decimation";
+            m_strFilterName        = (WCHAR*)L"HORIZ";
+            m_strFilterDescription = (WCHAR*)L"Horizontal Gaussian (1221), no decimation";
 
             // Blur from the backbuffer to the blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
@@ -1110,8 +1110,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_BOX2:
         {
-            m_strFilterName        = L"BOX2";
-            m_strFilterDescription = L"2x2 box filter, 2x2 downsampling";
+            m_strFilterName        = (WCHAR*)L"BOX2";
+            m_strFilterDescription = (WCHAR*)L"2x2 box filter, 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
@@ -1124,8 +1124,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_VERT2:
         {
-            m_strFilterName        = L"VERT2";
-            m_strFilterDescription = L"Vertical Gaussian (1221), 2x2 downsampling";
+            m_strFilterName        = (WCHAR*)L"VERT2";
+            m_strFilterDescription = (WCHAR*)L"Vertical Gaussian (1221), 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
@@ -1138,8 +1138,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_HORIZ2:
         {
-            m_strFilterName        = L"HORIZ2";
-            m_strFilterDescription = L"Horizontal Gaussian (1221), 2x2 downsampling";
+            m_strFilterName        = (WCHAR*)L"HORIZ2";
+            m_strFilterDescription = (WCHAR*)L"Horizontal Gaussian (1221), 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
@@ -1152,8 +1152,8 @@ HRESULT CXBoxSample::Blur()
         
         case FM_VERT2_HORIZ2:
         {
-            m_strFilterName        = L"VERT2 x HORIZ2";
-            m_strFilterDescription = L"2 passes: Vertical Gaussian (1221) followed by\n"
+            m_strFilterName        = (WCHAR*)L"VERT2 x HORIZ2";
+            m_strFilterDescription = (WCHAR*)L"2 passes: Vertical Gaussian (1221) followed by\n"
                                      L"horizontal Gaussian (1221), with 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
@@ -1172,8 +1172,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_HORIZ2_VERT2:
         {
-            m_strFilterName        = L"HORIZ2 x VERT2";
-            m_strFilterDescription = L"2 passes: Horizontal Gaussian (1221) followed by\n"
+            m_strFilterName        = (WCHAR*)L"HORIZ2 x VERT2";
+            m_strFilterDescription = (WCHAR*)L"2 passes: Horizontal Gaussian (1221) followed by\n"
                                      L"vertical Gaussian (1221), with 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
@@ -1192,8 +1192,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_VERT2_HORIZ:
         {
-            m_strFilterName        = L"VERT2 x HORIZ";
-            m_strFilterDescription = L"2 passes: Vertical Gaussian (1221) followed by\n"
+            m_strFilterName        = (WCHAR*)L"VERT2 x HORIZ";
+            m_strFilterDescription = (WCHAR*)L"2 passes: Vertical Gaussian (1221) followed by\n"
                                      L"narrow horizontal Gaussian (141), with 2x2\n"
                                      L"downsampling";
 
@@ -1213,8 +1213,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_HORIZ2_VERT:
         {
-            m_strFilterName        = L"HORIZ2 x VERT";
-            m_strFilterDescription = L"2 passes: Horizontal Gaussian (1221) followed by\n"
+            m_strFilterName        = (WCHAR*)L"HORIZ2 x VERT";
+            m_strFilterDescription = (WCHAR*)L"2 passes: Horizontal Gaussian (1221) followed by\n"
                                      L"narrow vertical Gaussian (141), with 2x2\n"
                                      L"downsampling";
 
@@ -1234,8 +1234,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_BOX2_BOX2:
         {
-            m_strFilterName        = L"BOX2 x BOX2";
-            m_strFilterDescription = L"2 passes: Box filter followed by box filter,\n"
+            m_strFilterName        = (WCHAR*)L"BOX2 x BOX2";
+            m_strFilterDescription = (WCHAR*)L"2 passes: Box filter followed by box filter,\n"
                                      L"with 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
@@ -1254,8 +1254,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_VERT2_HORIZ2_BOX2:
         {
-            m_strFilterName        = L"VERT2 x HORIZ2 x BOX2";
-            m_strFilterDescription = L"3 passes: Vertical Gaussian (1441) followed by\n"
+            m_strFilterName        = (WCHAR*)L"VERT2 x HORIZ2 x BOX2";
+            m_strFilterDescription = (WCHAR*)L"3 passes: Vertical Gaussian (1441) followed by\n"
                                      L"horizontal Gaussian (1441) followed by box filter,\n"
                                      L"with 2x2 downsampling";
 
@@ -1280,8 +1280,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_BOX2_BOX2_BOX2:
         {
-            m_strFilterName        = L"BOX2 x BOX2 x BOX2";
-            m_strFilterDescription = L"3 passes: Box filter followed by box filter\n"
+            m_strFilterName        = (WCHAR*)L"BOX2 x BOX2 x BOX2";
+            m_strFilterDescription = (WCHAR*)L"3 passes: Box filter followed by box filter\n"
                                      L"followed by box filter, with 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
@@ -1305,8 +1305,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_VERT2_HORIZ2_VERT2:
         {
-            m_strFilterName        = L"VERT2 x HORIZ2 x VERT2";
-            m_strFilterDescription = L"3 passes: Vertical Gaussian (1441) then horizontal\n"
+            m_strFilterName        = (WCHAR*)L"VERT2 x HORIZ2 x VERT2";
+            m_strFilterDescription = (WCHAR*)L"3 passes: Vertical Gaussian (1441) then horizontal\n"
                                      L"Gaussian (1441) then vertical Gaussian (1441)\n"
                                      L"with 2x2 downsampling";
 
@@ -1331,8 +1331,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_HORIZ2_VERT2_HORIZ2:
         {
-            m_strFilterName        = L"HORIZ2 x VERT2 x HORIZ2";
-            m_strFilterDescription = L"3 passes: Horizontal Gaussian (1441) then vertical\n"
+            m_strFilterName        = (WCHAR*)L"HORIZ2 x VERT2 x HORIZ2";
+            m_strFilterDescription = (WCHAR*)L"3 passes: Horizontal Gaussian (1441) then vertical\n"
                                      L"Gaussian (1441) then horizontal Gaussian (1441)\n"
                                      L"with 2x2 downsampling";
 
@@ -1357,8 +1357,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_VERT2_HORIZ2_VERT2_HORIZ2:
         {
-            m_strFilterName        = L"VERT2 x HORIZ2 x VERT2 x HORIZ2";
-            m_strFilterDescription = L"4 passes, alternating vertical Gaussian (1441)\n"
+            m_strFilterName        = (WCHAR*)L"VERT2 x HORIZ2 x VERT2 x HORIZ2";
+            m_strFilterDescription = (WCHAR*)L"4 passes, alternating vertical Gaussian (1441)\n"
                                      L"then horizontal Gaussian (1441), with 2x2\n"
                                      L"downsampling";
 
@@ -1388,8 +1388,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_HORIZ2_VERT2_HORIZ2_VERT2:
         {
-            m_strFilterName        = L"HORIZ2 x VERT2 x HORIZ2 x VERT2";
-            m_strFilterDescription = L"4 passes, alternating horizontal Gaussian (1441)\n"
+            m_strFilterName        = (WCHAR*)L"HORIZ2 x VERT2 x HORIZ2 x VERT2";
+            m_strFilterDescription = (WCHAR*)L"4 passes, alternating horizontal Gaussian (1441)\n"
                                      L"then vertical Gaussian (1441), with 2x2\n"
                                      L"downsampling";
 
@@ -1419,8 +1419,8 @@ HRESULT CXBoxSample::Blur()
 
         case FM_BOX2_BOX2_BOX2_BOX2:
         {
-            m_strFilterName        = L"BOX2 x BOX2 x BOX2 x BOX2";
-            m_strFilterDescription = L"4 passes of box filter with 2x2 downsampling";
+            m_strFilterName        = (WCHAR*)L"BOX2 x BOX2 x BOX2 x BOX2";
+            m_strFilterDescription = (WCHAR*)L"4 passes of box filter with 2x2 downsampling";
 
             // Blur from the backbuffer to the 1/2 sized blur texture
             D3DTexture* pTextureSrc = &m_BackBufferTexture;
