@@ -16,7 +16,7 @@
 
 #include <xtl.h>
 #include "Common.h"
-#include "XBFont.h"
+#include "xbfont.h"
 
 
 // Screen position constants

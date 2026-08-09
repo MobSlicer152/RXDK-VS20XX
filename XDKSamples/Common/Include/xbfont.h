@@ -42,8 +42,8 @@
 //-----------------------------------------------------------------------------
 #ifndef XBFONT_H
 #define XBFONT_H
-#include "XBResource.h"
-#include "XBUtil.h"
+#include "xbresource.h"
+#include "xbutil.h"
 
 
 

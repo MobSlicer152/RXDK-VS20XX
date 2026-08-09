@@ -11,8 +11,8 @@
 #include <xtl.h>
 #include <xgraphics.h>
 #include <stdio.h>
-#include "XBUtil.h"
-#include "XBResource.h"
+#include "xbutil.h"
+#include "xbresource.h"
 
 
 

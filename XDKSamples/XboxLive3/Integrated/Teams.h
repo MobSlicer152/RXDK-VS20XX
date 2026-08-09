@@ -13,7 +13,7 @@
 #ifndef TEAMS_H
 #define TEAMS_H
 
-#include "XBOnlineTask.h"
+#include "xbOnlineTask.h"
 
 
 enum

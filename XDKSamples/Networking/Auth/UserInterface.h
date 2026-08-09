@@ -13,7 +13,7 @@
 
 #include <xtl.h>
 #include <xonline.h>
-#include "XBFont.h"
+#include "xbfont.h"
 
 
 

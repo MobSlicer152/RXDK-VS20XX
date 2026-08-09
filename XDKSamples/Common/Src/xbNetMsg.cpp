@@ -9,7 +9,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XBNetMsg.h"
+#include "xbNetMsg.h"
 #include <cassert>
 #include <algorithm>
 

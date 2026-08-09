@@ -7,7 +7,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbConfig.h"
+#include "xbconfig.h"
 #include <cassert>
 
 

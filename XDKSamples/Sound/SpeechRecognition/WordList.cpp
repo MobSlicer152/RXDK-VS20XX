@@ -9,7 +9,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "wordlist.h"
-#include "XBUtil.h"
+#include "xbutil.h"
 
 
 

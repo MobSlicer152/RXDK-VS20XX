@@ -8,7 +8,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbMemUnit.h"
+#include "xbmemunit.h"
 #include <cassert>
 
 

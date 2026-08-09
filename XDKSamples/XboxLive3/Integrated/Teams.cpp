@@ -11,8 +11,8 @@
 #include <assert.h>
 #include <xtl.h>
 #include <xonline.h>
-#include "XBRandName.h"
-#include "XBStopWatch.h"
+#include "xbRandName.h"
+#include "xbstopwatch.h"
 
 #include "Teams.h"
 #include "Common.h"

@@ -12,7 +12,7 @@
 #define XBNET_H
 
 #include <xtl.h>
-#include "XBStopWatch.h"
+#include "xbstopwatch.h"
 #include <xonline.h>
 
 

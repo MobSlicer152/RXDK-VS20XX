@@ -11,8 +11,8 @@
 #include <xtl.h>
 #include <xonline.h>
 #include <uix.h>
-#include "XBFont.h"
-#include "XBOnline.h"
+#include "xbfont.h"
+#include "xbOnline.h"
 #include "CustomPlugin.h"
 
 

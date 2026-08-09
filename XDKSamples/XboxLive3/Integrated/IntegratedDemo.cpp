@@ -15,9 +15,9 @@
 #include <XBSound.h>
 #include "dsound.h"
 #include "dsstdfx.h"
-#include "XBFont.h"
-#include "XBMemUnit.h"
-#include "XBVoice.h"
+#include "xbfont.h"
+#include "xbmemunit.h"
+#include "xbVoice.h"
 
 #include "Common.h"
 #include "Menus.h"

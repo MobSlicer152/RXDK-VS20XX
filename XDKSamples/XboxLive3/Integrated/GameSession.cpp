@@ -8,8 +8,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-------------------------------------------------------------------------------------
 
-#include "XBRandName.h"
-#include "XBUtil.h"
+#include "xbRandName.h"
+#include "xbutil.h"
 #include "GameSession.h"
 #include "Teams.h"
 #include "XBSocket.h"

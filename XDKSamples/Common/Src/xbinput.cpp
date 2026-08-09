@@ -9,7 +9,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include <xtl.h>
-#include "XBInput.h"
+#include "xbinput.h"
 
 
 

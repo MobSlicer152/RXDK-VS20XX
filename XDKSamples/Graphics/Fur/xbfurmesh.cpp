@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "XBFurMesh.h"
-#include "XBUtil.h"
+#include "xbutil.h"
 #include "OctoSphere.h"
 
 

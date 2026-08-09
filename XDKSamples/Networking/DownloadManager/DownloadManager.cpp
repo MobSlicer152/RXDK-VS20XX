@@ -10,8 +10,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "DownloadManager.h"
-#include "XBMemUnit.h"
-#include "XBVoice.h"
+#include "xbmemunit.h"
+#include "xbVoice.h"
 #include <cassert>
 
 

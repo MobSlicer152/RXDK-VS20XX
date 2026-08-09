@@ -17,7 +17,7 @@
 #include <XBFont.h>
 #include <xonline.h>
 
-#include "XBOnlineTask.h"
+#include "xbOnlineTask.h"
 
 // Common colors
 static const D3DCOLOR COLOR_YELLOW    = 0xffffff00; // Yellow

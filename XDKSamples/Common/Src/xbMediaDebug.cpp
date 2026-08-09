@@ -7,7 +7,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbMediaDebug.h"
+#include "xbMediaDebug.h"
 
 
 //-----------------------------------------------------------------------------

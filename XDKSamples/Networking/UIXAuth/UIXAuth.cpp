@@ -13,13 +13,13 @@
 #include <xonline.h>
 #include <uix.h>
 #include <cassert>
-#include "XBApp.h"
-#include "XBFont.h"
-#include "XBHelp.h"
-#include "XBMemUnit.h"
-#include "XBNet.h"
-#include "XBOnline.h"
-#include "XBVoice.h"
+#include "xbapp.h"
+#include "xbfont.h"
+#include "xbhelp.h"
+#include "xbmemunit.h"
+#include "xbNet.h"
+#include "xbOnline.h"
+#include "xbVoice.h"
 
 
 

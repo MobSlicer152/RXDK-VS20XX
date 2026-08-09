@@ -15,8 +15,8 @@
 #include <xtl.h>
 #include <xgraphics.h>
 #include <stdio.h>
-#include "XBInput.h"
-#include "XBUtil.h"
+#include "xbinput.h"
+#include "xbutil.h"
 
 
 

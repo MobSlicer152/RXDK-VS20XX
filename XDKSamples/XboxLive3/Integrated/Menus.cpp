@@ -11,7 +11,7 @@
 
 #include "Menus.h"
 #include "xbinput.h"
-#include "XBStopWatch.h"
+#include "xbstopwatch.h"
 
 
 //-------------------------------------------------------------------------------------

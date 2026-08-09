@@ -14,8 +14,8 @@
 #include <xtl.h>
 #include <xgmath.h>
 #include <stdio.h>
-#include "XBMesh.h"
-#include "XBUtil.h"
+#include "xbmesh.h"
+#include "xbutil.h"
 
 
 

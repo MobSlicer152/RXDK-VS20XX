@@ -12,9 +12,9 @@
 
 #include "xtl.h"
 #include "xonline.h"
-#include "XBRandName.h"
-#include "XBNetMsg.h"
-#include "XBOnlineTask.h"
+#include "xbRandName.h"
+#include "xbNetMsg.h"
+#include "xbOnlineTask.h"
 
 #pragma warning( disable: 4786 )
 #include <vector>

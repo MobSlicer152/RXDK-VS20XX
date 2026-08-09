@@ -11,8 +11,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include <xtl.h>
-#include "XBApp.h"
-#include "XBProfiling.h"
+#include "xbapp.h"
+#include "xbprofiling.h"
 #include <D3D8Perf.h>
 
 

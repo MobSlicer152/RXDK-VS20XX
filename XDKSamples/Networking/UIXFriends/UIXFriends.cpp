@@ -9,7 +9,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "UIXFriends.h"
-#include "XBOnline.h"
+#include "xbOnline.h"
 #include <dsstdfx.h>
 #include "XHVVoiceManager.h"
 

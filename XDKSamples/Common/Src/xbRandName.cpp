@@ -9,7 +9,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbRandName.h"
+#include "xbRandName.h"
 #include <wctype.h> // RXDK: towupper (the XDK CRT dragged it in via xtl.h)
 
 

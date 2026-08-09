@@ -19,7 +19,7 @@
 #else
 #include <d3d8.h>
 #endif
-#include "XBUtil.h"
+#include "xbutil.h"
 #include "XBFur.h"
 #include "mipmap.h"
 

@@ -21,9 +21,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "ContentDownload.h"
-#include "XBStorageDevice.h"
-#include "XBMemUnit.h"
-#include "XBVoice.h"
+#include "xbstoragedevice.h"
+#include "xbmemunit.h"
+#include "xbVoice.h"
 #include <cassert>
 
 

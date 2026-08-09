@@ -10,8 +10,8 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <stdio.h>
-#include "XBSound.h"
-#include "XBUtil.h"
+#include "xbsound.h"
+#include "xbutil.h"
 
 
 

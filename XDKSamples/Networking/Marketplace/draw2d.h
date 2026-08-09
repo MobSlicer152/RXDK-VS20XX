@@ -10,8 +10,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #pragma once
-#include "XBResource.h"
-#include "XBUtil.h"
+#include "xbresource.h"
+#include "xbutil.h"
 
 //-----------------------------------------------------------------------------
 // Name: class CDraw2D

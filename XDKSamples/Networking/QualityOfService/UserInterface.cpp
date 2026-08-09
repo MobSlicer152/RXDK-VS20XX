@@ -8,7 +8,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "UserInterface.h"
-#include "XBApp.h"
+#include "xbapp.h"
 #include <cassert>
 
 

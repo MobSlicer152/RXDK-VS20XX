@@ -20,10 +20,10 @@
 #include "Common.h"
 #include "UserInterface.h"
 #include "GameMsg.h"
-#include "XBApp.h"
-#include "XBNet.h"
-#include "XBOnlineTask.h"
-#include "XBRandName.h"
+#include "xbapp.h"
+#include "xbNet.h"
+#include "xbOnlineTask.h"
+#include "xbRandName.h"
 
 
 

@@ -7,7 +7,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Sjis2unicode.h"
+#include "sjis2unicode.h"
 
 
 // Table of Japanese "kanji" words

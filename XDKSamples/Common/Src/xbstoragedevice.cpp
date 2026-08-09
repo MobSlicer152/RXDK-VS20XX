@@ -11,7 +11,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbStorageDevice.h"
+#include "xbstoragedevice.h"
 #include <cassert>
 
 

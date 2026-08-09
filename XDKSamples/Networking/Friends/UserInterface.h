@@ -12,9 +12,9 @@
 #define FRIENDS_UI_H
 
 #include "Common.h"
-#include "XBFont.h"
-#include "XBHelp.h"
-#include "XBOnline.h"
+#include "xbfont.h"
+#include "xbhelp.h"
+#include "xbOnline.h"
 
 
 

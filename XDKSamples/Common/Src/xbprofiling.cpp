@@ -9,8 +9,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include <xtl.h>
-#include "XBApp.h"
-#include "XBProfiling.h"
+#include "xbapp.h"
+#include "xbprofiling.h"
 #include <xbdm.h>
 
 // This entire file compiles to nothing if PROFILE is not defined.

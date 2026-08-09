@@ -11,8 +11,8 @@
 //-----------------------------------------------------------------------------
 #include "QualityOfService.h"
 #include "MatchSimDefs.h"
-#include "XBMemUnit.h"
-#include "XBVoice.h"
+#include "xbmemunit.h"
+#include "xbVoice.h"
 #include <cassert>
 #pragma warning( disable: 4355 )
 

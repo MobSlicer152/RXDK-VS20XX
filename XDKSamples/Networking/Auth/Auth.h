@@ -18,10 +18,10 @@
 #include "xonline.h"
 #include <vector>
 #include "UserInterface.h"
-#include "XBApp.h"
-#include "XBNet.h"
-#include "XBOnlineTask.h"
-#include "XBHelp.h"
+#include "xbapp.h"
+#include "xbNet.h"
+#include "xbOnlineTask.h"
+#include "xbhelp.h"
 
 
 

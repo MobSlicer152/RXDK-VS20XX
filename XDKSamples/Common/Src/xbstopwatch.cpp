@@ -7,7 +7,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbStopWatch.h"
+#include "xbstopwatch.h"
 
 
 

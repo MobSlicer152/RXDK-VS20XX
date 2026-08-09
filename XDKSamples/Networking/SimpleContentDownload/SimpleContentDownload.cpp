@@ -17,10 +17,10 @@
 #include <XBFont.h>
 #include <XBHelp.h>
 #include <xgraphics.h>
-#include "XBNet.h"
-#include "XBOnlineTask.h"
-#include "XBOnline.h"
-#include "XBVoice.h"
+#include "xbNet.h"
+#include "xbOnlineTask.h"
+#include "xbOnline.h"
+#include "xbVoice.h"
 #include <cassert>
 #include "common.h"
 

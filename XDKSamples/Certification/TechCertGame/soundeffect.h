@@ -11,7 +11,7 @@
 #define _SOUND_EFFECT_H_
 
 #include <xtl.h>
-#include "XbSound.h"
+#include "xbsound.h"
 
 
 

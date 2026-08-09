@@ -11,10 +11,10 @@
 #include <xact.h>
 #include <xonline.h>
 #include <uix.h>
-#include "XBApp.h"
-#include "XBHelp.h"
-#include "XBFont.h"
-#include "XBOnline.h"
+#include "xbapp.h"
+#include "xbhelp.h"
+#include "xbfont.h"
+#include "xbOnline.h"
 #include "CustomPlugin.h"
 
 

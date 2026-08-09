@@ -13,8 +13,8 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <xgraphics.h>
-#include "XBHelp.h"
-#include "XBResource.h"
+#include "xbhelp.h"
+#include "xbresource.h"
 
 
 

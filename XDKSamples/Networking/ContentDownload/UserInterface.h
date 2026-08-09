@@ -15,8 +15,8 @@
 #define USERINTERFACE_H
 
 #include "Common.h"
-#include "XBFont.h"
-#include "XBOnline.h"
+#include "xbfont.h"
+#include "xbOnline.h"
 
 
 

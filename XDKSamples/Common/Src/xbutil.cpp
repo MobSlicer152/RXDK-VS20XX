@@ -16,7 +16,7 @@
 #include <tchar.h> 
 #include <cstdio>
 #include <cassert>
-#include "XBUtil.h"
+#include "xbutil.h"
 
 
 

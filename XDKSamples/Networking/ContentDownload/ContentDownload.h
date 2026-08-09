@@ -20,12 +20,12 @@
 #define CONTENTDOWNLOAD_H
 
 #include "Common.h"
-#include "XBApp.h"
-#include "XBFont.h"
-#include "XBHelp.h"
-#include "XBNet.h"
-#include "XBOnlineTask.h"
-#include "XBStopwatch.h"
+#include "xbapp.h"
+#include "xbfont.h"
+#include "xbhelp.h"
+#include "xbNet.h"
+#include "xbOnlineTask.h"
+#include "xbstopwatch.h"
 #include "UserInterface.h"
 
 

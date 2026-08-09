@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "SliceTexture.h"
 #include "SwizzleFormat.h"
-#include "XBUtil.h"
+#include "xbutil.h"
 #include "mipmap.h"
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;

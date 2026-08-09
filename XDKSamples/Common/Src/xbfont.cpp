@@ -43,7 +43,7 @@
 #include <xtl.h>
 #include <xgraphics.h>
 #include <stdio.h>
-#include "XBFont.h"
+#include "xbfont.h"
 
 
 

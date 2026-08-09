@@ -10,7 +10,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "MusicManager.h"
-#include "XbUtil.h"
+#include "xbutil.h"
 #include <assert.h>
 #include <stdio.h>
 #include <tchar.h>

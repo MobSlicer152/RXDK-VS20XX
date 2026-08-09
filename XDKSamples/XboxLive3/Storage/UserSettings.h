@@ -19,8 +19,8 @@
 #include <xtl.h>
 #include <xonline.h>
 #include "common.h"
-#include "XBRandName.h"
-#include "XBOnlineTask.h"
+#include "xbRandName.h"
+#include "xbOnlineTask.h"
 
 // constants for use in User Settings
 enum

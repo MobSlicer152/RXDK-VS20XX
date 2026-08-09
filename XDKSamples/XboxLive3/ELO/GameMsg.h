@@ -11,7 +11,7 @@
 #ifndef GAMEMSG_H
 #define GAMEMSG_H
 
-#include "XBNetMsg.h"
+#include "xbNetMsg.h"
 
 
 class CXBoxSample; // forward declaration

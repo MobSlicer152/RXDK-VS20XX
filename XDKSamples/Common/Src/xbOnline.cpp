@@ -8,10 +8,10 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XBOnline.h"
-#include "XBMemUnit.h"
-#include "XBFont.h"
-#include "XBNet.h"
+#include "xbOnline.h"
+#include "xbmemunit.h"
+#include "xbfont.h"
+#include "xbNet.h"
 #include <cassert>
 #include <algorithm>
 

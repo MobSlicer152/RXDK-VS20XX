@@ -11,9 +11,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "UserInterface.h"
-#include "XBApp.h"
-#include "XBConfig.h"
-#include "XBStorageDevice.h"
+#include "xbapp.h"
+#include "xbconfig.h"
+#include "xbstoragedevice.h"
 #include <cassert>
 
 

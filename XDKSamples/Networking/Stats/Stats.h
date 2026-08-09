@@ -12,9 +12,9 @@
 
 #include "Common.h"
 #include "UserInterface.h"
-#include "XBApp.h"
-#include "XBNet.h"
-#include "XBOnlineTask.h"
+#include "xbapp.h"
+#include "xbNet.h"
+#include "xbOnlineTask.h"
 
 
 

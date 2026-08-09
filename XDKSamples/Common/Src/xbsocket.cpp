@@ -8,7 +8,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbSocket.h"
+#include "XBSocket.h"
 #include <cassert>
 
 

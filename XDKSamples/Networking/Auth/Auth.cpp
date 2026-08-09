@@ -14,10 +14,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "Auth.h"
-#include "XBFont.h"
-#include "XBMemUnit.h"
-#include "XBOnline.h"
-#include "XBVoice.h"
+#include "xbfont.h"
+#include "xbmemunit.h"
+#include "xbOnline.h"
+#include "xbVoice.h"
 #include <cassert>
 
 

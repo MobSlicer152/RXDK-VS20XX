@@ -16,11 +16,11 @@
 #include <vector>
 #include <Xbox.h>
 #include <XOnline.h>
-#include "XBApp.h"
-#include "XBNet.h"
-#include "XBOnline.h"
-#include "XBOnlineTask.h"
-#include "XBRandName.h"
+#include "xbapp.h"
+#include "xbNet.h"
+#include "xbOnline.h"
+#include "xbOnlineTask.h"
+#include "xbRandName.h"
 #include "XHVVoiceManager.h"
 
 #include "Player.h"

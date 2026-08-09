@@ -11,8 +11,8 @@
 #define USERINTERFACE_H
 
 #include "Common.h"
-#include "XBFont.h"
-#include "XBOnline.h"
+#include "xbfont.h"
+#include "xbOnline.h"
 
 
 static const D3DCOLOR COLOR_HIGHLIGHT = 0xffffff00; // Yellow

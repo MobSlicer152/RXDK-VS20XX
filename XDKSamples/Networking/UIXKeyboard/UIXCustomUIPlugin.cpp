@@ -9,7 +9,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "UIXCustomUIPlugin.h"
-#include "XBFont.h"
+#include "xbfont.h"
 #include "sk_res.h"
 
 

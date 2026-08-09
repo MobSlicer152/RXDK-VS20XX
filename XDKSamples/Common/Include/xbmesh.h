@@ -39,8 +39,8 @@
 //-----------------------------------------------------------------------------
 #ifndef XBMESH_H
 #define XBMESH_H
-#include "XBResource.h"
-#include "XBUtil.h"
+#include "xbresource.h"
+#include "xbutil.h"
 
 
 

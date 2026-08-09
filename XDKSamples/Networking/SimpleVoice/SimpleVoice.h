@@ -23,7 +23,7 @@
 #include "XHVVoiceManager.h"
 #include "MutelistManager.h"
 #include <uix.h>
-#include "xbonline.h"
+#include "xbOnline.h"
 
 
 

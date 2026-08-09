@@ -16,8 +16,8 @@
 #include <vector>
 #include <uix.h>
 #include "xonline.h"
-#include "XBResource.h"
-#include "XBFont.h"
+#include "xbresource.h"
+#include "xbfont.h"
 
 
 

@@ -18,11 +18,11 @@
 #include <xhv.h>
 #include <vector>
 #include <list>
-#include "XBApp.h"
-#include "XBFont.h"
-#include "XBHelp.h"
-#include "XBNet.h"
-#include "XBOnline.h"
+#include "xbapp.h"
+#include "xbfont.h"
+#include "xbhelp.h"
+#include "xbNet.h"
+#include "xbOnline.h"
 #include "XBSocket.h"
 #include "constants.h"
 #include "match.h"

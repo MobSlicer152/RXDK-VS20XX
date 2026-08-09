@@ -12,7 +12,7 @@
 
 #include <xtl.h>
 #include "XMVHelper.h"
-#include "XBUtil.h"
+#include "xbutil.h"
 #include <stdio.h>
 
 

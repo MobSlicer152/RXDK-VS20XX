@@ -10,9 +10,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbSavedGame.h"
-#include "Xbapp.h"
-#include "Xbutil.h"
+#include "xbsavedgame.h"
+#include "xbapp.h"
+#include "xbutil.h"
 #include <xgraphics.h>
 #include <cassert>
 

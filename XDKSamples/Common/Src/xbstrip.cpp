@@ -23,7 +23,7 @@
 #include <D3D8.h>
 #endif
 
-#include "XBStrip.h"
+#include "xbstrip.h"
 
 
 

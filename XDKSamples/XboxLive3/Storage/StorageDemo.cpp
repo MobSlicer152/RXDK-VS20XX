@@ -17,9 +17,9 @@
 #include <algorithm>
 #include <xtl.h>
 #include <xonline.h>
-#include "XBFont.h"
-#include "XBMemUnit.h"
-#include "XBVoice.h"
+#include "xbfont.h"
+#include "xbmemunit.h"
+#include "xbVoice.h"
 #include "StorageDemo.h"
 #include "Common.h"
 

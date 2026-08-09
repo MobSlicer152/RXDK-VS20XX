@@ -7,7 +7,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XbOnlineTask.h"
+#include "xbOnlineTask.h"
 #include <cassert>
 
 

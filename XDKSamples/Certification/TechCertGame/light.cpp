@@ -10,7 +10,7 @@
 #include "Light.h"
 #include <XBApp.h>
 #include "Globals.h"
-#include "XBUtil.h"
+#include "xbutil.h"
 
 
 

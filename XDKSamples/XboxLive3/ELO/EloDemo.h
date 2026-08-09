@@ -24,11 +24,11 @@
 #define ELODEMO_H
 
 #include <vector>
-#include "XBApp.h"
-#include "XBNet.h"
-#include "XBOnline.h"
-#include "XBOnlineTask.h"
-#include "XBRandName.h"
+#include "xbapp.h"
+#include "xbNet.h"
+#include "xbOnline.h"
+#include "xbOnlineTask.h"
+#include "xbRandName.h"
 #include "match.h"
 #include "GameMsg.H"
 

@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <xtl.h>
 #include <xonline.h>
-#include "XBOnlineTask.h"
+#include "xbOnlineTask.h"
 #include "UserContent.h"
 #include "Common.h"
 

@@ -13,9 +13,9 @@
 //-----------------------------------------------------------------------------
 #ifndef XBHELP_H
 #define XBHELP_H
-#include "XBFont.h"
-#include "XBResource.h"
-#include "XBUtil.h"
+#include "xbfont.h"
+#include "xbresource.h"
+#include "xbutil.h"
 
 
 

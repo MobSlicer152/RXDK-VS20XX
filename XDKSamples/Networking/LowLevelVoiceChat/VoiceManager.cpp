@@ -12,7 +12,7 @@
 #include "VoiceManager.h"
 #include <cassert>
 #include <stdio.h>
-#include "XBFont.h"
+#include "xbfont.h"
 
 // Global instance of the voice manager
 CVoiceManager g_VoiceManager;

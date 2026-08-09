@@ -8,7 +8,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "XBVoice.h"
+#include "xbVoice.h"
 
 
 
