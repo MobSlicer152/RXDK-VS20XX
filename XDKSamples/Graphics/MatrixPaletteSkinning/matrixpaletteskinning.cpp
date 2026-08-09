@@ -907,7 +907,7 @@ HRESULT CXBoxSample::Render()
 
         m_Snake.Render( XBMESH_NOFVF | XBMESH_NOMATERIALS | XBMESH_SETBUMPTEXTURE );
 
-        m_pd3dDevice->SetPixelShader( NULL );
+        m_pd3dDevice->SetPixelShader( 0 );
 
         m_pd3dDevice->SetTexture( 1, NULL );
         m_pd3dDevice->SetTexture( 2, NULL );
@@ -928,7 +928,7 @@ HRESULT CXBoxSample::Render()
 
         m_Snake.Render( XBMESH_NOFVF | XBMESH_NOMATERIALS );
 
-        m_pd3dDevice->SetPixelShader( NULL );
+        m_pd3dDevice->SetPixelShader( 0 );
     }
 
     // Show title, frame rate, and help

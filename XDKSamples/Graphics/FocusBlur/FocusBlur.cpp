@@ -988,7 +988,7 @@ HRESULT CXBoxSample::FilterCopy( LPDIRECT3DTEXTURE8 pTextureDst,
     }
 
     // Restore render target, zbuffer, and state
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetRenderTarget( m_pBackBuffer, m_pDepthBuffer );
 
     return S_OK;
@@ -1797,7 +1797,7 @@ HRESULT CXBoxSample::DebugDrawDepthRange()
     m_pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
     m_pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  FALSE );
     m_pd3dDevice->SetRenderState( D3DRS_ZENABLE,          TRUE );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, NULL );
     m_pd3dDevice->SetTexture( 1, NULL );
 
@@ -1966,7 +1966,7 @@ HRESULT CXBoxSample::DrawFocusEffectUsingRange()
     m_pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE,  FALSE );
     m_pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
     m_pd3dDevice->SetRenderState( D3DRS_ZENABLE,          TRUE );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, NULL );
     m_pd3dDevice->SetTexture( 1, NULL );
     m_pd3dDevice->SetTexture( 2, NULL );
@@ -2077,7 +2077,7 @@ HRESULT CXBoxSample::DrawFocusEffectUsingLookup()
     m_pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
     m_pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
     m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, NULL );
     m_pd3dDevice->SetTexture( 1, NULL );
     m_pd3dDevice->SetTexture( 2, NULL );

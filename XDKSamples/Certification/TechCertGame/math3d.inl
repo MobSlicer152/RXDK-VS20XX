@@ -69,6 +69,7 @@ inline Vector3& Vector3::operator=( const D3DXVECTOR3& v )
     x = v.x;
     y = v.y;
     z = v.z;
+    return *this;
 }
 
 

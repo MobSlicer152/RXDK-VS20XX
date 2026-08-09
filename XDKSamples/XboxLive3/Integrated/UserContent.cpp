@@ -266,7 +266,7 @@ LPDIRECT3DTEXTURE8 CUserContent::CreateTexture( LPDIRECT3DDEVICE8  lpD3dDevice )
                 1,                   // Create only 1 mipmap level
                 0,                   // No usage flags
                 D3DFMT_LIN_A8R8G8B8, // A Linear 32BIT color format
-                NULL,                // Pool - ignored
+                (D3DPOOL)0,                // Pool - ignored
                 &lpNewTexture        // New texture address
             );
 
@@ -828,7 +828,7 @@ BOOL CUserContent::Upload( const DWORD dwControllingUserPort,
         assert( wszFilename );
 
         if( wszFilename )
-            ZeroMemory( wszFilename, sizeof( wszFilename ) );
+            ZeroMemory( wszFilename, sizeof( WCHAR ) * MAX_GAMENAME );   // whole buffer, not sizeof(pointer)
 
         _snwprintf( wszFilename, MAX_GAMENAME, L"%08x%08x",
                     iHi, iLo );
@@ -957,7 +957,7 @@ HRESULT CUserContent::Download( const DWORD dwControllingUserPort,
         assert( wszFilename );
 
         if( wszFilename )
-            ZeroMemory( wszFilename, sizeof( wszFilename ) );
+            ZeroMemory( wszFilename, sizeof( WCHAR ) * MAX_GAMENAME );   // whole buffer, not sizeof(pointer)
 
         _snwprintf( wszFilename, MAX_GAMENAME, L"%08x%08x",
                     iHi, iLo );

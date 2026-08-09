@@ -42,7 +42,7 @@ public:
     {
     }
 
-    virtual ~Shader() = 0
+    virtual ~Shader()   // was '= 0 {}' (pure-specifier with inline body is an MS extension)
     {
     }
 

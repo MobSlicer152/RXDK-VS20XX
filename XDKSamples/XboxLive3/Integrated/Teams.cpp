@@ -754,8 +754,10 @@ BOOL GetTeamLeaderboard( XONLINE_STAT_USER* rwLeaderboardUsers,
     dwNumStats = 0;
     (VOID) GetStatIDs( &dwNumStats );
 
-    ZeroMemory( rwLeaderboardUsers, sizeof( rwLeaderboardUsers ) );
-    ZeroMemory( rwLeaderboardStats, sizeof( rwLeaderboardStats ) );
+    // Callers pass fixed arrays (see IntegratedDemo.h); zero the whole arrays,
+    // not sizeof(pointer). (-Wsizeof-pointer-memaccess)
+    ZeroMemory( rwLeaderboardUsers, sizeof( XONLINE_STAT_USER ) * MAX_STAT_USERS );
+    ZeroMemory( rwLeaderboardStats, sizeof( XONLINE_STAT ) * MAX_STAT_USERS * STAT_MAX );
 
     INT iStatSize = dwNumStats * MAX_STAT_USERS;
 
@@ -866,7 +868,7 @@ BOOL GetTeamList( DWORD dwControllerPort,
 
     dwTeamCount = 0;
 
-    ZeroMemory( rwTeamXUIDS, sizeof( rwTeamXUIDS ) );
+    ZeroMemory( rwTeamXUIDS, sizeof( XUID ) * XONLINE_MAX_TEAM_COUNT );   // whole array, not sizeof(pointer)
 
     hrTeamFind = XOnlineTeamEnumerateGetResults(
                     hViewMyTeamsTask, // The enumeration task
@@ -893,7 +895,7 @@ BOOL GetTeamList( DWORD dwControllerPort,
     // NOTE: A real title would only have to display
     // the team details if the user wanted
 
-    ZeroMemory( rwTeamInfo, sizeof( rwTeamInfo ) );
+    ZeroMemory( rwTeamInfo, sizeof( XONLINE_TEAM ) * XONLINE_MAX_TEAM_COUNT );   // whole array, not sizeof(pointer)
 
     for( INT i = 0; i < (INT)dwTeamCount; ++i)
     {
@@ -993,7 +995,7 @@ BOOL GetTeamRoster( DWORD dwControllerPort,
     // and return our success
 
     dwTeamMemberCount = 0;
-    ZeroMemory( rwTeamMembers, sizeof( rwTeamMembers ) );
+    ZeroMemory( rwTeamMembers, sizeof( XUID ) * XONLINE_MAX_TEAM_MEMBER_COUNT );   // whole array, not sizeof(pointer)
 
     hrTeamRoster = XOnlineTeamMembersEnumerateGetResults(
                         phTeamRosterTask,   // The task that read the roster

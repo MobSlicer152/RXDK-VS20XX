@@ -131,4 +131,4 @@ HRESULT DeleteSession( CSession& hostedSession,
 
 HRESULT RemoveHostEntry( DWORD dwControllerPort, ULONGLONG qwTeamID );
 
-#endif GAME_SESSION_H
+#endif // GAME_SESSION_H

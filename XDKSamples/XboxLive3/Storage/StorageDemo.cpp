@@ -990,7 +990,7 @@ LPDIRECT3DVERTEXBUFFER8 CXBoxSample::CreateFace( FLOAT fX, FLOAT fY )
                     4 * sizeof(CUSTOMVERTEX), // Size of buffer
                     0,                        // Usage: ignored
                     0,                        // FVF: ignored
-                    NULL,                     // Pool: ignored
+                    (D3DPOOL)0,                     // Pool: ignored
                     &pQuadVertices            // Output pointer to the vertex buffer
                 );
 

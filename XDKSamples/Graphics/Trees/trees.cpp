@@ -1010,7 +1010,7 @@ HRESULT CXBoxSample::BlendScreenTexture( LPDIRECT3DTEXTURE8 pTexture, D3DCOLOR c
     v[3].p = D3DXVECTOR4( desc.Width - 0.5f, desc.Height - 0.5f, 1.0f, 1.0f ); v[3].tu = (float)desc.Width; v[3].tv = (float)desc.Height;
     
     // Set states
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, pTexture );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );

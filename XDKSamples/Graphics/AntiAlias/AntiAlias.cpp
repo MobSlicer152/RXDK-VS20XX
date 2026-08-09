@@ -572,7 +572,7 @@ HRESULT CXBoxSample::Render()
                 }
 
                 // Restore state
-                m_pd3dDevice->SetPixelShader( NULL );
+                m_pd3dDevice->SetPixelShader( 0 );
                 break;
             }
 
@@ -742,7 +742,7 @@ HRESULT CXBoxSample::Render()
                 }
 
                 // Restore state
-                m_pd3dDevice->SetPixelShader( NULL );
+                m_pd3dDevice->SetPixelShader( 0 );
             }
             break;
         }

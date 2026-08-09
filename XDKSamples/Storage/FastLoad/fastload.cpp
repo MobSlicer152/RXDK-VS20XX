@@ -570,7 +570,7 @@ HRESULT CXBoxSample::Render()
 
     m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE ); 
 
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetVertexShader( D3DFVF_XYZ );
 
     m_pd3dDevice->SetTexture( 0, NULL );
@@ -588,7 +588,7 @@ HRESULT CXBoxSample::Render()
                                          XYZVertices, sizeof(D3DXVECTOR3) );
 
     // Draw animated center quad
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
 
     m_pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );

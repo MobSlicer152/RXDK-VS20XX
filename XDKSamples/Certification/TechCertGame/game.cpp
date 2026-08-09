@@ -583,7 +583,7 @@ HRESULT Game::FrameMove( const XBGAMEPAD* pGamePadIn, FLOAT fTime,
                 Controller::SetVibration( pGamepad, 0.0f, 0.0f );
                 End();
                 Start( FALSE, FALSE, m_bIsVibrationOn, m_fMusicVolume, 
-                       m_fEffectVolume, NULL );
+                       m_fEffectVolume, 0 );
             }
         }
         else

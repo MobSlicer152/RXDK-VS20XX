@@ -377,7 +377,7 @@ VOID CXBoxSample::Reset()
     {
         // Set the UIX voice mail engine to zero, to make sure XHV is
         // shut down.
-        m_pLiveEngine->SetProperty( UIX_PROPERTY_VOICE_MAIL_ENGINE, NULL );
+        m_pLiveEngine->SetProperty( UIX_PROPERTY_VOICE_MAIL_ENGINE, 0 );
         g_XHVVoiceManager.Shutdown();
     }
 

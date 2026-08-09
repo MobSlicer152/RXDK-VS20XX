@@ -201,6 +201,6 @@ HRESULT CALLBACK MyFactory(REFCLSID clsid,
         OUTPUT_DEBUG_STRING(szTemp);
         DebugBreak();              
     }                              
-    #endif AUDANALYZE_NODEBUG     
+    #endif // AUDANALYZE_NODEBUG
     return hr;                     
 }
