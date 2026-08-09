@@ -484,7 +484,7 @@ OPTION_STRUCT g_aOptions[] =
 
 // List of wav files to cycle through
 const WCHAR* g_strMediaDir = L"Media\\Sounds\\";
-WCHAR* g_astrFileNames[] = 
+const WCHAR* g_astrFileNames[] = 
 {
     L"Heli.wav",
     L"DockingMono.wav",

@@ -516,7 +516,7 @@ HRESULT CXBoxSample::UpdateInstances()
 //-----------------------------------------------------------------------------
 HRESULT CXBoxSample::LoadModels()
 {
-    static CHAR* rstrTeddy[TEDDYCOUNT] = 
+    const static CHAR* rstrTeddy[TEDDYCOUNT] = 
     {
         "Models\\Teddy2000.xbg",
         "Models\\Teddy1000.xbg",

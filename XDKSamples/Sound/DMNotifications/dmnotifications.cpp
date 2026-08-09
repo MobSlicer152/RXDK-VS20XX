@@ -52,7 +52,7 @@ BOUNDARY g_aBoundaries[] =
 };
 static const DWORD NUM_BOUNDARIES = sizeof( g_aBoundaries ) / sizeof( g_aBoundaries[0] );
 
-char* g_strSegments[] = 
+const char* g_strSegments[] = 
 {
     "Bach Invention.sgt", 
     "ClaireDeLune.sgt", 

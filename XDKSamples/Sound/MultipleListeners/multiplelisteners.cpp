@@ -87,7 +87,7 @@ static const INITIAL_POSITION g_aInitialPositions[MAX_LISTENERS] =
 
 // List of wav files to cycle through
 const WCHAR* g_strMediaDir = L"Media\\Sounds\\";
-WCHAR* g_strFileNames[] = 
+const WCHAR* g_strFileNames[] = 
 {
     L"heli.wav",
     L"DockingMono.wav",

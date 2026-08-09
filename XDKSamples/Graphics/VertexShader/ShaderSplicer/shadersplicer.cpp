@@ -647,7 +647,7 @@ HRESULT CXBoxSample::Render()
         m_Font.DrawText( 64, 80, 0xffffffff, L"Lights: " );
         m_Font.DrawText( 0xffffff00, strBuffer );
 
-        WCHAR* strOptName[MAX_OPTIMIZATION_LEVELS] = { L"Off", L"On" };
+        const WCHAR* strOptName[MAX_OPTIMIZATION_LEVELS] = { L"Off", L"On" };
         m_Font.DrawText( 64, 110, 0xffffffff, L"Optimizations: " );
         m_Font.DrawText( 0xffffff00, strOptName[m_dwOptimizationLevel] );
     }

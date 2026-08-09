@@ -31,7 +31,7 @@ FLOAT g_fShadowBufferZRange[4] = { D3DZ_MAX_D16, D3DZ_MAX_D24S8,
                                    D3DZ_MAX_F16, (FLOAT)D3DZ_MAX_F24S8 };
 
 // Descriptions
-WCHAR* g_strShadowBufferDesc[4] = { L"D16", L"D24S8",
+const WCHAR* g_strShadowBufferDesc[4] = { L"D16", L"D24S8",
                                     L"F16", L"F24S8" };
 
 // Formats

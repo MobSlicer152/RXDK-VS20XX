@@ -119,7 +119,7 @@ static CUE_METADATA g_aCueMetaData[] =
 };
 
 // Object names
-static WCHAR* g_aObjectNames[] =
+const static WCHAR* g_aObjectNames[] =
 {
     L"Target",       // SOURCE_TARGET
     L"Helicopter",   // SOURCE_HELICOPTER

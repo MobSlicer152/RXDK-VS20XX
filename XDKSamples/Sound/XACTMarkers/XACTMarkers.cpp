@@ -36,7 +36,7 @@ XBHELP_CALLOUT g_HelpCallouts[] =
 //-----------------------------------------------------------------------------
 // Global variable declarations
 //-----------------------------------------------------------------------------
-WCHAR* g_rgWordArray[] = 
+const WCHAR* g_rgWordArray[] = 
 {
     L"And ",
     L"the ",

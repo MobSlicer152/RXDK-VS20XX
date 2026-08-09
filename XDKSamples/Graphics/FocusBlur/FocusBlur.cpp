@@ -715,13 +715,13 @@ HRESULT CXBoxSample::Render()
     }
     else
     {
-        static WCHAR* strDepthMode[] = 
+        const static WCHAR* strDepthMode[] = 
         {
             L"Raw Depth",
             L"Depth Range",
             L"Depth Lookup",
         };
-        static WCHAR* strDepthModeDescription[] = 
+        const static WCHAR* strDepthModeDescription[] = 
         {
             L"Z values are draw in false color.",
             

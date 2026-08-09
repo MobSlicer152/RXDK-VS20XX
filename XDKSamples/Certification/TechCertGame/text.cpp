@@ -28,7 +28,7 @@ WCHAR* g_StringArray[TEXT_NUMSTRINGS];
 //-----------------------------------------------------------------------------
 HRESULT LoadStrings( DWORD dwLanguage )
 {
-    CHAR* strFilename = "d:\\Media\\Strings\\English.txt";
+    const CHAR* strFilename = "d:\\Media\\Strings\\English.txt";
     switch( dwLanguage )
     {
         case XC_LANGUAGE_FRENCH:   strFilename = "d:\\Media\\Strings\\French.txt";   break;

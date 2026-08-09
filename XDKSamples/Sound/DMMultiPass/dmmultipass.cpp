@@ -71,7 +71,7 @@ static const DWORD LISTENER_COLOR = 0xFF1B1BEA;
 
 // List of wav files to cycle through
 const WCHAR* g_strMediaDir = L"Media\\Sounds\\";
-WCHAR* g_strFileNames[] = 
+const WCHAR* g_strFileNames[] = 
 {
     L"Heli.wav",
     L"DockingMono.wav",

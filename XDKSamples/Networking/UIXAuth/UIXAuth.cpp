@@ -163,7 +163,7 @@ HRESULT CXBoxSample::Initialize()
     HRESULT hr;
 
     // Select the font file based on the languages setting of the Xbox
-    CHAR* strFontFile = "Font.xpr";
+    const CHAR* strFontFile = "Font.xpr";
     switch( XGetLanguage() )
     {
     case XC_LANGUAGE_TCHINESE:

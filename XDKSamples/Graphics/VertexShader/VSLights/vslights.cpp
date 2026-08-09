@@ -588,7 +588,7 @@ HRESULT CXBoxSample::Render()
         m_Font.DrawText( 64,  80, 0xffffffff, L"Lights: " );
         m_Font.DrawText( 0xffffff00, buf );
 
-        WCHAR* strOptName[MAX_OPTIMIZATION_LEVELS] = {L"None", L"Local",L"Global"};
+        const WCHAR* strOptName[MAX_OPTIMIZATION_LEVELS] = {L"None", L"Local",L"Global"};
         m_Font.DrawText(  64, 110, 0xffffffff, L"Optimizations: " );
         m_Font.DrawText( 0xffffff00, strOptName[m_iOpt] );
     }

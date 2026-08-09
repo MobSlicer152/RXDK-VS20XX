@@ -45,7 +45,7 @@ const DWORD NUM_HELP_CALLOUTS = sizeof(g_HelpCallouts) / sizeof(g_HelpCallouts[0
 
 
 
-char* g_strSegments[] =
+const char* g_strSegments[] =
 {
     "ClaireDeLune.sgt", 
     "Bach Invention.sgt", 

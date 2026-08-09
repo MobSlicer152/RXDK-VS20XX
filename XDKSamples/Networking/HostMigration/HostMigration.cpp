@@ -2548,14 +2548,14 @@ VOID CXBoxSample::AppendConsonant( WCHAR* strRandom, BOOL bLeading ) // static
     }
     else
     {
-        WCHAR* strLeadConGroup[32] = 
+        const WCHAR* strLeadConGroup[32] = 
         {
             L"bl", L"br", L"cl", L"cr", L"dr", L"fl", L"fr", L"gh", L"gl", L"gn", 
             L"gr", L"kl", L"kn", L"kr", L"ph", L"pl", L"pr", L"ps", L"qu", L"sc", 
             L"sk", L"sl", L"sn", L"sp", L"st", L"sw", L"th", L"tr", L"vh", L"vl", 
             L"wh", L"zh"
         };
-        WCHAR* strTrailConGroup[32] = 
+        const WCHAR* strTrailConGroup[32] = 
         {
             L"rt", L"ng", L"bs", L"cs", L"ds", L"gs", L"hs", L"sh", L"ss", L"ks",
             L"ms", L"ns", L"ps", L"rs", L"ts", L"gh", L"ph", L"sk", L"st", L"tt",
@@ -2585,7 +2585,7 @@ VOID CXBoxSample::AppendVowel( WCHAR* strRandom ) // static
     }
     else
     {
-        WCHAR* strVowelGroup[10] =
+        const WCHAR* strVowelGroup[10] =
         {
             L"ai", L"au", L"ay", L"ea", L"ee", L"ie", L"oa", L"oi", L"oo", L"ou"
         };

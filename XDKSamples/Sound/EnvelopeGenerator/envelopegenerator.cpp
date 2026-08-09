@@ -42,7 +42,7 @@ const DWORD NUM_HELP_CALLOUTS = sizeof(g_HelpCallouts) / sizeof(g_HelpCallouts[0
 
 // List of wav files to cycle through
 const WCHAR* g_strMediaDir = L"Media\\Sounds\\";
-WCHAR* g_strFileNames[] = 
+const WCHAR* g_strFileNames[] = 
 {
     L"Heli.wav",
     L"DockingMono.wav",

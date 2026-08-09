@@ -42,7 +42,7 @@ XBHELP_CALLOUT g_HelpCallouts[] =
 //-----------------------------------------------------------------------------
 // Names of meshes to use.
 //-----------------------------------------------------------------------------
-CHAR* g_strMeshNames[] = 
+const CHAR* g_strMeshNames[] = 
 {
     "Models\\Torus.xbg",
     "Models\\Sphere.xbg",

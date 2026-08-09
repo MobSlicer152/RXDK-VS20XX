@@ -180,7 +180,7 @@ HRESULT CXBoxSample::FrameMove()
         static DWORD dwTexture = 0;
         dwTexture = (dwTexture+1)%3;
 
-        CHAR* strTextures[] = { "SphMap1", "SphMap2", "Scene" };
+        const CHAR* strTextures[] = { "SphMap1", "SphMap2", "Scene" };
         m_pSphereMapTexture = m_xprResource.GetTexture( strTextures[dwTexture] );
     }
 

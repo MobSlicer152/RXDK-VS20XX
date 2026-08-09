@@ -81,7 +81,7 @@ struct GrassVertex {
 //
 //-----------------------------------------------------------------------------
 
-CHAR* g_strFieldTextureNames[] =
+const CHAR* g_strFieldTextureNames[] =
 {
     "Fairway",     // Whole-field golf-style texture
     "Football",    // Whole-field football texture

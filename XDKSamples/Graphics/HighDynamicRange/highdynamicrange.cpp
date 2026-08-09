@@ -550,7 +550,7 @@ HRESULT CXBoxSample::Render()
         m_Help.Render( &m_Font, g_HelpCallouts, NUM_HELP_CALLOUTS );
     else
     {
-        static WCHAR* strEffectMode[EM_MAX] = 
+        const static WCHAR* strEffectMode[EM_MAX] = 
         {
             L"Original Image\n",
             L"Blurred Hot Image",

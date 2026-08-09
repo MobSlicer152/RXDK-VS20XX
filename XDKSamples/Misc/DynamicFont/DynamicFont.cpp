@@ -25,7 +25,7 @@
 static BYTE g_ValidGlyphs[65536] = { 0 };
 
 // Some localized text files for the app to test out
-static CHAR* g_LocalizedTextFilenames[] =
+const static CHAR* g_LocalizedTextFilenames[] =
 {
     "d:\\media\\Strings_Chinese.inf",
     "d:\\media\\Strings_German.inf",

@@ -186,7 +186,7 @@ HRESULT CXBoxSample::FrameMove()
     // Select options
     if( m_DefaultGamepad.bPressedAnalogButtons[XINPUT_GAMEPAD_X] )
     {
-        CHAR* strTextures[] = { "XRay1", "XRay2", "Crystal" };
+        const CHAR* strTextures[] = { "XRay1", "XRay2", "Crystal" };
 
         m_dwTextureSelection = (m_dwTextureSelection+1)%3;
         m_pSphereMapTexture = m_xprResource.GetTexture( strTextures[m_dwTextureSelection] );
