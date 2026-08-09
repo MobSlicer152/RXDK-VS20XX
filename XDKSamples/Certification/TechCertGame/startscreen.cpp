@@ -7,9 +7,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "StartScreen.h"
-#include "Controller.h"
-#include "Text.h"
+#include "startscreen.h"
+#include "controller.h"
+#include "text.h"
 #include <xbapp.h>
 #include <xbconfig.h>
 #include <xbfont.h>

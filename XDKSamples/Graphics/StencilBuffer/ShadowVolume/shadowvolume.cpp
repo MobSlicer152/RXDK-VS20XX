@@ -27,7 +27,7 @@
 #include <xbhelp.h>
 #include <xbmesh.h>
 #include <xbutil.h>
-#include "ShadowMesh.h"
+#include "shadowmesh.h"
 
 
 

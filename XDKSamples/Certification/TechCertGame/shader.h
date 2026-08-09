@@ -9,9 +9,9 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_SHADER_H
 #define TECHCERTGAME_SHADER_H
-#include "Common.h"
-#include "File.h"
-#include "Light.h"
+#include "common.h"
+#include "file.h"
+#include "light.h"
 
 
 

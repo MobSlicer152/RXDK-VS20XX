@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_POLYHEDRON_H
 #define TECHCERTGAME_POLYHEDRON_H
-#include "Common.h"
+#include "common.h"
 // RXDK: was #include "XMath.h". No such file shipped with the sample -- and because
 // the include is quoted, it did not fail: it fell through to the include path and
 // found zig's MinGW <XMath.h>, which drags in ymath.h -> yvals.h -> crtdefs.h ->
@@ -15,8 +15,8 @@
 // Math3d.h is this sample's math header and defines everything used below
 // (Vector3, Matrix3, Quaternion, Transformation); XMath.h was evidently an earlier
 // name for it -- polyhedron.h is the only file that ever referenced it.
-#include "Math3d.h"
-#include "PhysicsShape.h"
+#include "math3d.h"
+#include "physicsshape.h"
 
 
 

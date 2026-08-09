@@ -18,7 +18,7 @@
 
 #include <xtl.h>
 #include <xonline.h>
-#include "common.h"
+#include "Common.h"
 #include "xbRandName.h"
 #include "xbOnlineTask.h"
 

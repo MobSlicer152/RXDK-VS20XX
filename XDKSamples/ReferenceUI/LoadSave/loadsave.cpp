@@ -19,11 +19,11 @@
 // For functionality ideas see the Technical Certification game
 //
 //-----------------------------------------------------------------------------
-#include "LoadSave.h"
+#include "loadsave.h"
 #include <xbconfig.h>
 #include <cassert>
 #include <algorithm>
-#include "Text.h"
+#include "text.h"
 
 
 

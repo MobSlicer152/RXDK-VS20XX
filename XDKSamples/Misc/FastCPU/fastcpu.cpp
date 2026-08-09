@@ -13,8 +13,8 @@
 #include <xgraphics.h>
 
 #include "skinning.h"
-#include "SSE.h"
-#include "P3HardwareTimer.h"
+#include "sse.h"
+#include "p3hardwaretimer.h"
 
 
 //-----------------------------------------------------------------------------

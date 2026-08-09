@@ -21,7 +21,7 @@
 #include <xbresource.h>
 #include <xmv.h>
 #include <xbdm.h>
-#include "XMVHelper.h"
+#include "xmvhelper.h"
 #include "RemoteConnection.h"
 
 #define MAX_FILES               20

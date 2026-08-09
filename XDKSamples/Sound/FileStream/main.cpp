@@ -15,7 +15,7 @@
 #include <xbhelp.h>
 #include <xbsound.h>
 #include <xbutil.h>
-#include "FileStream.h"
+#include "filestream.h"
 #include "dsstdfx.h"
 
 

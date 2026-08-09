@@ -10,9 +10,9 @@
 //-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <assert.h>
-#include "XBFurMesh.h"
+#include "xbfurmesh.h"
 #include "xbutil.h"
-#include "OctoSphere.h"
+#include "octosphere.h"
 
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;

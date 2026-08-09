@@ -38,7 +38,7 @@
 #include <xbhelp.h>
 #include <xgraphics.h>
 #include "Resource.h" // Bundled texture resources
-#include "Media/Shaders/Displacement.h"
+#include "Media/Shaders/displacement.h"
 
 
 #ifdef _DEBUG

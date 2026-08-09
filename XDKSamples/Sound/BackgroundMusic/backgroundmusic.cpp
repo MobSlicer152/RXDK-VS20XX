@@ -18,7 +18,7 @@
 #include <xbsound.h>
 #include <xgraphics.h>
 #include "dsstdfx.h"
-#include "MusicManager.h"
+#include "musicmanager.h"
 
 
 

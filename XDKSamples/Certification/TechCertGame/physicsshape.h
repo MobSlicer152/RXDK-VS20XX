@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_PHYSICS_SHAPE_H
 #define TECHCERTGAME_PHYSICS_SHAPE_H
-#include "Math3d.h"
+#include "math3d.h"
 
 
 // Structure containing the information necessary for resolving an intersection.

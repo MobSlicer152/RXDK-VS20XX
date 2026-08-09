@@ -13,7 +13,7 @@
 #include <xbmesh.h>
 #include <xbresource.h>
 #include <xbutil.h>
-#include "D3D8Perf.h"
+#include "d3d8perf.h"
 
 
 //-----------------------------------------------------------------------------

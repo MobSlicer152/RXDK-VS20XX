@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_DEMO_H
 #define TECHCERTGAME_DEMO_H
-#include "Common.h"
-#include "Game.h"
+#include "common.h"
+#include "game.h"
 #include <xbinput.h>
 #include <xbstopwatch.h>
 

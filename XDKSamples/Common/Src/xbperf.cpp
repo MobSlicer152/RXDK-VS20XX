@@ -95,7 +95,9 @@ HRESULT XBPerf_CalcCacheHits( D3DPRIMITIVETYPE dwPrimType, DWORD dwVertexSize,
 // Name: XBPerf_GetCpuSpeed()
 // Desc: Returns a calculation of the CPU speed.
 //-----------------------------------------------------------------------------
-#pragma optimize("g", on)
+#ifdef _MSC_VER
+#pragma optimize("g", on)   // MSVC global optimization; clang ignores this form
+#endif
 double XBPerf_GetCpuSpeed()
 {
     __int64 start, end, freq;
@@ -137,4 +139,6 @@ x:      dec     ecx
 
     return ((clocks + time / 2) / time);
 }
+#ifdef _MSC_VER
 #pragma optimize("g", off)
+#endif

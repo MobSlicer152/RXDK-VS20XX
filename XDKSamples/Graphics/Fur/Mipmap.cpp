@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #include <xbutil.h>
 #include <assert.h>
-#include "MipMap.h"
+#include "Mipmap.h"
 #include "SwizzleFormat.h"
 
 
@@ -536,7 +536,7 @@ HRESULT Decimate( LPDIRECT3DSURFACE8 pSurfaceDst,
     DWORD dwPS = 0;
 #pragma warning(push)
 #pragma warning(disable: 4245)    // conversion from int to DWORD
-#include "mipmap.inl"
+#include "Mipmap.inl"
 #pragma warning(pop)
     g_pd3dDevice->CreatePixelShader(&psd, &dwPS);
     g_pd3dDevice->SetPixelShader(dwPS);

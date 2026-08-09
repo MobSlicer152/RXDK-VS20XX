@@ -16,7 +16,7 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <xbmesh.h>
-#include "ShadowMesh.h"
+#include "shadowmesh.h"
 
 
 

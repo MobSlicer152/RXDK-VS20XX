@@ -29,8 +29,8 @@
 #include "xbOnline.h"
 #include "xbOnlineTask.h"
 #include "xbRandName.h"
-#include "match.h"
-#include "GameMsg.H"
+#include "Match.h"
+#include "GameMsg.h"
 
 //-------------------------------------------------------------------------------------
 // Constants

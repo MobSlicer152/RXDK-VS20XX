@@ -16,7 +16,7 @@
 #include <xbfont.h>
 #include <xbutil.h>
 #include <xbhelp.h>
-#include "wavebankStream.h"
+#include "WaveBankStream.h"
 #include "dsstdfx.h"
 
 

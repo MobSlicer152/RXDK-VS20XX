@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 
 #include <assert.h>
-#include "PhysicsObject.h"
-#include "Polyhedron.h"
+#include "physicsobject.h"
+#include "polyhedron.h"
 
 
 PhysicsObject::PhysicsObject( PhysicsSystem* pPhysicsSystem )

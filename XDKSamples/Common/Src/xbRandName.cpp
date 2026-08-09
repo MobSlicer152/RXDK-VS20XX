@@ -52,9 +52,9 @@ static DWORD GetRand()
 // Name: GetVowel()
 // Desc: Return a random vowel or vowel group string
 //-----------------------------------------------------------------------------
-static WCHAR* GetVowel()
+static const WCHAR* GetVowel()
 {
-    WCHAR* strVowelGroup[] =
+    const WCHAR* strVowelGroup[] =
     {
         L"a",  L"e",  L"i",  L"o",  L"u",  L"a",  L"e",  L"i",  L"o",  L"u",
         L"ai", L"au", L"ay", L"ea", L"ee", L"ie", L"oa", L"oi", L"oo", L"ou"
@@ -69,11 +69,11 @@ static WCHAR* GetVowel()
 // Name: GetLeadingConsonant()
 // Desc: Return a random consonant or consonant group string
 //-----------------------------------------------------------------------------
-static WCHAR* GetLeadingConsonant()
+static const WCHAR* GetLeadingConsonant()
 {
     if( ( GetRand() % 2 == 0 ) )
     {
-        WCHAR* strConsonants[] = 
+        const WCHAR* strConsonants[] =
         {
             L"b", L"c", L"d", L"f", L"g", L"h", L"j", L"k", L"l", L"m", L"n", 
             L"p", L"q", L"r", L"s", L"t", L"v", L"w", L"x", L"y", L"z"
@@ -82,7 +82,7 @@ static WCHAR* GetLeadingConsonant()
     }
     else
     {
-        WCHAR* strLeadConGroup[32] = 
+        const WCHAR* strLeadConGroup[32] =
         {
             L"bl", L"br", L"cl", L"cr", L"dr", L"fl", L"fr", L"gh", L"gl", L"gn", 
             L"gr", L"kl", L"kn", L"kr", L"ph", L"pl", L"pr", L"ps", L"qu", L"sc", 
@@ -100,11 +100,11 @@ static WCHAR* GetLeadingConsonant()
 // Name: GetTrailingConsonant()
 // Desc: Return a random consonant or consonant group string
 //-----------------------------------------------------------------------------
-static WCHAR* GetTrailingConsonant()
+static const WCHAR* GetTrailingConsonant()
 {
     if( ( GetRand() % 2 == 0 ) )
     {
-        WCHAR* strConsonants[] = 
+        const WCHAR* strConsonants[] =
         {
             L"b", L"c", L"d", L"f", L"g", L"h", L"j", L"k", L"l", L"m", L"n", 
             L"p", L"q", L"r", L"s", L"t", L"v", L"w", L"x", L"y", L"z"
@@ -113,7 +113,7 @@ static WCHAR* GetTrailingConsonant()
     }
     else
     {
-        WCHAR* strTrailConGroup[32] = 
+        const WCHAR* strTrailConGroup[32] =
         {
             L"rt", L"ng", L"bs", L"cs", L"ds", L"gs", L"hs", L"sh", L"ss", L"ks",
             L"ms", L"ns", L"ps", L"rs", L"ts", L"gh", L"ph", L"sk", L"st", L"tt",

@@ -10,10 +10,10 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "WaterDefs.h"
-#include "Refraction.h"
-#include "NoneWater.h" 
-#include "ResMan.h"
+#include "waterdefs.h"
+#include "refraction.h"
+#include "nonewater.h" 
+#include "resman.h"
 
 
 //Water Fog texture

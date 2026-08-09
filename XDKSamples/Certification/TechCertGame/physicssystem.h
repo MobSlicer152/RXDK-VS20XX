@@ -10,9 +10,9 @@
 #ifndef TECHCERTGAME_PHYSICS_SYSTEM_H
 #define TECHCERTGAME_PHYSICS_SYSTEM_H
 #pragma warning( disable: 4702 )
-#include "Common.h"
-#include "PhysicsObject.h"
-#include "PhysicsShape.h"
+#include "common.h"
+#include "physicsobject.h"
+#include "physicsshape.h"
 #pragma warning( push, 3 )  // Suppress VC warnings when compiling at W4
 #include <vector>
 #include <list>

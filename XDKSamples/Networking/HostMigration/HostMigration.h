@@ -14,7 +14,7 @@
 #include <cassert>
 #include <vector>
 #include <algorithm>
-#include "gamemessage.h"
+#include "GameMessage.h"
 
 
 //-----------------------------------------------------------------------------

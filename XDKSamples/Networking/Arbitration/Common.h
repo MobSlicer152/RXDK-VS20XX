@@ -16,7 +16,7 @@
 #include "xbRandName.h"
 #include "xbNetMsg.h"
 #include "xbOnlineTask.h"
-#include "match.h"
+#include "Match.h"
 
 #pragma warning( disable: 4786 )
 #include <vector>

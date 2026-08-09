@@ -8,7 +8,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #pragma once
-#include "Terrain.h"
+#include "terrain.h"
 
 
 

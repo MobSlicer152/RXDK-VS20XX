@@ -16,7 +16,7 @@
 #include <xbhelp.h>
 #include <xbsound.h>
 #include <xbutil.h>
-#include "WMAStream.h"
+#include "wmastream.h"
 #include "dsstdfx.h"
 
 

@@ -22,7 +22,7 @@
 #include "xbOnline.h"
 #include "xbVoice.h"
 #include <cassert>
-#include "common.h"
+#include "Common.h"
 
 //-----------------------------------------------------------------------------
 // Constants

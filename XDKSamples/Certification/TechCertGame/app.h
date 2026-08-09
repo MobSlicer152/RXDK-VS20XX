@@ -17,16 +17,16 @@
 #define TECHCERTGAME_APP_H
 #include "dsound.h"
 #include "dsstdfx.h"
-#include "Common.h"
+#include "common.h"
 #include <xbapp.h>
 #include <xbfont.h>
 #include <xbstopwatch.h>
-#include "Splash.h"
-#include "StartScreen.h"
-#include "Demo.h"
-#include "LoadSave.h"
-#include "Menu.h"
-#include "Game.h"
+#include "splash.h"
+#include "startscreen.h"
+#include "demo.h"
+#include "loadsave.h"
+#include "menu.h"
+#include "game.h"
 
 
 

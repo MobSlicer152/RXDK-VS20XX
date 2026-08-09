@@ -16,9 +16,9 @@
 #include <xbutil.h>
 #include <assert.h>
 #include <xgraphics.h>
-#include "Clip.h"
-#include "Terrain.h"
-#include "Tree.h"
+#include "clip.h"
+#include "terrain.h"
+#include "tree.h"
 #include "mipmap.h"
 
 

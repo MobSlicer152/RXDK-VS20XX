@@ -7,13 +7,13 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Menu.h"
+#include "menu.h"
 #include <xbapp.h>
 #include <xbconfig.h>
 #include <xbfont.h>
-#include "Controller.h"
-#include "App.h"
-#include "Text.h"
+#include "controller.h"
+#include "app.h"
+#include "text.h"
 
 
 

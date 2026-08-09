@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #include <xbmesh.h>
 #include <xbresource.h>
-#include "SliceObject.h"
+#include "sliceobject.h"
 
 
 // Vertex shader constants

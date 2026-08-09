@@ -17,7 +17,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "VirtualKeyboard.h"
+#include "virtualkeyboard.h"
 #include <cassert>
 #include <algorithm>
 

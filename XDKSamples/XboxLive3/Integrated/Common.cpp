@@ -12,7 +12,7 @@
 #include <xtl.h>
 
 #include <xbstopwatch.h>
-#include "common.h"
+#include "Common.h"
 
 
 // Make the font global so we don't have to pass

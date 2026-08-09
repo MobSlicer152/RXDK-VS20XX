@@ -9,12 +9,12 @@
 //-----------------------------------------------------------------------------
 
 #include <assert.h>
-#include "PhysicsSystem.h"
-#include "Polyhedron.h"
-#include "HeightField.h"
-#include "PerfTimer.h"
-#include "Globals.h"
-#include "Controller.h"
+#include "physicssystem.h"
+#include "polyhedron.h"
+#include "heightfield.h"
+#include "perftimer.h"
+#include "globals.h"
+#include "controller.h"
 #pragma warning(disable: 4355)
 
 

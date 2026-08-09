@@ -18,7 +18,7 @@
 #include <xbstopwatch.h>
 #include <xbhelp.h>
 #include <xbsound.h>
-#include "WmaStream.h"
+#include "wmastream.h"
 #include "dsstdfx.h"
 
 #pragma warning( push, 3 )  // Suppress VC warnings when compiling at W4

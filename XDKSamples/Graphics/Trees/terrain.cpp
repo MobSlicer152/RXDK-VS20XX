@@ -10,8 +10,8 @@
 #include <xbapp.h>
 #include <xbutil.h>
 #include <assert.h>
-#include "Clip.h"
-#include "Terrain.h"
+#include "clip.h"
+#include "terrain.h"
 #include "debug.h"
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;

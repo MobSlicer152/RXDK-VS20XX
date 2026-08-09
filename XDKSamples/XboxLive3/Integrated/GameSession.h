@@ -15,8 +15,8 @@
 
 #include <xtl.h>
 #include <xonline.h>
-#include "common.h"
-#include "player.h"
+#include "Common.h"
+#include "Player.h"
 #include "GameMsg.h"
 #include "Match.h"
 #include "Comps.h"

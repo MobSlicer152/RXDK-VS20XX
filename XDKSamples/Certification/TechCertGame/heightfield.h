@@ -9,9 +9,9 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_HEIGHTFIELD_H
 #define TECHCERTGAME_HEIGHTFIELD_H
-#include "Common.h"
-#include "Mesh.h"
-#include "PolyHedron.h"
+#include "common.h"
+#include "mesh.h"
+#include "polyhedron.h"
 
 
 

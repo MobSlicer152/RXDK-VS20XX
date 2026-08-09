@@ -194,7 +194,7 @@ VOID CXBOnlineUI::RenderCreateAccount( BOOL bHasMachineAccount ) const
 {
     RenderHeader();
 
-    WCHAR* strInfo;
+    const WCHAR* strInfo;
     if( bHasMachineAccount )
     {
         strInfo = L"No online accounts exist on this Xbox.\n\n"

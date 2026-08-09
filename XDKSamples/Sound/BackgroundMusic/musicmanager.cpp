@@ -9,7 +9,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "MusicManager.h"
+#include "musicmanager.h"
 #include "xbutil.h"
 #include <assert.h>
 #include <stdio.h>

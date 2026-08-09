@@ -7,9 +7,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Mesh.h"
-#include "File.h"
-#include "Globals.h"
+#include "mesh.h"
+#include "file.h"
+#include "globals.h"
 
 #if defined(_XBOX)
 

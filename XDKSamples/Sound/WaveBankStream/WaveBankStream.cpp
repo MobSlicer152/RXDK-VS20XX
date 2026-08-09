@@ -10,7 +10,7 @@
 #include <xtl.h>
 #include <assert.h>
 #include <xbutil.h>
-#include "wavebankStream.h"
+#include "WaveBankStream.h"
 
 
 

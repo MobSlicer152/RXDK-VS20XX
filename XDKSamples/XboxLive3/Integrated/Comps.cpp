@@ -5,7 +5,7 @@
 // Title ID: ffedaaab
 // Project Name: comps
 //------------------------------------------------------------------------------
-#include "comps.h"
+#include "Comps.h"
 
 
 

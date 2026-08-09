@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_MESH_H
 #define TECHCERTGAME_MESH_H
-#include "Common.h"
-#include "Shader.h"
+#include "common.h"
+#include "shader.h"
 
 
 

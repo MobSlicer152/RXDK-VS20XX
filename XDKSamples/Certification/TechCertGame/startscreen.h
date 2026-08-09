@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_START_H
 #define TECHCERTGAME_START_H
-#include "Common.h"
+#include "common.h"
 #include <xbfont.h>
 #include <xbinput.h>
 #include <xbstopwatch.h>

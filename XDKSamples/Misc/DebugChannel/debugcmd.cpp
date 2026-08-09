@@ -19,7 +19,7 @@
 #include <xtl.h>
 #include <xbdm.h>
 #include <stdio.h>
-#include "DebugCmd.h"
+#include "debugcmd.h"
 
 
 

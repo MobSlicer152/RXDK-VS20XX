@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_MATH_H
 #define TECHCERTGAME_MATH_H
-#include "Common.h"
+#include "common.h"
 #pragma inline_depth(255)
 // RXDK: dropped `#define inline __forceinline` -- it leaks into the C++
 // standard headers included after this point and breaks libc++'s
@@ -204,7 +204,7 @@ public:
 //-----------------------------------------------------------------------------
 // Include inline functions
 //-----------------------------------------------------------------------------
-#include "Math3d.inl"
+#include "math3d.inl"
 
 
 

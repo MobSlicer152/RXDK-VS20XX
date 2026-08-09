@@ -19,7 +19,7 @@
 #include <xbhelp.h>
 #include <xbresource.h>
 #include <xgraphics.h>
-#include "DebugCmd.h"
+#include "debugcmd.h"
 
 
 

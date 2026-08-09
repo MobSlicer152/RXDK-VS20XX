@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_SPLASH_H
 #define TECHCERTGAME_SPLASH_H
-#include "Common.h"
+#include "common.h"
 #include <xbfont.h>
 #include <xbinput.h>
 #include <xbstopwatch.h>

@@ -8,7 +8,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-#include "AudioEngine.h"
+#include "audioengine.h"
 
 // Structure representing a game provided soundtrack
 // All game provided soundtracks must consist of

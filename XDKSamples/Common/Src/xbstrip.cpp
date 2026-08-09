@@ -1246,7 +1246,7 @@ int CVertCache::Add( int strip, int vertindex )
     int retval = 1;
 
     // If we are push one of the verts add by our strip out of the cache, return two.
-    if ( m_rgCache[m_iCachePtr] != -1 && m_rgCacheStrip[m_iCachePtr] == strip && 
+    if ( m_rgCache[m_iCachePtr] != (WORD)-1 && m_rgCacheStrip[m_iCachePtr] == strip &&
          !m_bReUsed[m_iCachePtr] )
         retval = 2;
 

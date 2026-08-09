@@ -8,7 +8,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include <xtl.h>
-#include "WMAInMemory.h"
+#include "wmainmemory.h"
 
 
 //-----------------------------------------------------------------------------

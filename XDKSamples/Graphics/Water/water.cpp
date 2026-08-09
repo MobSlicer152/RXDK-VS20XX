@@ -16,9 +16,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "WaterDefs.h"
-#include "WaterApp.h"
-#include "Water.h"
+#include "waterdefs.h"
+#include "waterapp.h"
+#include "water.h"
 
 
 //Constants for loading textures and effects

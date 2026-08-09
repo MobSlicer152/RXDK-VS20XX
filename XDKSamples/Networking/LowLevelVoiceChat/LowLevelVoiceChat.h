@@ -20,7 +20,7 @@
 #include <cassert>
 #include <vector>
 #include <algorithm>
-#include "player.h"
+#include "Player.h"
 #include "VoiceManager.h"
 
 

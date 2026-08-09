@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_CONTROLLER_H
 #define TECHCERTGAME_CONTROLLER_H
-#include "Common.h"
+#include "common.h"
 #include <xbinput.h>
 
 

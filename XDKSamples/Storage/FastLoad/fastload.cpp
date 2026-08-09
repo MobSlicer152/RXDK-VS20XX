@@ -11,8 +11,8 @@
 #include <xbfont.h>
 #include <xbhelp.h>
 #include <xgraphics.h>
-#include "LevelLoader.h"
-#include "WMAInMemory.h"
+#include "levelloader.h"
+#include "wmainmemory.h"
 
 
 //-----------------------------------------------------------------------------

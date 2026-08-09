@@ -7,15 +7,15 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "LoadSave.h"
+#include "loadsave.h"
 #include <xbapp.h>
 #include <xbconfig.h>
 #include <algorithm>
 #include <malloc.h>
-#include "Controller.h"
-#include "File.h"
-#include "Text.h"
-#include "App.h"
+#include "controller.h"
+#include "file.h"
+#include "text.h"
+#include "app.h"
 
 extern TechCertGame g_xbApp;
 

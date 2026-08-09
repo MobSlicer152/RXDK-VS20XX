@@ -16,7 +16,7 @@
 #include <xtl.h>                  
 #include <xonline.h>              
 #include <assert.h> 
-#include "Match.h"
+#include "match.h"
 
 //-----------------------------------------------------------------------------
 // Prototypes

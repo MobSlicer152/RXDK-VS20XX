@@ -9,11 +9,11 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_MENU_OPTIONS_H
 #define TECHCERTGAME_MENU_OPTIONS_H
-#include "Common.h"
+#include "common.h"
 #include <xbfont.h>
 #include <xbinput.h>
 #include <xbstopwatch.h>
-#include "AudioEngine.h"
+#include "audioengine.h"
 
 
 

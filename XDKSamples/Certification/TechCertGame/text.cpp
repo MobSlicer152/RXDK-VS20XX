@@ -9,7 +9,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include <stdio.h>
-#include "Text.h"
+#include "text.h"
 
 
 

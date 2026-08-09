@@ -8,7 +8,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "SoundEffect.h"
+#include "soundeffect.h"
 
 
 

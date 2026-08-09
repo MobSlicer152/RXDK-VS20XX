@@ -17,7 +17,7 @@
 #include <xgraphics.h>
 
 // Dynamic gamma controller
-#include "DynamicGammaController.h"
+#include "dynamicgammaController.h"
 
 
 

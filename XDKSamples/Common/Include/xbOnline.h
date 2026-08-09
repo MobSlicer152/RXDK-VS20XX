@@ -116,7 +116,7 @@ private:
     mutable CXBFont     m_OnlineIconsFont;
     
     WCHAR               m_strError[ MAX_ERROR_STR ]; // Generic err
-    WCHAR*              m_strHeader;                 // Header string
+    const WCHAR*        m_strHeader;                 // Header string
 
 public:
 
@@ -127,7 +127,7 @@ public:
     // Accessors
     VOID SetErrorStr( const WCHAR*, va_list );
 
-    VOID SetHeader( WCHAR* strHeader ) { m_strHeader = strHeader; }
+    VOID SetHeader( const WCHAR* strHeader ) { m_strHeader = strHeader; }
 
     // UI functions
     VOID RenderCreateAccount( BOOL bHasMachineAccount ) const;

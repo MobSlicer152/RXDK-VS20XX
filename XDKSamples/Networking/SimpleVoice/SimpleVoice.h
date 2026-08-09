@@ -17,7 +17,7 @@
 #include <cassert>
 #include <vector>
 #include <algorithm>
-#include "player.h"
+#include "Player.h"
 #include <xonline.h>
 #include <xhv.h>
 #include "XHVVoiceManager.h"

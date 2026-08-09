@@ -19,7 +19,7 @@
 #include <xgraphics.h>
 #include <stddef.h>
 #include <assert.h>
-#include "DSPImage.h"
+#include "dspimage.h"
 #include "dsfxparm.h"
 
 

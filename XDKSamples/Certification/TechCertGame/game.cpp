@@ -7,21 +7,21 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Game.h"
+#include "game.h"
 #include <xbapp.h>
 #include <xbconfig.h>
 #include <xbfont.h>
-#include "Controller.h"
-#include "File.h"
-#include "HeightField.h"
-#include "LoadSave.h"
-#include "Mesh.h"
-#include "PhysicsObject.h"
-#include "PhysicsSystem.h"
-#include "Vehicle.h"
-#include "Globals.h"
-#include "Text.h"
-#include "App.h"
+#include "controller.h"
+#include "file.h"
+#include "heightfield.h"
+#include "loadsave.h"
+#include "mesh.h"
+#include "physicsobject.h"
+#include "physicssystem.h"
+#include "vehicle.h"
+#include "globals.h"
+#include "text.h"
+#include "app.h"
 
 extern TechCertGame g_xbApp;
 

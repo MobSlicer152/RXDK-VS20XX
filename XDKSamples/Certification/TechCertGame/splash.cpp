@@ -7,8 +7,8 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Splash.h"
-#include "Text.h"
+#include "splash.h"
+#include "text.h"
 #include <xbapp.h>
 #include <xbconfig.h>
 #include <xbfont.h>

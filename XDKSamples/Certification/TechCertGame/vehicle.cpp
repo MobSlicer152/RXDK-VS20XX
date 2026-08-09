@@ -7,9 +7,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Vehicle.h"
-#include "PhysicsSystem.h"
-#include "Globals.h"
+#include "vehicle.h"
+#include "physicssystem.h"
+#include "globals.h"
 
 
 Vehicle::Vehicle( PhysicsSystem* pPhysicsSystem, const Vector3& v3Pos, 

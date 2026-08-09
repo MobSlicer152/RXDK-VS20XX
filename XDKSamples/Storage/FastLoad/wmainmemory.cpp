@@ -10,7 +10,7 @@
 #include <cassert>
 #include <algorithm>
 #include <xtl.h>
-#include "WMAInMemory.h"
+#include "wmainmemory.h"
 #include "xbutil.h"
 
 

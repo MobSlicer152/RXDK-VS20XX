@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <xbutil.h>
-#include "GearModel.h"
+#include "gearmodel.h"
 
 
 

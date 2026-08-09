@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_PHYSICS_OBJECT_H
 #define TECHCERTGAME_PHYSICS_OBJECT_H
-#include "Common.h"
-#include "Math3d.h"
+#include "common.h"
+#include "math3d.h"
 
 class Polyhedron;
 class OverlapRecord;

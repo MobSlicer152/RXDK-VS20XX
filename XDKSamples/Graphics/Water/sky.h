@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #pragma once
 #include <xbmesh.h>
-#include "WaterDefs.h"
+#include "waterdefs.h"
 
 
 

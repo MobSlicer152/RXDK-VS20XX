@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_AUDIOENGINE_H
 #define TECHCERTGAME_AUDIOENGINE_H
-#include "Common.h"
+#include "common.h"
 #include <dsstdfx.h>
 #include <xact.h>
 #include <vector>

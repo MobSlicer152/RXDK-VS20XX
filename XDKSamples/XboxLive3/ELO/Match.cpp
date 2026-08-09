@@ -10,7 +10,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-------------------------------------------------------------------------------------
 
-#include "match.h"
+#include "Match.h"
 #include "xbRandName.h"
 
 #ifdef _DEBUG

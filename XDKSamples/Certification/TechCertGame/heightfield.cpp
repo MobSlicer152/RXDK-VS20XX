@@ -7,8 +7,8 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "HeightField.h"
-#include "Math3d.h"
+#include "heightfield.h"
+#include "math3d.h"
 
 
 

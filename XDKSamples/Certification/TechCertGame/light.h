@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_LIGHT_H
 #define TECHCERTGAME_LIGHT_H
-#include "Common.h"
+#include "common.h"
 
 #pragma warning( push, 3 )  // Suppress VC warnings when compiling at W4
 #include <vector>

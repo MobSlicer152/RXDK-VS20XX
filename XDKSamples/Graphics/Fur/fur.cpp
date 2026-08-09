@@ -16,8 +16,8 @@
 #include <xbhelp.h>
 #include <xbmesh.h>
 #include "Clip.h"
-#include "XBFur.h"
-#include "XBFurMesh.h"
+#include "xbfur.h"
+#include "xbfurmesh.h"
 #include "d3d8perf.h"
 #include <assert.h>
 

@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_VEHICLE_H
 #define TECHCERTGAME_VEHICLE_H
-#include "Common.h"
-#include "PhysicsObject.h"
+#include "common.h"
+#include "physicsobject.h"
 
 
 

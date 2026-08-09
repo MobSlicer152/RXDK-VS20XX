@@ -10,7 +10,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-#include "commoninclude.h"
+#include "CommonInclude.h"
 
 SoundbitDB g_SoundbitDB;
 

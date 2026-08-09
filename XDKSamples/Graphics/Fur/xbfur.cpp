@@ -20,8 +20,8 @@
 #include <d3d8.h>
 #endif
 #include "xbutil.h"
-#include "XBFur.h"
-#include "mipmap.h"
+#include "xbfur.h"
+#include "Mipmap.h"
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;
 

@@ -14,7 +14,7 @@
 #include <xbhelp.h>
 #include <xbsound.h>
 #include <xbutil.h>
-#include "WMAInMemory.h"
+#include "wmainmemory.h"
 #include "dsstdfx.h"
 
 

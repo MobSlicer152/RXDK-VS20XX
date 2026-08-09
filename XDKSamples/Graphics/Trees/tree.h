@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #include <xbmesh.h>
 #include <xbresource.h>
-#include "TreeBranch.h"
+#include "treebranch.h"
 
 
 // Flags

@@ -8,9 +8,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "WaterDefs.h"
-#include "WaterApp.h"
-#include "Sky.h"
+#include "waterdefs.h"
+#include "waterapp.h"
+#include "sky.h"
 
 
 // Constants for loading sky resource

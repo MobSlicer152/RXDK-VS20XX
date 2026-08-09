@@ -11,7 +11,7 @@
 #include <xtl.h>
 #include <xgraphics.h>
 #include <xbapp.h>
-#include "Tree.h"
+#include "tree.h"
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;
 

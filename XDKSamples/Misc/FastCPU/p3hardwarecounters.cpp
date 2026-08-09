@@ -13,7 +13,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-#include "P3HardwareCounters.h"
+#include "p3hardwarecounters.h"
 
 
 //-----------------------------------------------------------------------------

@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------------
 
 // stuck all of the include.h files here for convenience
-#include "commoninclude.h"
+#include "CommonInclude.h"
 
 
 

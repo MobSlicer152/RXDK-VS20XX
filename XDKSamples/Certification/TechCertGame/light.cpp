@@ -7,9 +7,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Light.h"
+#include "light.h"
 #include <xbapp.h>
-#include "Globals.h"
+#include "globals.h"
 #include "xbutil.h"
 
 

@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <assert.h>
-#include "FileStream.h"
+#include "filestream.h"
 
 
 

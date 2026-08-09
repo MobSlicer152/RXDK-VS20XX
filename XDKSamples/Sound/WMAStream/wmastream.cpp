@@ -12,7 +12,7 @@
 //-----------------------------------------------------------------------------
 #include <assert.h>
 #include <xtl.h>
-#include "WMAStream.h"
+#include "wmastream.h"
 
 
 

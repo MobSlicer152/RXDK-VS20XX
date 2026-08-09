@@ -9,14 +9,14 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_GAME_H
 #define TECHCERTGAME_GAME_H
-#include "Common.h"
-#include "Math3d.h"
-#include "File.h"
+#include "common.h"
+#include "math3d.h"
+#include "file.h"
 #include <xbfont.h>
 #include <xbinput.h>
 #include <xbstopwatch.h>
-#include "AudioEngine.h"
-#include "SoundEffect.h"
+#include "audioengine.h"
+#include "soundeffect.h"
 
 
 

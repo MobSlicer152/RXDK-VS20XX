@@ -7,10 +7,10 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Shader.h"
-#include "Globals.h"
-#include "Light.h"
-#include "File.h"
+#include "shader.h"
+#include "globals.h"
+#include "light.h"
+#include "file.h"
 
 
 

@@ -13,7 +13,7 @@
 
 #include <assert.h>
 #include <xtl.h>
-#include "P3HardwareCounters.h"
+#include "p3hardwarecounters.h"
 
 
 //-----------------------------------------------------------------------------

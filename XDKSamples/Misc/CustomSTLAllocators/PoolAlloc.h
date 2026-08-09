@@ -26,7 +26,7 @@
 #pragma warning( disable: 4100 )
 #include <memory>
 #include <malloc.h>
-#include "Tinyobj.h"
+#include "TinyObj.h"
 
 
 //-----------------------------------------------------------------------------

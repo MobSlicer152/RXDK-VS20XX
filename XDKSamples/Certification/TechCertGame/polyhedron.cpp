@@ -8,12 +8,12 @@
 // Copyright (c) 1999-2000 Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-#include "Common.h"
+#include "common.h"
 #include <memory>
 #include <assert.h>
-#include "Polyhedron.h"
-#include "PerfTimer.h"
-#include "Globals.h"
+#include "polyhedron.h"
+#include "perftimer.h"
+#include "globals.h"
 
 
 

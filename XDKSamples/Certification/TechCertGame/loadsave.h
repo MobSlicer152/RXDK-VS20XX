@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_LOAD_SAVE_H
 #define TECHCERTGAME_LOAD_SAVE_H
-#include "Common.h"
+#include "common.h"
 #include <xbfont.h>
 #include <xbinput.h>
 #include <xbmemunit.h>

@@ -10,7 +10,7 @@
 #pragma once
 
 #include <xtl.h>
-#include "XBFur.h"
+#include "xbfur.h"
 
 
 

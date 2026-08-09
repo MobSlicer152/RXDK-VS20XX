@@ -7,9 +7,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "Demo.h"
-#include "Controller.h"
-#include "Text.h"
+#include "demo.h"
+#include "controller.h"
+#include "text.h"
 #include <xbconfig.h>
 #include <xbfont.h>
 #include <xbapp.h>

@@ -8,7 +8,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-#include "P3HardwareTimer.h"
+#include "p3hardwaretimer.h"
 
 
 //-----------------------------------------------------------------------------

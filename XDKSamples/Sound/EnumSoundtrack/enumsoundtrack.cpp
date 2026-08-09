@@ -8,7 +8,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include "EnumSoundtrack.h"
+#include "enumsoundtrack.h"
 #include <cassert>
 
 

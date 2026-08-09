@@ -11,7 +11,7 @@
 #include <xbapp.h>
 #include <xbfont.h>
 #include <xbhelp.h>
-#include "Teapot.h"
+#include "teapot.h"
 
 
 

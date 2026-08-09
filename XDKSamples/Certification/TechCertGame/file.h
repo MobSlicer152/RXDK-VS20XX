@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #ifndef TECHCERTGAME_FILE_H
 #define TECHCERTGAME_FILE_H
-#include "Common.h"
+#include "common.h"
 
 
 

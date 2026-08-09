@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include <xtl.h>
-#include "XMVHelper.h"
+#include "xmvhelper.h"
 #include "xbutil.h"
 #include <stdio.h>
 

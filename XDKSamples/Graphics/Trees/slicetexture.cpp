@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "SliceTexture.h"
+#include "slicetexture.h"
 #include "SwizzleFormat.h"
 #include "xbutil.h"
 #include "mipmap.h"

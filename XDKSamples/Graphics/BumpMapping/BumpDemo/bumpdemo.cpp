@@ -13,7 +13,7 @@
 #include <xbhelp.h>
 #include <xbresource.h>
 #include <xgraphics.h>
-#include "GearModel.h"
+#include "gearmodel.h"
 
 // The following header file is generated from "Resource.rdf" file using the
 // Bundler tool. In addition to the header, the tool outputs a binary file
