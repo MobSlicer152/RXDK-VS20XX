@@ -179,13 +179,36 @@ public sealed class MainViewModel : ObservableObject
         var iso = s.IsoFor(_settings.Configuration);
         if (iso is null) { Status = $"{s.Name}: no ISO — build it first."; Append($"ERROR: no ISO for {s.Name} — build it first."); return; }
 
-        ClearLog();  // console window is cleared on every new launch
+        ClearLog();  // in-app log is cleared on every new launch
         Status = $"xemu: {s.Name}";
-        var args = SplitParams(_settings.XemuParams);
-        args.Add("-dvd_path");
-        args.Add(iso);
-        await ProcessRunner.RunAsync(_settings.XemuPath, args, Path.GetDirectoryName(_settings.XemuPath), Append, ct);
-        Status = $"xemu closed — {s.Name}";
+
+        // xemu.exe is a Windows GUI-subsystem binary: launched with redirected pipes it
+        // never wires stdout/stderr, so "-serial stdio" (and xemu's own startup log) never
+        // reach us. Give it a real console instead — run it inside a cmd window, where the
+        // title's serial console AND xemu's diagnostics show up and stay readable.
+        var inner = $"\"{_settings.XemuPath}\" {_settings.XemuParams} -dvd_path \"{iso}\"";
+        var psi = new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = "cmd.exe",
+            // /k keeps the console open after xemu exits so the log stays readable.
+            Arguments = $"/k title xemu - {s.Name} & {inner}",
+            UseShellExecute = false,
+            CreateNoWindow = false,   // allocate a visible console window
+            WorkingDirectory = Path.GetDirectoryName(_settings.XemuPath) ?? "",
+        };
+        try
+        {
+            System.Diagnostics.Process.Start(psi);
+            Append($"Launched {s.Name} in a console window — xemu's serial console and startup log appear there.");
+            Append("(xemu is a GUI app that can't stream into this pane; the console window shows everything.)");
+            Status = $"xemu (console): {s.Name}";
+        }
+        catch (Exception ex)
+        {
+            Append($"ERROR: cannot launch xemu console: {ex.Message}");
+            Status = "xemu launch failed";
+        }
+        await Task.CompletedTask;
     }
 
     private async Task DeployRunAsync(SampleItem s, CancellationToken ct)

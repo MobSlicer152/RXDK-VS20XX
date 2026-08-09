@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Rxdk.Engine.Build;
 using Rxdk.Engine.Model;
@@ -44,6 +45,28 @@ public static class XemuLaunch
             var args = new List<string>(SplitParams(paramsStr)) { "-dvd_path", iso };
 
             opts.Log?.Invoke($"Launching xemu: {Path.GetFileName(iso)}");
+
+            if (OperatingSystem.IsWindows())
+            {
+                // xemu.exe is a Windows GUI-subsystem binary: launched with redirected pipes it
+                // never wires stdout/stderr, so -serial stdio (and xemu's own startup log) reach
+                // nothing. Give it a real console — run it inside a cmd window (/k keeps it open
+                // after xemu exits) where the serial console and diagnostics appear and stay.
+                var inner = $"\"{opts.XemuPath}\" {paramsStr} -dvd_path \"{iso}\"";
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/k title xemu - {opts.Manifest.Name} & {inner}",
+                    UseShellExecute = false,
+                    CreateNoWindow = false,   // allocate a visible console window
+                    WorkingDirectory = Path.GetDirectoryName(opts.XemuPath) ?? "",
+                };
+                Process.Start(psi);
+                opts.Log?.Invoke("Launched xemu in a console window — serial console + startup log appear there.");
+                return LaunchResult.Success;
+            }
+
+            // Non-Windows: xemu is a normal console-capable process; stream its output as before.
             var r = await ProcessRunner.RunStreamedAsync(opts.XemuPath, args, opts.Log, ct: ct);
             if (!r.Success)
                 return LaunchResult.Fail($"xemu exited with code {r.ExitCode}");
