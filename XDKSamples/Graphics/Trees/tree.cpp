@@ -10,7 +10,7 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <xgraphics.h>
-#include <XBApp.h>
+#include <xbapp.h>
 #include "Tree.h"
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;

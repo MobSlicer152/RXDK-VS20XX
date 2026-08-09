@@ -30,7 +30,7 @@ struct XBHELP_CALLOUT
 {
     WORD     wControl;    // An index to identify a control, as enum'ed below
     WORD     wPlacement;  // An offset to pick from one of the possible placements
-    WCHAR*   strText;     // Text to draw when rendering this call out
+    const WCHAR* strText; // Text to draw when rendering this call out
 };
 
 
@@ -56,7 +56,7 @@ public:
     ~CXBHelp();
 
     // Functions to create and destroy the internal objects
-    HRESULT Create( CHAR* pResource );
+    HRESULT Create( const CHAR* pResource );
     HRESULT Destroy();
 
     // Renders the help screen (using builtin, or caller-supplied, font)

@@ -14,13 +14,13 @@
 
 #pragma warning( disable: 4702 4786 )
 #include <xtl.h>
-#include <XbApp.h>
-#include <XbFont.h>
-#include <XbStorageDevice.h>
-#include <XbMemUnit.h>
-#include <XbResource.h>
-#include <XbSavedGame.h>
-#include <XbStopWatch.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbstoragedevice.h>
+#include <xbmemunit.h>
+#include <xbresource.h>
+#include <xbsavedgame.h>
+#include <xbstopwatch.h>
 
 #pragma warning( push, 3 )  // Suppress VC warnings when compiling at W4
 #include <deque>

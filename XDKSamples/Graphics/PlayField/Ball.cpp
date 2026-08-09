@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <xgraphics.h>
-#include <XbApp.h>
+#include <xbapp.h>
 #include "Ball.h"
 
 

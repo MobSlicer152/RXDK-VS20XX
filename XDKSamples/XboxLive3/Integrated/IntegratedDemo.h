@@ -14,8 +14,8 @@
 #define INTEGRATEDDEMO_H
 
 #include <vector>
-#include <Xbox.h>
-#include <XOnline.h>
+#include <xbox.h>
+#include <xonline.h>
 #include "xbapp.h"
 #include "xbNet.h"
 #include "xbOnline.h"

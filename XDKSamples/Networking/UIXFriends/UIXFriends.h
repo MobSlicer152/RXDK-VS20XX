@@ -7,13 +7,13 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
+#include <xbapp.h>
+#include <xbfont.h>
 #include <xgraphics.h>
 #include <xact.h>
 
 // Header needed for detecting loss of network connectivity
-#include <XbNet.h>
+#include <xbNet.h>
 
 // XHV is optional for the friends list - it is used here for voice-mail.
 #include <xhv.h>

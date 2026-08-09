@@ -9,10 +9,10 @@
 //       11.00.02 - Added "hot regions" filter and improved blur
 //       04.00.03 - Added Accumulation of previous to get "streaky" lights
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBMesh.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbmesh.h>
 #include <xgraphics.h>
 
 //-----------------------------------------------------------------------------

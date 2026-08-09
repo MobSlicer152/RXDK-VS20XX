@@ -10,9 +10,9 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBStopWatch.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbstopwatch.h>
 #include <cassert>
 #include <algorithm>
 #include "DelayVoice.h"

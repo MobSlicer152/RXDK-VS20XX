@@ -8,8 +8,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "LoadSave.h"
-#include <XbApp.h>
-#include <XbConfig.h>
+#include <xbapp.h>
+#include <xbconfig.h>
 #include <algorithm>
 #include <malloc.h>
 #include "Controller.h"

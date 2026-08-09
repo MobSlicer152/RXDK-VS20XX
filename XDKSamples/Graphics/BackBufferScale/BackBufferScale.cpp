@@ -17,10 +17,10 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBUtil.h>
-#include <XBMesh.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbutil.h>
+#include <xbmesh.h>
 #include "Resource.h" // Constants for bundled resources
 
 

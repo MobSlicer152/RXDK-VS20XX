@@ -11,7 +11,7 @@
 #ifndef BUMPMESH_H
 #define BUMPMESH_H
 
-#include <XBMesh.h>
+#include <xbmesh.h>
 
 
 

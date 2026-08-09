@@ -20,7 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 #include "LoadSave.h"
-#include <XbConfig.h>
+#include <xbconfig.h>
 #include <cassert>
 #include <algorithm>
 #include "Text.h"

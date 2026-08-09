@@ -163,7 +163,7 @@ CXBHelp::~CXBHelp()
 // Name: Create()
 // Desc: Creates the help class' internal objects
 //-----------------------------------------------------------------------------
-HRESULT CXBHelp::Create( CHAR* strResource )
+HRESULT CXBHelp::Create( const CHAR* strResource )
 {
     // Create the gamepad resource
     if( FAILED( m_xprResource.Create( strResource ) ) )

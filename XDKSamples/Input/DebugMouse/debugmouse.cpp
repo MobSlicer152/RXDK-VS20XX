@@ -10,11 +10,11 @@
 #include "mouse.h"
 #include <xgraphics.h>
 #include <stdio.h>
-#include <XBApp.h>
-#include <XBInput.h>
-#include <XBFont.h>
-#include <XBUtil.h>
-#include <XBMesh.h>
+#include <xbapp.h>
+#include <xbinput.h>
+#include <xbfont.h>
+#include <xbutil.h>
+#include <xbmesh.h>
 
 
 

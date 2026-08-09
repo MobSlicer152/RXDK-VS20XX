@@ -12,7 +12,7 @@
 #define RAYMESH_H
 
 #include <xtl.h>
-#include <XBMesh.h>
+#include <xbmesh.h>
 
 
 

@@ -8,9 +8,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "Menu.h"
-#include <XbApp.h>
-#include <XbConfig.h>
-#include <XbFont.h>
+#include <xbapp.h>
+#include <xbconfig.h>
+#include <xbfont.h>
 #include "Controller.h"
 #include "App.h"
 #include "Text.h"

@@ -11,10 +11,10 @@
 #define TECHCERTGAME_MENU_H
 
 #include "Common.h"
-#include <XBFont.h>
-#include <XBInput.h>
-#include <XBResource.h>
-#include <XBStopWatch.h>
+#include <xbfont.h>
+#include <xbinput.h>
+#include <xbresource.h>
+#include <xbstopwatch.h>
 #include "MenuOptions.h"
 
 

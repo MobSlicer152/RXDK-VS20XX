@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "SliceObject.h"
-#include <XBUtil.h>
+#include <xbutil.h>
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;
 

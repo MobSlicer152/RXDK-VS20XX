@@ -11,10 +11,10 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XButil.h>
-#include <XBFont.h>
-#include <XBHelp.h>
+#include <xbapp.h>
+#include <xbutil.h>
+#include <xbfont.h>
+#include <xbhelp.h>
 #include <cassert>
 #include <algorithm>
 #include <xvoice.h>

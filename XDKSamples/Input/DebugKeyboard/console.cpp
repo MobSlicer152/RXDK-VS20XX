@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <stdio.h>
-#include <XBFont.h>
-#include <XBUtil.h>
+#include <xbfont.h>
+#include <xbutil.h>
 #include "keyboard.h"
 #include "commands.h"
 #include "console.h"

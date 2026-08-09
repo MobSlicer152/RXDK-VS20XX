@@ -135,4 +135,4 @@ public:
 
 
 
-#endif XBRESOURCE_H
+#endif // XBRESOURCE_H

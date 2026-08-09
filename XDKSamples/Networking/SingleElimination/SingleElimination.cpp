@@ -14,12 +14,12 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
+#include <xbapp.h>
+#include <xbfont.h>
 #include <xgraphics.h>
 #include <xonline.h>
-#include <XBOnline.h>
-#include <XBOnlineTask.h>
+#include <xbOnline.h>
+#include <xbOnlineTask.h>
 
 #include "comps.h"
 

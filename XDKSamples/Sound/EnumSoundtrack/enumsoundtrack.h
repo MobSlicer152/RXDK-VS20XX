@@ -13,11 +13,11 @@
 
 #pragma warning( disable: 4702 )
 #include <xtl.h>
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBStopWatch.h>
-#include <XBHelp.h>
-#include <XBSound.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbstopwatch.h>
+#include <xbhelp.h>
+#include <xbsound.h>
 #include "WmaStream.h"
 #include "dsstdfx.h"
 

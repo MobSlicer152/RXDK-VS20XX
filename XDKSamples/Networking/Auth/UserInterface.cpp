@@ -8,7 +8,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBOnline.h>
+#include <xbOnline.h>
 #include "UserInterface.h"
 #include <cassert>
 

@@ -14,11 +14,11 @@
 #pragma once
 
 
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBMesh.h>
-#include <XBResource.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbmesh.h>
+#include <xbresource.h>
 #include <xmv.h>
 #include <xbdm.h>
 #include "XMVHelper.h"

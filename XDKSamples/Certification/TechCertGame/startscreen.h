@@ -10,9 +10,9 @@
 #ifndef TECHCERTGAME_START_H
 #define TECHCERTGAME_START_H
 #include "Common.h"
-#include <XBFont.h>
-#include <XBInput.h>
-#include <XBStopWatch.h>
+#include <xbfont.h>
+#include <xbinput.h>
+#include <xbstopwatch.h>
 
 
 

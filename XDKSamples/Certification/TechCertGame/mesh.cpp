@@ -13,7 +13,7 @@
 
 #if defined(_XBOX)
 
-#include <XbUtil.h>
+#include <xbutil.h>
 
 #endif
 

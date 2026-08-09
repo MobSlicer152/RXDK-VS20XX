@@ -8,9 +8,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include "Game.h"
-#include <XbApp.h>
-#include <XbConfig.h>
-#include <XbFont.h>
+#include <xbapp.h>
+#include <xbconfig.h>
+#include <xbfont.h>
 #include "Controller.h"
 #include "File.h"
 #include "HeightField.h"

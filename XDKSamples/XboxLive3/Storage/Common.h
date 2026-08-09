@@ -13,7 +13,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <XBOnlineTask.h>
+#include <xbOnlineTask.h>
 
 // Common colors
 static const D3DCOLOR COLOR_YELLOW    = 0xffffff00; // Yellow

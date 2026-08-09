@@ -19,12 +19,12 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <xact.h>
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBResource.h>
-#include <XBOnline.h>
-#include <XBSound.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbresource.h>
+#include <xbOnline.h>
+#include <xbsound.h>
 #include "UIXKeyboardFeature.h"
 #include "UIXCustomUIPlugin.h"
 

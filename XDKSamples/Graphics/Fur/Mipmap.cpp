@@ -7,7 +7,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBUtil.h>
+#include <xbutil.h>
 #include <assert.h>
 #include "MipMap.h"
 #include "SwizzleFormat.h"

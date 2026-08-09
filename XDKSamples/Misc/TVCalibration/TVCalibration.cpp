@@ -11,10 +11,10 @@
 //-----------------------------------------------------------------------------
 #include <dsound.h>
 #include <dsstdfx.h>
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBUtil.h>
-#include <XBSound.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbutil.h>
+#include <xbsound.h>
 
 
 

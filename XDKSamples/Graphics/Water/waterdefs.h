@@ -10,9 +10,9 @@
 #pragma once
 
 #include <xtl.h>
-#include <D3D8.h>
+#include <d3d8.h>
 #include <d3dx8.h>
-#include <D3DX8Math.h> 
+#include <d3dx8math.h> 
 #include <xbapp.h>
 #include <xgraphics.h>
 #include <crtdbg.h>

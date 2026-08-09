@@ -14,7 +14,7 @@
 #include <xtl.h>
 #include <xonline.h>
 #include <vector>
-#include <XBOnline.h>
+#include <xbOnline.h>
 
 #if _DEBUG
 static const DWORD DBGWARN_SIZE = 200;

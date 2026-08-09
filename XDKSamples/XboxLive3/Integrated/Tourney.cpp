@@ -14,10 +14,10 @@
 #include <xonline.h>
 #include <stdio.h>
 
-#include <XBUtil.h>
-#include <XBFont.h>
-#include <XBOnlineTask.h>
-#include <XBRandName.h>
+#include <xbutil.h>
+#include <xbfont.h>
+#include <xbOnlineTask.h>
+#include <xbRandName.h>
 
 #include "Tourney.h"
 #include "GameSession.h"

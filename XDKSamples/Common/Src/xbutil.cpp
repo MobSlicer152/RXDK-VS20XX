@@ -676,7 +676,7 @@ HRESULT XBUtil_DumpSurface( LPDIRECT3DSURFACE8 pSurface, const CHAR* strFileName
     if( NULL == file )
     {
         pSurface->UnlockRect();
-        delete[] pBits;
+        delete[] (DWORD*)pBits;   // allocated as new DWORD[] above
         return E_FAIL;
     }
 
@@ -686,7 +686,7 @@ HRESULT XBUtil_DumpSurface( LPDIRECT3DSURFACE8 pSurface, const CHAR* strFileName
     fclose( file );
 
     // Cleanup and return
-    delete[] pBits;
+    delete[] (DWORD*)pBits;   // allocated as new DWORD[] above
 
     return S_OK;
 }

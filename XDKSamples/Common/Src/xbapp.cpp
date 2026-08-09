@@ -13,7 +13,7 @@
 #include <xtl.h>
 #include "xbapp.h"
 #include "xbprofiling.h"
-#include <D3D8Perf.h>
+#include <d3d8perf.h>
 
 
 

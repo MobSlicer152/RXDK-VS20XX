@@ -13,10 +13,10 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBSound.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbsound.h>
 #include <xgraphics.h>
 #include <assert.h>
 #include <dsstdfx.h>

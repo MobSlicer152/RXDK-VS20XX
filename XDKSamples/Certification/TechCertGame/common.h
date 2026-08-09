@@ -11,7 +11,7 @@
 #ifndef TECHCERTGAME_COMMON_H
 #define TECHCERTGAME_COMMON_H
 #include <xtl.h>
-#include <XBUtil.h>
+#include <xbutil.h>
 #include <cassert>
 
 

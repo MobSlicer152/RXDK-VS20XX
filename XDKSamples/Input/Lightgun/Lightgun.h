@@ -11,7 +11,7 @@
 #define LIGHTGUN_H
 
 #include <xtl.h>
-#include <XBInput.h>
+#include <xbinput.h>
 
 
 

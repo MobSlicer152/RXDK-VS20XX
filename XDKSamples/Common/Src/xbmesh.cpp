@@ -53,7 +53,7 @@ CXBMesh::~CXBMesh()
 
     // Free allocated memory
     if( m_pAllocatedSysMem )
-        delete[] m_pAllocatedSysMem;
+        delete[] (BYTE*)m_pAllocatedSysMem;   // allocated as new BYTE[] above
 
     if( m_pAllocatedVidMem )
         D3D_FreeContiguousMemory( m_pAllocatedVidMem );
@@ -66,7 +66,7 @@ CXBMesh::~CXBMesh()
 // Name: Create()
 // Desc: 
 //-----------------------------------------------------------------------------
-HRESULT CXBMesh::Create( CHAR* strFilename, CXBPackedResource* pResource )
+HRESULT CXBMesh::Create( const CHAR* strFilename, CXBPackedResource* pResource )
 {
     // Find the media file
     CHAR strMeshPath[512];
@@ -165,7 +165,7 @@ HRESULT CXBMesh::Create( CHAR* strFilename, CXBPackedResource* pResource )
 // Name: WriteToXBG()
 // Desc: Writes the mesh to an XBG (Xbox geometry) file
 //-----------------------------------------------------------------------------
-HRESULT CXBMesh::WriteToXBG( CHAR* strFilename )
+HRESULT CXBMesh::WriteToXBG( const CHAR* strFilename )
 {
     struct XBG_HEADER
     {

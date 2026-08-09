@@ -10,9 +10,9 @@
 #ifndef TECHCERTGAME_SPLASH_H
 #define TECHCERTGAME_SPLASH_H
 #include "Common.h"
-#include <XBFont.h>
-#include <XBInput.h>
-#include <XBStopWatch.h>
+#include <xbfont.h>
+#include <xbinput.h>
+#include <xbstopwatch.h>
 
 
 

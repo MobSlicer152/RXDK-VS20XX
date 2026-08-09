@@ -12,9 +12,9 @@
 #include "Common.h"
 #include "Math3d.h"
 #include "File.h"
-#include <XBFont.h>
-#include <XBInput.h>
-#include <XBStopWatch.h>
+#include <xbfont.h>
+#include <xbinput.h>
+#include <xbstopwatch.h>
 #include "AudioEngine.h"
 #include "SoundEffect.h"
 

@@ -4,7 +4,7 @@
 //  Copyright (C) 2001 Microsoft Corporation
 //  All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBMesh.h>
+#include <xbmesh.h>
 
 extern D3DXVECTOR3 g_vGravity;
 

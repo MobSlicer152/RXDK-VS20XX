@@ -8,11 +8,11 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBSound.h>
-#include <XBUtil.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbsound.h>
+#include <xbutil.h>
 #include <dmusici.h>
 #include <dmusicfx.h>
 #include "myfactory.h"

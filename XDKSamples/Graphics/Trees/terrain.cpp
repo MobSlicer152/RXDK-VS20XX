@@ -7,8 +7,8 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBUtil.h>
+#include <xbapp.h>
+#include <xbutil.h>
 #include <assert.h>
 #include "Clip.h"
 #include "Terrain.h"

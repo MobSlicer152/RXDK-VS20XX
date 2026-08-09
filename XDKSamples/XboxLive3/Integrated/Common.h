@@ -14,7 +14,7 @@
 #define COMMON_H
 
 #include <xtl.h>
-#include <XBFont.h>
+#include <xbfont.h>
 #include <xonline.h>
 
 #include "xbOnlineTask.h"

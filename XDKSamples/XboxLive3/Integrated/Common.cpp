@@ -11,7 +11,7 @@
 #include <assert.h>
 #include <xtl.h>
 
-#include <XBStopWatch.h>
+#include <xbstopwatch.h>
 #include "common.h"
 
 

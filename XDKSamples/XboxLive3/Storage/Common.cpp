@@ -11,7 +11,7 @@
 #include <xtl.h>
 #include <xonline.h>
 #include <assert.h>
-#include <XBOnlineTask.h>
+#include <xbOnlineTask.h>
 #include "Common.h"
 
 

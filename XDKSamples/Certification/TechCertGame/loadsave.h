@@ -10,13 +10,13 @@
 #ifndef TECHCERTGAME_LOAD_SAVE_H
 #define TECHCERTGAME_LOAD_SAVE_H
 #include "Common.h"
-#include <XBFont.h>
-#include <XBInput.h>
-#include <XBMemUnit.h>
-#include <XBResource.h>
-#include <XBSavedGame.h>
-#include <XBStopWatch.h>
-#include <XBStorageDevice.h>
+#include <xbfont.h>
+#include <xbinput.h>
+#include <xbmemunit.h>
+#include <xbresource.h>
+#include <xbsavedgame.h>
+#include <xbstopwatch.h>
+#include <xbstoragedevice.h>
 
 #pragma warning( push, 3 )  // Suppress VC warnings when compiling at W4
 #include <deque>

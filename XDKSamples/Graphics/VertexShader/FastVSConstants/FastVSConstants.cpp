@@ -11,13 +11,13 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBMesh.h>
-#include <XBResource.h>
-#include <XBUtil.h>
-#include <XGMath.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbmesh.h>
+#include <xbresource.h>
+#include <xbutil.h>
+#include <xgmath.h>
 #include "Resource.h"  // Bundled resources
 
 

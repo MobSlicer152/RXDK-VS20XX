@@ -11,8 +11,8 @@
 #define TECHCERTGAME_DEMO_H
 #include "Common.h"
 #include "Game.h"
-#include <XBInput.h>
-#include <XBStopWatch.h>
+#include <xbinput.h>
+#include <xbstopwatch.h>
 
 
 

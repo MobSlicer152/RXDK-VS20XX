@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 #include <xtl.h>
 #include <assert.h>
-#include <XBUtil.h>
+#include <xbutil.h>
 #include "wavebankStream.h"
 
 

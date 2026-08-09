@@ -18,9 +18,9 @@
 #include "dsound.h"
 #include "dsstdfx.h"
 #include "Common.h"
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBStopWatch.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbstopwatch.h>
 #include "Splash.h"
 #include "StartScreen.h"
 #include "Demo.h"

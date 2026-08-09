@@ -682,7 +682,7 @@ HRESULT CXBFont::End()
     if( m_bSaveState )
     {
         D3DDevice::SetTexture( 0, NULL );
-        D3DDevice::SetPixelShader( NULL );
+        D3DDevice::SetPixelShader( 0 );   // pixel-shader handle is a DWORD, not a pointer
         D3DDevice::SetRenderState( D3DRS_ALPHABLENDENABLE, m_dwSavedState[0] );
         D3DDevice::SetRenderState( D3DRS_SRCBLEND,         m_dwSavedState[1] );
         D3DDevice::SetRenderState( D3DRS_DESTBLEND,        m_dwSavedState[2] );

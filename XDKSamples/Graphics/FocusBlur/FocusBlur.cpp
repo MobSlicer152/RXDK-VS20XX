@@ -10,10 +10,10 @@
 //
 // Copyright (c) 2001-2002 Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBUtil.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbutil.h>
 #include "Resource.h" // Bundled resources
 
 

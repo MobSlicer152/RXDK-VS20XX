@@ -17,11 +17,11 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBUtil.h>
-#include <XBHelp.h>
-#include <XBMesh.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbutil.h>
+#include <xbhelp.h>
+#include <xbmesh.h>
 
 
 

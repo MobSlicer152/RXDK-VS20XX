@@ -14,7 +14,7 @@
 #include <xtl.h>
 #include <xgraphics.h>
 #include <stdio.h>
-#include <XBMesh.h>
+#include <xbmesh.h>
 #include "DrawTriangle.h"
 #include "RayMesh.h"
 #include "NormalMesh.h"

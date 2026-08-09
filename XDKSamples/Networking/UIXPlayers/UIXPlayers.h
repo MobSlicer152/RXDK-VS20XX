@@ -7,8 +7,8 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
+#include <xbapp.h>
+#include <xbfont.h>
 #include <xgraphics.h>
 #include <xact.h>
 

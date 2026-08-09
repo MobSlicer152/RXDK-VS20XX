@@ -11,9 +11,9 @@
 #include "Controller.h"
 #include "File.h"
 #include "Text.h"
-#include <XBApp.h>
-#include <XBConfig.h>
-#include <XBFont.h>
+#include <xbapp.h>
+#include <xbconfig.h>
+#include <xbfont.h>
 
 
 

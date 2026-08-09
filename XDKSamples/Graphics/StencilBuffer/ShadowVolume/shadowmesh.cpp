@@ -15,7 +15,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include <xtl.h>
-#include <XBMesh.h>
+#include <xbmesh.h>
 #include "ShadowMesh.h"
 
 

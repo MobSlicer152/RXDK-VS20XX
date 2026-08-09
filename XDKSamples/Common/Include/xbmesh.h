@@ -161,10 +161,10 @@ public:
 
     // Creation function. Call this function to create the hierarchy of frames
     // and meshes from a geometry file.
-    HRESULT Create( CHAR* strFilename, CXBPackedResource* pResource = NULL );
+    HRESULT Create( const CHAR* strFilename, CXBPackedResource* pResource = NULL );
 
     // Writes the mesh to an XBG (Xbox geometry) file
-    HRESULT WriteToXBG( CHAR* strFilename );
+    HRESULT WriteToXBG( const CHAR* strFilename );
 
     // Access functions
     XBMESH_FRAME* GetFrame( DWORD i ) { return &m_pMeshFrames[i]; }

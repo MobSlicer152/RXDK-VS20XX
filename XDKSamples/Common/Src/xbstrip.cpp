@@ -20,7 +20,7 @@
 #include <xtl.h>
 #else
 #include <limits.h>
-#include <D3D8.h>
+#include <d3d8.h>
 #endif
 
 #include "xbstrip.h"

@@ -40,6 +40,7 @@ DWORD XBResource_SizeOf( LPDIRECT3DRESOURCE8 pResource )
         case D3DRTYPE_VERTEXBUFFER:  return sizeof(D3DVertexBuffer);
         case D3DRTYPE_INDEXBUFFER:   return sizeof(D3DIndexBuffer);
         case D3DRTYPE_PALETTE:       return sizeof(D3DPalette);
+        default:                     break;
     }
     return 0;
 }

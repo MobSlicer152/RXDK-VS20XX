@@ -28,11 +28,11 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBResource.h>
-#include <XBUtil.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbresource.h>
+#include <xbutil.h>
 
 // The following header file is generated from "Resource.rdf" file using the
 // Bundler tool. In addition to the header, the tool outputs a binary file

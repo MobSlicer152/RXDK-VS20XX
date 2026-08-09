@@ -14,7 +14,7 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBMesh.h>
+#include <xbmesh.h>
 
 
 

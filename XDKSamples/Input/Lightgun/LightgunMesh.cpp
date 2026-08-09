@@ -8,8 +8,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #include <xtl.h>
-#include <XBMesh.h>
-#include <XBResource.h>
+#include <xbmesh.h>
+#include <xbresource.h>
 #include "LightgunMesh.h"
 
 

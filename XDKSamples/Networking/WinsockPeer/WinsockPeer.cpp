@@ -16,13 +16,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 #pragma warning( disable: 4786 )
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
-#include <XBStopWatch.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
+#include <xbstopwatch.h>
 #include <XBSocket.h>
-#include <XBNet.h>
-#include <XBRandName.h>
+#include <xbNet.h>
+#include <xbRandName.h>
 #include <cassert>
 #include <vector>
 #include <algorithm>

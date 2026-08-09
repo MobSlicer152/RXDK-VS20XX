@@ -10,9 +10,9 @@
 #include "Demo.h"
 #include "Controller.h"
 #include "Text.h"
-#include <XbConfig.h>
-#include <XbFont.h>
-#include <XbApp.h>
+#include <xbconfig.h>
+#include <xbfont.h>
+#include <xbapp.h>
 
 
 

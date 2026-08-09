@@ -28,24 +28,29 @@ public static class XboxBuild
 {
     // -I (not -isystem) everywhere: the SDK's clean-room windef.h/etc. must win over zig's
     // bundled MinGW headers, which -isystem would let shadow them.
+    // The sample + framework code is compiled warning-clean; only these unavoidable suppressions
+    // remain, and none of them is a fixable source defect:
+    //   * c++11-narrowing / address-of-temporary — clang treats these as hard ERRORS on legacy
+    //     XDK idioms (braced-init narrowing e.g. STRING={(USHORT)strlen(s),...}; and taking the
+    //     address of a temporary passed to a D3DX helper, D3DXVec3Cross(&out,&D3DXVECTOR3(...),...)
+    //     — the temporary lives to end-of-expression so the callee is safe). Rewriting Microsoft's
+    //     reference idioms is out of scope.
+    //   * ignored-pragma-intrinsic — clang cannot honor MSVC's `#pragma intrinsic`; harmless.
+    //   * multichar — the XDK FOURCC idiom ('YV12' etc.) is intentional, not a bug.
+    //   * unused-command-line-argument — build-driver noise (a flag that doesn't apply to a TU).
+    //   * deprecated-enum-enum-conversion — the D3D8 pixel-shader register-combiner API is
+    //     *defined* by OR-ing the named PS_REGISTER / PS_CHANNEL / PS_INPUTMAPPING enums together
+    //     (see d3d8types.h's own combiner examples). It is the documented, retail-faithful idiom;
+    //     C++20 deprecates cross-enum bitwise ops in general but this usage is correct by design,
+    //     and casting at every combiner call site across the shader samples would only obscure it.
     private static readonly string[] XdkClangWarnings =
     {
-        "-Wno-macro-redefined", "-Wno-deprecated-declarations", "-Wno-sign-compare",
-        "-Wno-sign-conversion", "-Wno-implicit-int-conversion", "-Wno-shorten-64-to-32",
-        "-Wno-pointer-to-int-cast", "-Wno-int-to-pointer-cast", "-Wno-unused-parameter",
-        "-Wno-unused-variable", "-Wno-unused-function", "-Wno-missing-field-initializers",
-        "-Wno-switch", "-Wno-ignored-qualifiers", "-Wno-invalid-source-encoding",
-        "-Wno-pragma-pack", "-Wno-nonportable-include-path", "-Wno-main-return-type",
-        "-Wno-missing-prototype-for-cc", "-Wno-ignored-pragma-intrinsic", "-Wno-multichar",
-        "-Wno-comment", "-Wno-extra-tokens", "-Wno-unused-command-line-argument",
-        // Legacy XDK code narrows freely in braced initializers (e.g. STRING = {(USHORT)strlen(s),
-        // (USHORT)strlen(s)+1, s}); the C++11 narrowing rule makes those hard errors. Benign here.
         "-Wno-c++11-narrowing",
-        // MSVC let you take the address of a temporary, and the XDK's math idiom leans on it
-        // (D3DXVec3Cross(&out, &D3DXVECTOR3(...), ...)). The temporary lives to the end of the
-        // full expression, so the callee -- which only reads through the pointer during the
-        // call -- is safe; clang otherwise makes this a hard error.
         "-Wno-address-of-temporary",
+        "-Wno-ignored-pragma-intrinsic",
+        "-Wno-multichar",
+        "-Wno-unused-command-line-argument",
+        "-Wno-deprecated-enum-enum-conversion",
     };
 
     // Resolve a project's manifest: hand-authored rxdk.project.json if present, else the

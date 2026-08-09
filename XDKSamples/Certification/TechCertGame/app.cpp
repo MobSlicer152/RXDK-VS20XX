@@ -10,7 +10,7 @@
 #include "App.h"
 #include "Controller.h"
 #include "Text.h"
-#include <XbConfig.h>
+#include <xbconfig.h>
 
 
 //-----------------------------------------------------------------------------

@@ -10,7 +10,7 @@
 #ifndef LIGHTGUNMESH_H
 #define LIGHTGUNMESH_H
 
-#include <XBMesh.h>
+#include <xbmesh.h>
 
 
 

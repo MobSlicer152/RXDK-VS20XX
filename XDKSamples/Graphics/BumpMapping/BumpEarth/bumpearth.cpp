@@ -9,12 +9,12 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBUtil.h>
-#include <XBHelp.h>
-#include <XBResource.h>
-#include <XBUtil.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbutil.h>
+#include <xbhelp.h>
+#include <xbresource.h>
+#include <xbutil.h>
 #include <xgraphics.h>
 
 

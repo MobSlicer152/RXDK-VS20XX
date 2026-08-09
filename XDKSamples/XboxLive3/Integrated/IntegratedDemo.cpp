@@ -12,7 +12,7 @@
 #include <xtl.h>
 #include <xonline.h>
 #include <xhv.h>
-#include <XBSound.h>
+#include <xbsound.h>
 #include "dsound.h"
 #include "dsstdfx.h"
 #include "xbfont.h"

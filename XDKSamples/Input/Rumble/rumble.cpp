@@ -11,10 +11,10 @@
 #include <xtl.h>
 #include <xgraphics.h>
 #include <stdio.h>
-#include <XBApp.h>
-#include <XBInput.h>
-#include <XBFont.h>
-#include <XBUtil.h>
+#include <xbapp.h>
+#include <xbinput.h>
+#include <xbfont.h>
+#include <xbutil.h>
 
 
 

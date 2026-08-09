@@ -13,9 +13,9 @@
 #include "xtl.h"
 #include "xonline.h"
 #include <vector>
-#include <XBApp.h>
-#include <XBFont.h>
-#include <XBHelp.h>
+#include <xbapp.h>
+#include <xbfont.h>
+#include <xbhelp.h>
 #include <xgraphics.h>
 #include "xbNet.h"
 #include "xbOnlineTask.h"

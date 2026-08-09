@@ -8,8 +8,8 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#include <XBApp.h>
-#include <XAct.h>
+#include <xbapp.h>
+#include <xact.h>
 #include <dsstdfx.h>
 
 
