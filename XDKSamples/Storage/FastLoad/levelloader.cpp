@@ -348,6 +348,7 @@ HRESULT CLevelLoader::StreamCurrentLevel()
   
     switch( m_IOState )
     {
+        default: break;
         case Begin:
         {
             // Reset IO

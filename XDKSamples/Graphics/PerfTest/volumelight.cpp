@@ -607,7 +607,7 @@ HRESULT CXBoxSample::Render()
     m_TerrainObject.Render( XBMESH_NOFVF );
 
     // Restore state
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 1, NULL );
 
     // Render the flashlight body

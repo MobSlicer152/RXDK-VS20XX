@@ -612,6 +612,7 @@ VOID CXBoxSample::FrameMoveMenu( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
 
             // Prepare networking
@@ -742,6 +743,7 @@ VOID CXBoxSample::FrameMoveGame( Event ev )
 
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             switch( m_CurrItem )
             {
@@ -806,6 +808,7 @@ VOID CXBoxSample::FrameMoveSelectName( Event ev )
 
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
 
             // Use the selected name
@@ -901,6 +904,7 @@ VOID CXBoxSample::FrameMoveSelectGame( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             InitiateJoin( m_CurrItem );
             break;

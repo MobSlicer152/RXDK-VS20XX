@@ -352,7 +352,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->SetPixelShader( m_dwFirePixelShader );
     m_FlameObject.Render( XBMESH_NOFVF|XBMESH_NOMATERIALS|XBMESH_NOTEXTURES );
 
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
 
     // Show title, frame rate, and help
     if( m_bDrawHelp )

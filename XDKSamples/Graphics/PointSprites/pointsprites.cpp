@@ -356,7 +356,7 @@ HRESULT CXBoxSample::Initialize()
 
     // Fill vertex buffer
     GROUNDVERTEX* pVertices;
-    m_pGroundVB->Lock( 0, 0, (BYTE**)&pVertices, NULL );
+    m_pGroundVB->Lock( 0, 0, (BYTE**)&pVertices, 0 );
     pVertices[0].v     = GROUND_SIZE * D3DXVECTOR3( -0.5f, 0.0f, -0.5f );
     pVertices[0].color = GROUND_COLOR;
     pVertices[0].tu    = 0.0f;
@@ -619,7 +619,7 @@ HRESULT CParticleSystem::InitDeviceObjects( LPDIRECT3DDEVICE8 pd3dDevice )
         // Write default values to light vertices (the texture coordinates for
         // the quads never changes)
         LIGHTVERTEX* pLightVertices;
-        m_pLightsVBs[buf]->Lock( 0, 0, (BYTE**)&pLightVertices, NULL );
+        m_pLightsVBs[buf]->Lock( 0, 0, (BYTE**)&pLightVertices, 0 );
         ZeroMemory( pLightVertices, 4*m_dwMaxParticles*sizeof(LIGHTVERTEX) );
         
         for( DWORD i=0; i<m_dwMaxParticles; i++ )
@@ -685,8 +685,8 @@ HRESULT CParticleSystem::Update( FLOAT fSecsPerFrame, DWORD dwNumParticlesToEmit
     // Lock vertex buffers
     PARTICLEVERTEX* pPointSpriteVertices;
     LIGHTVERTEX*    pLightVertices;
-    m_pPointSpritesVB->Lock( 0, 0, (BYTE**)&pPointSpriteVertices, NULL );
-    m_pLightsVB->Lock( 0, 0, (BYTE**)&pLightVertices, NULL );
+    m_pPointSpritesVB->Lock( 0, 0, (BYTE**)&pPointSpriteVertices, 0 );
+    m_pLightsVB->Lock( 0, 0, (BYTE**)&pLightVertices, 0 );
     m_dwNumParticlesToRender = 0;
     m_dwNumLightsToRender    = 0;
 

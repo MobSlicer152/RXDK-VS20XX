@@ -130,7 +130,7 @@ HRESULT CWater::LoadBumpTextures()
       
         // Create texture
         if( FAILED( hr = g_pd3dDevice->CreateTexture( width, height, 3,
-                                                      NULL, D3DFMT_V8U8, D3DPOOL_MANAGED,
+                                                      0, D3DFMT_V8U8, D3DPOOL_MANAGED,
                                                       &m_prgBumpTextures[i] ) ) )
             return hr;
        
@@ -138,7 +138,7 @@ HRESULT CWater::LoadBumpTextures()
         D3DLOCKED_RECT lr; 
         D3DSURFACE_DESC desc;
         m_prgBumpTextures[i]->GetLevelDesc( 0, &desc );
-        m_prgBumpTextures[i]->LockRect( NULL, &lr, NULL, NULL );
+        m_prgBumpTextures[i]->LockRect( 0, &lr, NULL, 0 );
 
         fread( lr.pBits, sizeof(WORD), height * width, fp );
 
@@ -154,7 +154,7 @@ HRESULT CWater::LoadBumpTextures()
             height >>= 1;
                         
             m_prgBumpTextures[i]->GetLevelDesc( level, &desc );
-            m_prgBumpTextures[i]->LockRect( level, &lr, NULL,NULL );
+            m_prgBumpTextures[i]->LockRect( level, &lr, NULL,0 );
 
             fread( lr.pBits, sizeof(WORD), width * height, fp );
 

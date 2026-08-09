@@ -456,7 +456,7 @@ HRESULT CXBoxSample::Render()
     m_Gears[4].Render();
 
     // Restore the state
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 2, NULL );
     m_pd3dDevice->SetTexture( 3, NULL );
 

@@ -460,7 +460,7 @@ VOID Player::UpdateAnimation( FLOAT fDt )
    }
    else
    {
-        WCHAR *glyph;    
+        const WCHAR *glyph;    // GLYPH_* macros expand to string literals
         DWORD dwColor;
 
         glyph = GLYPH_DOWN_TICK;
@@ -514,7 +514,7 @@ VOID Player::UpdateAnimation( FLOAT fDt )
         else
             dwColor = REMOTE_PLAYER_COLOR;
            
-        m_dObj.SetLabel( glyph, dwColor );   
+        m_dObj.SetLabel( (WCHAR*)glyph, dwColor );
    }
 }
 
@@ -955,9 +955,9 @@ VOID PlayerBot::Update( FLOAT fDt )
         m_fLastHeardSomething = g_Marketplace.Time();
 
     if ( g_Marketplace.Time() - m_fLastHeardSomething > 0.1f )
-        m_fWantToTalkMeter += ((FLOAT) rand() / RAND_MAX );  // add 0 to 1
+        m_fWantToTalkMeter += ((FLOAT) rand() / (FLOAT)RAND_MAX );  // add 0 to 1
     else if ( m_fWantToTalkMeter > -20.0f )
-        m_fWantToTalkMeter -= ((FLOAT) rand() / RAND_MAX );  // subtract 0 to 1
+        m_fWantToTalkMeter -= ((FLOAT) rand() / (FLOAT)RAND_MAX );  // subtract 0 to 1
     
     if ( m_dwPlayerFlags & PLAYERFLAG_TALKING ) 
     {

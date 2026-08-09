@@ -759,6 +759,7 @@ VOID CXBoxSample::UpdateUserStateWaitForOthers( CUser& User, Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
         case EV_BUTTON_BACK:
             BeginSelectAccount( User );
@@ -813,6 +814,7 @@ VOID CXBoxSample::UpdateStateSigningOn( Event ev )
     
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
         case EV_BUTTON_BACK:
         {
@@ -947,6 +949,7 @@ VOID CXBoxSample::UpdateStateError( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             m_State = m_NextState;
             m_bAllowBootToDash = FALSE;
@@ -970,6 +973,7 @@ VOID CXBoxSample::UpdateUserStateError( CUser& User, Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             User.bAllowBootToDash = FALSE;
             // Transition to NextState, if this is account selection

@@ -538,6 +538,7 @@ HRESULT LoadSave::FrameMove( const XBGAMEPAD* pGamePad )
     // Process the current state
     switch( m_State )
     {
+        default: break;
         case GAME_SAVE:
             if( !SaveGame() )
             {
@@ -1358,6 +1359,7 @@ VOID LoadSave::UpdateState( Event ev )
         // Check for events
         switch( ev )
         {
+            default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
         case EV_B_BUTTON:
@@ -1382,6 +1384,7 @@ VOID LoadSave::UpdateState( Event ev )
     }
     else switch( m_State )
     {
+        default: break;
         case MENU_DEVICE:      UpdateStateDevice( ev );      break;
         case MENU_GAMELIST:    UpdateStateGameList( ev );    break;
         case BOX_OVERWRITE:    UpdateStateOverwrite( ev );   break;
@@ -1401,6 +1404,7 @@ VOID LoadSave::UpdateStateDevice( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
         {
@@ -1539,6 +1543,7 @@ VOID LoadSave::UpdateStateGameList( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             if( m_Mode == MODE_LOAD )
@@ -1670,6 +1675,7 @@ VOID LoadSave::UpdateStateOverwrite( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             if( m_Answer == ANSWER_YES )
@@ -1719,6 +1725,7 @@ VOID LoadSave::UpdateStateDelete( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             if( m_Answer == ANSWER_YES )

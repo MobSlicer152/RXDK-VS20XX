@@ -396,7 +396,7 @@ HRESULT CXBoxSample::CreateShader()
     // Delete the old vertex shader
     if( m_dwShader )
     {
-        m_pd3dDevice->SetVertexShader( NULL );
+        m_pd3dDevice->SetVertexShader( 0 );
         m_pd3dDevice->DeleteVertexShader( m_dwShader );
         m_dwShader = 0L;
     }

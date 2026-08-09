@@ -275,6 +275,7 @@ HRESULT CXBoxSample::InitBumpMap()
 
             switch( m_BumpMapFormat )
             {
+                default: break;
                 case D3DFMT_V8U8:
                     *pDstT++ = (BYTE)iDu;
                     *pDstT++ = (BYTE)iDv;

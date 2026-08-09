@@ -17,6 +17,12 @@
 // Global instance of the voice manager
 CVoiceManager g_VoiceManager;
 
+// The failure paths below use the Windows cleanup-goto idiom (goto Cleanup),
+// which jumps past later local initializers. clang accepts it but flags
+// -Wmicrosoft-goto; scope the diagnostic to this file rather than restructure
+// the working control flow.
+#pragma clang diagnostic ignored "-Wmicrosoft-goto"
+
 // The voice codec only operates on 8kHz data
 extern const DWORD VOICE_SAMPLING_RATE = 8000;
 // Ramp headphone up/down over some range of headroom

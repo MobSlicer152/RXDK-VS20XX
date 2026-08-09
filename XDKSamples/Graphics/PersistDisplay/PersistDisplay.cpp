@@ -602,7 +602,7 @@ HRESULT CXBoxSample::RenderQuad( LPDIRECT3DTEXTURE8 pTexture, FLOAT fAlpha )
 
     // Set state to render the image
     m_pd3dDevice->SetTexture( 0, pTexture );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1 );

@@ -636,6 +636,7 @@ VOID CXBoxSample::UpdateStateLoggingOn( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         
@@ -876,6 +877,7 @@ VOID CXBoxSample::UpdateStateSelectMatch( Event ev )
     
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         Reset( TRUE );
@@ -936,6 +938,7 @@ VOID CXBoxSample::UpdateStateOptiMatch( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;
@@ -1014,6 +1017,7 @@ VOID CXBoxSample::UpdateStateSelectType( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;
@@ -1059,6 +1063,7 @@ VOID CXBoxSample::UpdateStateSelectLevel( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;
@@ -1107,6 +1112,7 @@ VOID CXBoxSample::UpdateStateSelectStyle( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;
@@ -1154,6 +1160,7 @@ VOID CXBoxSample::UpdateStateSelectName( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;
@@ -1199,6 +1206,7 @@ VOID CXBoxSample::UpdateStateSelectSession( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;
@@ -1246,6 +1254,7 @@ VOID CXBoxSample::UpdateStateGameSearch( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         m_OptiMatchQuery.Cancel();
@@ -1322,6 +1331,7 @@ VOID CXBoxSample::UpdateStateGameSearchByID( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         m_FindByIDQuery.Cancel();
@@ -1377,6 +1387,7 @@ VOID CXBoxSample::UpdateStateRequestJoin( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         // Cancel request; return to match menu
@@ -1410,6 +1421,7 @@ VOID CXBoxSample::UpdateStateCreateSession( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         // Cancel the task
@@ -1509,6 +1521,7 @@ VOID CXBoxSample::UpdateStatePlayGame( Event ev )
     
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;
@@ -1553,6 +1566,7 @@ VOID CXBoxSample::UpdateStateDeleteSession( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         Reset(FALSE); // Return to matchmaking
@@ -1586,6 +1600,7 @@ VOID CXBoxSample::UpdateStateError( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         m_State = m_NextState;
         
@@ -1608,6 +1623,7 @@ VOID CXBoxSample::UpdateStateHelp( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
     case EV_BUTTON_B:
     case EV_BUTTON_WHITE:

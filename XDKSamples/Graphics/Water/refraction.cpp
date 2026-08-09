@@ -161,7 +161,7 @@ HRESULT CRefraction::RenderToTexture()
                          D3DCOLOR_COLORVALUE( m_vWaterFogFarColor.x,
                                               m_vWaterFogFarColor.y,
                                               m_vWaterFogFarColor.z, 1.0f ), 
-                         1.0f, NULL );
+                         1.0f, 0 );
     
     g_pApp->m_pNonWater->Render( RF_BELOW_WATER );
 

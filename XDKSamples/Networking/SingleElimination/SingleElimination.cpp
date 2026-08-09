@@ -1248,6 +1248,7 @@ HRESULT CXBoxSample::Render()
 
     switch( m_WhichScreen )
     {
+        default: break;
         case SCREEN_DISPLAYTOURNAMENT:
         {
             // Render the topology of the tournament from the data obtained previously.

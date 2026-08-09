@@ -100,7 +100,7 @@ FLOAT g_fPresentTimePerWait;
 // Perf testing function protocols
 VOID StartPerfTest();
 VOID StopPerfTest();
-VOID PerfTestCallback();
+VOID WINAPI PerfTestCallback();   // must match PFNDumpFrameRateInfoHandler's __stdcall
 VOID GetPerfStatistics();
 VOID DisplayPerfResults( CXBFont* pFont );
 VOID DumpPerfResults();
@@ -312,7 +312,7 @@ VOID GetPerfStatistics()
 //       app would want to customize the formatting of the results, or display
 //       the information on screen.
 //-----------------------------------------------------------------------------
-VOID PerfTestCallback()
+VOID WINAPI PerfTestCallback()
 {
     // Get the perf stats
     GetPerfStatistics();

@@ -541,6 +541,7 @@ VOID CXBoxSample::UpdateStateSelectMode( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_dwCurrItem )
         {
@@ -748,6 +749,7 @@ VOID CXBoxSample::UpdateStateSigningIn( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         
@@ -966,6 +968,7 @@ VOID CXBoxSample::UpdateStateSelectListenParams( Event ev )
 
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_dwCurrItem )
         {
@@ -1105,6 +1108,7 @@ VOID CXBoxSample::UpdateStateSessionList( Event ev )
 
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         m_State = STATE_SHOW_PROBE_DATA;
         break;
@@ -1151,6 +1155,7 @@ VOID CXBoxSample::UpdateStateShowProbeData( Event ev )
 
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
         m_State = STATE_SESSION_LIST;
         break;
@@ -1173,6 +1178,7 @@ VOID CXBoxSample::UpdateStateError( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         m_State = m_NextState;
         break;
@@ -1190,6 +1196,7 @@ VOID CXBoxSample::UpdateStateHelp( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
     case EV_BUTTON_B:
     case EV_BUTTON_WHITE:

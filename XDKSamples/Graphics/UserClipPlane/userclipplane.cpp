@@ -378,7 +378,7 @@ HRESULT CXBoxSample::DrawPlanes()
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE );
     m_pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
     m_pd3dDevice->SetVertexShader( FVF_PLANE_VERTEX );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     
     // Loop over each plane, drawing it if it's active
     for( DWORD i = 0; i < NUM_PLANES; i++ )
@@ -501,7 +501,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->SetPixelShader( m_dwPixelShader );
     m_pd3dDevice->SetRenderState( D3DRS_PSCONSTANT0_0, 0xffffff00 );
     m_Model.Render( XBMESH_NOFVF | XBMESH_NOMATERIALS | XBMESH_NOTEXTURES );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
 
     // Show the active clipping planes
     DrawPlanes();

@@ -748,11 +748,11 @@ HRESULT CXBoxSample::Render()
 
     // Draw the spotlight using the fixed function pipeline
     m_pd3dDevice->SetTransform( D3DTS_WORLD, &m_matLightMatrix );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_LightObject.Render();
 
     m_pd3dDevice->SetTransform( D3DTS_WORLD, &m_matWomanMatrix );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     
     // Draw the woman object (everything but the dress)
     m_WomanObject.m_bRenderDress = FALSE;
@@ -818,7 +818,7 @@ HRESULT CXBoxSample::Render()
     m_WomanObject.Render( XBMESH_NOFVF|XBMESH_NOTEXTURES );
 
     // Reset states
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP );
 

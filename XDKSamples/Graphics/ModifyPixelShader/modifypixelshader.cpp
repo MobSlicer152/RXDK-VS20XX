@@ -491,7 +491,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->SetRenderState( D3DRS_LIGHTING,        TRUE );
     m_pd3dDevice->SetRenderState( D3DRS_ZENABLE,         TRUE );
     m_pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
 
     // Enable fog (in case pixel shader might do anything with fog)
     m_pd3dDevice->SetRenderState( D3DRS_FOGENABLE,     TRUE );
@@ -567,7 +567,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2*50-2 );
 
     // Restore states
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
 
     // Show title, frame rate, and help
     if( m_bDrawHelp )

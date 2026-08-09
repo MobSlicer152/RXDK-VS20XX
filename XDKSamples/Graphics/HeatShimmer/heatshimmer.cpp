@@ -397,8 +397,8 @@ VOID CXBoxSample::SetDefaultStates()
     m_pd3dDevice->SetRenderState( D3DRS_FOGCOLOR, dwFogColor );
 
     // Vertex/pixel shaders
-    m_pd3dDevice->SetPixelShader( NULL );
-    m_pd3dDevice->SetVertexShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
+    m_pd3dDevice->SetVertexShader( 0 );
 }
 
 
@@ -553,7 +553,7 @@ VOID CXBoxSample::RenderHeatShimmer()
     m_pd3dDevice->DrawVerticesUP( D3DPT_QUADSTRIP, 8, Verts, sizeof(Verts[0]) );
 
     // Restore state
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, NULL );
     m_pd3dDevice->SetTexture( 1, NULL );
     m_pd3dDevice->SetTexture( 2, NULL );

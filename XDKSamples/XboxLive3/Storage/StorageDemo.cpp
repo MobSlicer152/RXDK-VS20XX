@@ -2309,7 +2309,7 @@ BOOL CXBoxSample::GetUIColors( PXONLINESTORAGE_FILE_INFO* rwEnumResults,
 
     // If the download was successful, extract and set the UI colors
     if( SUCCEEDED( hrDownloaded ) )
-        sscanf( (CHAR*)rwBuffer, "%d%d%d", &m_dwBGColor, &m_dwTextColor, &m_dwHighlightColor );
+        sscanf( (CHAR*)rwBuffer, "%d%d%d", (int*)&m_dwBGColor, (int*)&m_dwTextColor, (int*)&m_dwHighlightColor );
     
     return SUCCEEDED( hrDownloaded );
 }
@@ -2358,7 +2358,7 @@ BOOL CXBoxSample::GetMessageIcon( PXONLINESTORAGE_FILE_INFO* rwEnumResults,
         //  Save signature
         //  Data
         //  Live Signature
-        memcpy( &m_motdIcon, rwBuffer + 4 + SAVE_SIG_BUFFER_SIZE, CUserContent::DATA_SIZE );
+        memcpy( (void*)&m_motdIcon, rwBuffer + 4 + SAVE_SIG_BUFFER_SIZE, CUserContent::DATA_SIZE );
 
 
         // Create a texture if we have not already

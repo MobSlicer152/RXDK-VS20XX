@@ -129,7 +129,7 @@ HRESULT CXBTerrain::Generate( DWORD dwXSlices, DWORD dwZSlices,
     fZUnit = vWidth.y / dwZSlices;
 
     // Fill vertex buffer
-    m_pvbTerrain->Lock( 0, 0, (BYTE **)&pVertices, NULL );
+    m_pvbTerrain->Lock( 0, 0, (BYTE **)&pVertices, 0 );
     for( z = 0; z <= dwZSlices; z++ )
     {
         // Calculate Z of top of terrain grid
@@ -192,7 +192,7 @@ HRESULT CXBTerrain::Render()
     // Set up to render
     m_pd3dDevice->SetStreamSource( 0, m_pvbTerrain, sizeof( XBTERRAIN_VERTEX ) );
     m_pd3dDevice->SetVertexShader( FVF_XBTERRAIN_VERTEX );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, m_pTexture );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG1 );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );

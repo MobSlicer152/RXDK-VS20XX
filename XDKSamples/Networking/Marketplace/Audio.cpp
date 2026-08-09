@@ -581,7 +581,7 @@ PositionedVoiceSound::PositionedVoiceSound()
 {
     m_xuid.qwUserID     = 0;
     m_wVoiceBufferIdx   = IDX_NO_BUFFER;
-    m_fTimeLastUsed     = NULL;
+    m_fTimeLastUsed     = 0;
     m_vSavedPos         = D3DXVECTOR3( 0.0f, 0.0f, 0.0f );
     m_wPriorMethod      = VOM_NONE;
 }

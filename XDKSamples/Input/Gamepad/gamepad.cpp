@@ -384,6 +384,7 @@ HRESULT CXBoxSample::FrameMove()
     {
         switch( m_AppState )
         {
+            default: break;
             case APPSTATE_CONTROLTEST:         m_AppState = APPSTATE_VIBRATIONTEST; break;
             case APPSTATE_VIBRATIONTEST:       m_AppState = APPSTATE_DEADZONECALIBRATION; break;
             case APPSTATE_DEADZONECALIBRATION: m_AppState = APPSTATE_BUTTONQUANTIZATION; break;
@@ -1142,6 +1143,7 @@ HRESULT CXBoxSample::Render()
     {
         switch( m_AppState )
         {
+            default: break;
             case APPSTATE_CONTROLTEST:
                 RenderControlTestPage();
                 break;

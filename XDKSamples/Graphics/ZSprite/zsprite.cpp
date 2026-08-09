@@ -516,8 +516,8 @@ CZSprite::CZSprite()
     m_pZSpriteDepthBufferSurface = NULL;
     m_pZSpriteDepthBufferTexture = NULL;
 
-    m_dwZSpriteVertexShader      = NULL;
-    m_dwZSpritePixelShader       = NULL;
+    m_dwZSpriteVertexShader      = 0;
+    m_dwZSpritePixelShader       = 0;
 
     m_bUsingD16ZTexture          = FALSE;
     m_bRenderTargetIsTiled       = FALSE;
@@ -798,7 +798,7 @@ HRESULT CZSprite::Render1Pass()
 
     // Restore state
     D3DDevice::SetTextureStageState( 0, D3DTSS_ALPHAKILL, D3DTALPHAKILL_DISABLE );
-    D3DDevice::SetPixelShader( NULL );
+    D3DDevice::SetPixelShader( 0 );
     D3DDevice::SetTexture( 0, NULL );
     D3DDevice::SetTexture( 1, NULL );
     D3DDevice::SetTexture( 3, NULL );
@@ -880,7 +880,7 @@ HRESULT CZSprite::Render2Pass()
     D3DDevice::DrawVerticesUP( D3DPT_QUADLIST, 4, m_ZSpriteVertices, sizeof(D3DXVECTOR2) );
 
     // Restore state
-    D3DDevice::SetPixelShader( NULL );
+    D3DDevice::SetPixelShader( 0 );
     D3DDevice::SetTexture( 1, NULL );
     D3DDevice::SetTexture( 3, NULL );
     D3DDevice::SetRenderState( D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_ALL );

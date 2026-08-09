@@ -663,7 +663,7 @@ HRESULT CXBoxSample::Render()
         DrawShadowBufferedObject( &m_ObjectMesh, m_matObject );
 
         // Reset shadowbuffer state
-        m_pd3dDevice->SetPixelShader( NULL );
+        m_pd3dDevice->SetPixelShader( 0 );
         m_pd3dDevice->SetTexture( 1, NULL );
         m_pd3dDevice->SetRenderState( D3DRS_SHADOWFUNC, D3DCMP_NEVER );
     }

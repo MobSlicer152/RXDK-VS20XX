@@ -730,7 +730,7 @@ HRESULT CXBoxSample::RenderBubbles()
     // Set projection matrix
     m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &m_matProj );
     
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetRenderState( D3DRS_FOGENABLE, FALSE );
 
     // Set states for rendering the particles. Note that point sprites use 
@@ -928,7 +928,7 @@ HRESULT CXBoxSample::Render()
                                        D3D__IndexData );
 
     // Restore state
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, NULL );
     m_pd3dDevice->SetTexture( 1, NULL );
     m_pd3dDevice->SetTexture( 2, NULL );

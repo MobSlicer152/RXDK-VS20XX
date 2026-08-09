@@ -620,7 +620,7 @@ void CXBFurMesh::DrawFins( CXBFur* pFur, DWORD dwFinVS, float fFinLODFull,
     }
     else
         g_pd3dDevice->SetVertexShaderConstant( VSC_DIFFUSE, &s_DiffuseConditioning, 1 );
-    g_pd3dDevice->SetPixelShader( NULL );
+    g_pd3dDevice->SetPixelShader( 0 );
     
     // Set volume texture on stage 0
     g_pd3dDevice->SetTexture( 0, pFur->m_pFinTexture );
@@ -817,5 +817,5 @@ void CXBFurMesh::End()
     g_pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAKILL, D3DTALPHAKILL_DISABLE );
     g_pd3dDevice->SetTextureStageState( 2, D3DTSS_ALPHAKILL, D3DTALPHAKILL_DISABLE );
     g_pd3dDevice->SetTextureStageState( 3, D3DTSS_ALPHAKILL, D3DTALPHAKILL_DISABLE );
-    g_pd3dDevice->SetPixelShader( NULL );
+    g_pd3dDevice->SetPixelShader( 0 );
 }

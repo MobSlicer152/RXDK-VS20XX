@@ -97,7 +97,7 @@ HRESULT CXBoxSample::DownloadEffectsImage( CHAR* strScratchFile )
 {
     HANDLE hFile;
     DWORD dwSize = 0;
-    PVOID pBuffer = NULL;
+    BYTE* pBuffer = NULL;   // allocated as new BYTE[]; typed so delete[] is well-formed
     HRESULT hr = S_OK;
     LPDSEFFECTIMAGEDESC pDesc;
     DSEFFECTIMAGELOC EffectLoc;

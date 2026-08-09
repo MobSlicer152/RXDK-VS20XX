@@ -437,6 +437,7 @@ LPDIRECT3DTEXTURE8 CXMVPlayer::AdvanceFrameForTexturing( LPDIRECT3DDEVICE8 pDevi
 
     switch ( xr )
     {
+        default: break;
         case XMV_NOFRAME:
             // Do nothing - we didn't get a frame.
             break;
@@ -521,6 +522,7 @@ LPDIRECT3DTEXTURE8 CXMVPlayer::AdvanceFrameForOverlays( LPDIRECT3DDEVICE8 pDevic
 
     switch ( xr )
     {
+        default: break;
         case XMV_NOFRAME:
             // Do nothing - we didn't get a frame.
             break;

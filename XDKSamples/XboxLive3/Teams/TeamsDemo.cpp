@@ -1466,6 +1466,7 @@ INT CXBoxSample::GetMenuPosition( INT iCurMenuPosition, INT iNumMenuItems, Event
 {
     switch( event )
     {
+        default: break;
     case EV_UP:
         --iCurMenuPosition;
 
@@ -2175,6 +2176,7 @@ VOID CXBoxSample::UpdateStateGameSetup( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         assert( m_iItemSelected >= 0 );
         assert( m_iItemSelected < NUM_ITEMS_GAME_SETUP_MENU );
@@ -2236,6 +2238,7 @@ VOID CXBoxSample::UpdateStateTeamsLeaderboard( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
         PopState();
         break;
@@ -2330,6 +2333,7 @@ VOID CXBoxSample::UpdateStateTeams( INT iUser, Event event)
 
         switch( event )
         {
+            default: break;
             case EV_BUTTON_A:
                 assert( m_iItemSelected >= 0 );
                 assert( m_iItemSelected < NUM_ITEMS_TEAMS_MENU );
@@ -2464,6 +2468,7 @@ VOID CXBoxSample::UpdateStateRecentPlayers( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_UP: // Move the roster list up until we hit the top
         m_dwPlayerSelected = ( m_dwPlayerSelected > 0 ) ? ( m_dwPlayerSelected - 1 ) : 0;
 
@@ -2610,6 +2615,7 @@ VOID CXBoxSample::UpdateStateSelectInviteTeam( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A: // The user has choosen a team
         PopState();
 
@@ -2770,6 +2776,7 @@ VOID CXBoxSample::UpdateStateInbox( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A: // Accept or decline the invite
         // If this is not a team message, ignore it
         if( !( m_rwMessagesSummaries[m_dwMessageSelected].dwMessageFlags & XONLINE_MSG_FLAG_TEAM_CONTEXT ) )
@@ -2987,6 +2994,7 @@ VOID CXBoxSample::UpdateStateInviteDetails( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_dwInviteResponseSelected )
         {
@@ -3193,6 +3201,7 @@ VOID CXBoxSample::UpdateStateViewMyTeams( INT iUser, Event event)
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A: // View the team roster
         if( m_dwTeamCount < 1 )
             break;
@@ -3359,6 +3368,7 @@ VOID CXBoxSample::UpdateStateViewTeamRoster( INT iUser, Event event)
 
     switch( event )
     {
+        default: break;
     case EV_UP: // Move the roster list up until we hit the top
         m_dwTeamMemberSelected = ( m_dwTeamMemberSelected > 0 ) ? ( m_dwTeamMemberSelected - 1 ) : 0;
 
@@ -3541,6 +3551,7 @@ VOID CXBoxSample::UpdateStateTeamMemberOps( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_localUsers[iUser].m_iCurSelection )
         {
@@ -3655,6 +3666,7 @@ VOID CXBoxSample::UpdateStateMessageWindow( INT iUser, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
     case EV_BUTTON_B:
         PopState();

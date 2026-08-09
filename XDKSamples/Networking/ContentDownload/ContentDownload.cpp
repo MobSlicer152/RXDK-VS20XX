@@ -544,6 +544,7 @@ VOID CXBoxSample::UpdateStateLoggingOn( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
         {
             // Cancel the task
@@ -647,6 +648,7 @@ VOID CXBoxSample::UpdateStateSelectDevice( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             /// Begin enumerating content for the selected device
             assert( m_dwCurrItem < 3 );
@@ -728,6 +730,7 @@ VOID CXBoxSample::UpdateStateEnumContent( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
             delete [] m_pEnumBuffer;
             m_pEnumBuffer = NULL;
@@ -806,6 +809,7 @@ VOID CXBoxSample::UpdateStateSelectContent( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             // If no items, return to device list
             if( m_ContentList.empty() )
@@ -880,6 +884,7 @@ VOID CXBoxSample::UpdateStateGetDetails( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
             
             delete [] m_pDetailsBuffer;
@@ -938,6 +943,7 @@ VOID CXBoxSample::UpdateStateContentDetails( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             // subscription
             if( XONLINE_OFFERING_SUBSCRIPTION ==
@@ -998,6 +1004,7 @@ VOID CXBoxSample::UpdateStateContentMetadata( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             // remove content
             m_State = STATE_CONFIRM_REMOVE;
@@ -1025,6 +1032,7 @@ VOID CXBoxSample::UpdateStateInstallContent( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
             // If a player expressly cancels an installation, it's up to the title
             // to handle content removal. However, if the installation
@@ -1108,6 +1116,7 @@ VOID CXBoxSample::UpdateStateConfirm( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             if( m_dwCurrItem == 0 ) // "Yes"
             {
@@ -1219,6 +1228,7 @@ VOID CXBoxSample::UpdateStatePurchase( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
             // XOnlineTaskClose() will not cancel the purchase process,
             break;
@@ -1269,6 +1279,7 @@ VOID CXBoxSample::UpdateStateCancelSub( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
             // XOnlineTaskClose() will not cancel the cancel purchase process,
             break;
@@ -1306,6 +1317,7 @@ VOID CXBoxSample::UpdateStateCheckForNewContent( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
             Reset();
             return;
@@ -1354,6 +1366,7 @@ VOID CXBoxSample::UpdateStateContinue( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             Reset();
             break;
@@ -1371,6 +1384,7 @@ VOID CXBoxSample::UpdateStateBadContent( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             if( m_State == STATE_BAD_CONTENT )
                 RemoveContent();

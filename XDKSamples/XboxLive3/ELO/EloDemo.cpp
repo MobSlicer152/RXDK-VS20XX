@@ -1113,6 +1113,7 @@ VOID CXBoxSample::UpdateStateLogin( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B: // Allow the user to cancel and use a different account
         // Close the task to allow for somone else to signon
         if ( m_bSignedIn || m_bIsSigningIn )
@@ -1375,6 +1376,7 @@ VOID CXBoxSample::UpdateStateGameSetup( Event event )
 
     switch( event )
     {
+        default: break;
     case EV_UP:
         --m_iItemSelected;
         // Wrap the input to goto the bottom
@@ -1641,6 +1643,7 @@ VOID CXBoxSample::UpdateStateViewRatings( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
         SetState( STATE_GAME_SETUP );
         break;
@@ -1854,6 +1857,7 @@ VOID CXBoxSample::UpdateStateQuickMatch( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK: // Allow the user to cancel
         m_matchQuery.Cancel();
@@ -2152,6 +2156,7 @@ VOID CXBoxSample::UpdateStateGameLobby( Event event )
     // player should be displayed?
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B: // Leave the game
         if ( m_bIsHost )
             DeleteSession();
@@ -2351,6 +2356,7 @@ VOID CXBoxSample::UpdateStateGameSession( Event event )
 
     switch( event )
     {
+        default: break;
     case EV_UP: // Move the menu cursor up
         --m_iItemSelected;
         // Wrap the input to goto the bottom
@@ -2731,6 +2737,7 @@ VOID CXBoxSample::UpdateStateGameResults( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         SetState( STATE_GAME_SETUP );
         break;

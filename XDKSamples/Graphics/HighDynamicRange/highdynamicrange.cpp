@@ -197,7 +197,7 @@ CXBoxSample::CXBoxSample()
 
     ZeroMemory( m_rpBlur, sizeof(m_rpBlur) );
     m_pBlur = NULL;
-    m_dwHotBlurPixelShader = NULL;
+    m_dwHotBlurPixelShader = 0;
  }
 
 
@@ -514,6 +514,7 @@ HRESULT CXBoxSample::Render()
 
     switch( m_eEffectMode )
     {
+        default: break;
         case EM_ORIGINAL:
             SetLight( 0.8f );           // Set light
             m_Scene.Render();           // Render scene

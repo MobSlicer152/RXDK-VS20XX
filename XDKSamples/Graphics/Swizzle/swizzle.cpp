@@ -332,6 +332,7 @@ HRESULT CXBoxSample::FrameMove()
     {
         switch( m_d3dFormat )
         {
+            default: break;
             case D3DFMT_R5G6B5:       m_d3dFormat = D3DFMT_A8R8G8B8;     break;
             case D3DFMT_LIN_R5G6B5:   m_d3dFormat = D3DFMT_LIN_A8R8G8B8; break;
             case D3DFMT_A8R8G8B8:     m_d3dFormat = D3DFMT_R5G6B5;       break;
@@ -346,6 +347,7 @@ HRESULT CXBoxSample::FrameMove()
     {
         switch( m_d3dFormat )
         {
+            default: break;
             case D3DFMT_R5G6B5:       m_d3dFormat = D3DFMT_LIN_R5G6B5;   break;
             case D3DFMT_LIN_R5G6B5:   m_d3dFormat = D3DFMT_R5G6B5;       break;
             case D3DFMT_A8R8G8B8:     m_d3dFormat = D3DFMT_LIN_A8R8G8B8; break;
@@ -458,6 +460,7 @@ HRESULT CXBoxSample::Render()
         m_Font.DrawText(  64, 100, 0xffffffff, L"Texture format:" );
         switch( m_d3dFormat )
         {
+            default: break;
             case D3DFMT_R5G6B5:       m_Font.DrawText( 275, 100, 0xffffff00, L"D3DFMT_R5G6B5" );       break;
             case D3DFMT_A8R8G8B8:     m_Font.DrawText( 275, 100, 0xffffff00, L"D3DFMT_A8R8G8B8" );     break;
             case D3DFMT_LIN_R5G6B5:   m_Font.DrawText( 275, 100, 0xffffff00, L"D3DFMT_LIN_R5G6B5" );   break;

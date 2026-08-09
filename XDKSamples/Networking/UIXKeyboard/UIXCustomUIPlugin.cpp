@@ -646,6 +646,7 @@ HRESULT CUIListBoxObject::HandleInput( UIX_INPUT_TYPE InputKey )
     // Handle the listbox input
     switch( InputKey )
     {
+        default: break;
         // Move up
         case UIX_INPUT_UP:
         case UIX_INPUT_DPAD_UP:

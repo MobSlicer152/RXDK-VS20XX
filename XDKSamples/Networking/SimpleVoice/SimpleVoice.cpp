@@ -375,7 +375,7 @@ VOID CXBoxSample::FrameMoveSignIn( Event ev )
             for( DWORD i = 0; i < 4; i++ )
             {
                 testUsers[i].xuid.qwUserID = GetTickCount() + i;
-                sprintf( testUsers[i].szGamertag, "Test%lx", testUsers[i].xuid );
+                sprintf( testUsers[i].szGamertag, "Test%lx", (DWORD)testUsers[i].xuid.qwUserID );
             }
 
             m_pUsers            = testUsers;

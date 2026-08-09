@@ -197,7 +197,7 @@ HRESULT CALLBACK MyFactory(REFCLSID clsid,
         OUTPUT_DEBUG_STRING("AudAnalyzer includes support for this CLSID when generating MyFactory(), by using        \n");
         OUTPUT_DEBUG_STRING("a command-line parameter if necessary (see AudAnalyzer docs for more details.)           \n");
         CHAR szTemp[MAX_PATH] ={0};
-        sprintf(szTemp,"Unknown CLSID: %08x-%04x-%04x-%02x%02x%02x%02x%02x%02x%02x%02x\n", clsid.Data1, clsid.Data2, clsid.Data3, clsid.Data4[0], clsid.Data4[1], clsid.Data4[2], clsid.Data4[3], clsid.Data4[4], clsid.Data4[5], clsid.Data4[6], clsid.Data4[7] );
+        sprintf(szTemp,"Unknown CLSID: %08lx-%04x-%04x-%02x%02x%02x%02x%02x%02x%02x%02x\n", clsid.Data1, clsid.Data2, clsid.Data3, clsid.Data4[0], clsid.Data4[1], clsid.Data4[2], clsid.Data4[3], clsid.Data4[4], clsid.Data4[5], clsid.Data4[6], clsid.Data4[7] );
         OUTPUT_DEBUG_STRING(szTemp);
         DebugBreak();              
     }                              

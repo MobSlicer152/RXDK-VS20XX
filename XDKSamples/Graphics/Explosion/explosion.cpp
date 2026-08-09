@@ -783,7 +783,7 @@ HRESULT CExplosion::Render()
 
     // Actually draw the quad
     m_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
 
     if( g_bWireFrame )
     {

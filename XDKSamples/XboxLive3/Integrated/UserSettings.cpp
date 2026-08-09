@@ -411,7 +411,7 @@ BOOL CUserSettings::ExitDownload( CXBOnlineTask& taskSettings ,
     taskSettings.Close();
 
     // copy results buffer into temporary settings variable
-    memcpy( this , pReceiveBuffer , sizeof( *this ) );
+    memcpy( (void*)this , pReceiveBuffer , sizeof( *this ) );   // raw copy of received settings (-Wnontrivial-memcall)
 
     return TRUE;
 }

@@ -193,7 +193,7 @@ HRESULT CXBoxSample::CreateBumpMap( DWORD dwWidth, DWORD dwHeight )
     if( FAILED( m_pd3dDevice->CreateTexture( dwWidth, dwHeight, 1, 0,
                                              D3DFMT_V8U8, D3DPOOL_MANAGED,
                                              &m_pBumpMapTexture ) ) )
-        return NULL;
+        return 0;
 
     // Lock the surface and write in some bumps for the waves
     DWORD* pBits    = new DWORD[dwWidth*dwHeight];
@@ -423,7 +423,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->DrawPrimitive( D3DPT_QUADLIST, 0, 1 );
 
     // Restore state
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORSIGN, 0 );
 
     // Show title, frame rate, and help

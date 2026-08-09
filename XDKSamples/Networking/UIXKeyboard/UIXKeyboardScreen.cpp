@@ -275,6 +275,7 @@ VOID CUIXKeyboardScreen::Input( DWORD dwPort, UIX_INPUT_TYPE InputKey )
         XBKEYBOARD_EVENT ev = XBKEYBOARD_EVENT_NONE;
         switch( InputKey )
         {
+            default: break;
             case UIX_INPUT_START:           ev = XBKEYBOARD_EVENT_SELECT; break;
             case UIX_INPUT_A:               ev = XBKEYBOARD_EVENT_SELECT; break;
             case UIX_INPUT_X:               ev = XBKEYBOARD_EVENT_TOGGLEKEYS; break;

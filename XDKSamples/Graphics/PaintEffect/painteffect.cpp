@@ -839,7 +839,7 @@ HRESULT CXBoxSample::RenderToPaintTexture()
     m_pd3dDevice->SetTextureStageState( 0, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP );
 
     // Render some geometry
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetStreamSource( 0, m_pCylinderVB, sizeof(CUSTOMVERTEX) );
     m_pd3dDevice->SetVertexShader( D3DFVF_CUSTOMVERTEX );
     D3DXMATRIX matWorld;

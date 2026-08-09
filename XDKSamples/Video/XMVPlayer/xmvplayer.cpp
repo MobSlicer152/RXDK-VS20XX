@@ -322,6 +322,7 @@ HRESULT CXBoxSample::Render()
         output += swprintf( output, L"\n");
         switch ( m_readMethod )
         {
+            default: break;
             case READ_FROM_FILE:
                 output += swprintf( output, L"Use CreateDecoderForFile: " GLYPH_B_BUTTON );
                 break;
@@ -395,6 +396,7 @@ HRESULT CXBoxSample::OpenMovie( const CHAR* strFilename, D3DFORMAT format, BOOL 
     HRESULT hr = E_FAIL;
     switch ( m_readMethod )
     {
+        default: break;
         case READ_FROM_FILE:
             hr = m_player.OpenFile( strFilename, format, m_pd3dDevice, bAllocateTextures );
             break;

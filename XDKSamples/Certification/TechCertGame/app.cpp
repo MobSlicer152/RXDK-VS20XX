@@ -213,6 +213,7 @@ HRESULT TechCertGame::FrameMove()
                 {
                     switch( m_Menu.GetCurrItem() )
                     {
+                        default: break;
                         case Menu::MENU_ITEM_RESUME:
                             m_Game.SetPaused( FALSE );
                             m_Menu.End();
@@ -300,6 +301,7 @@ HRESULT TechCertGame::FrameMove()
             {
                 switch( m_Menu.GetCurrItem() )
                 {
+                    default: break;
                     case Menu::MENU_ITEM_START:
                         m_Game.SetPaused( FALSE );
                         ChangeMode( GAME_MODE_GAME );

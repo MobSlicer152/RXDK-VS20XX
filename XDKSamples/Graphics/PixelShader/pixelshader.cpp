@@ -525,7 +525,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->SetRenderState( D3DRS_LIGHTING,        TRUE );
     m_pd3dDevice->SetRenderState( D3DRS_ZENABLE,         TRUE );
     m_pd3dDevice->SetRenderState( D3DRS_ALPHATESTENABLE, FALSE );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     
     if( m_bWireframe )
         m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
@@ -560,7 +560,7 @@ HRESULT CXBoxSample::Render()
     }
 
     // Restore states
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 
     // Show title, frame rate, and help

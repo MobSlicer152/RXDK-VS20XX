@@ -608,6 +608,7 @@ HRESULT CXBoxSample::FrameMove()
     {
         switch( m_wFillMode )
         {
+            default: break;
             case D3DFILL_POINT:     m_wFillMode = D3DFILL_WIREFRAME; break;
             case D3DFILL_WIREFRAME: m_wFillMode = D3DFILL_SOLID;     break;
             case D3DFILL_SOLID:     m_wFillMode = D3DFILL_POINT;     break;

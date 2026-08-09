@@ -969,7 +969,7 @@ BOOL CXBLoadSave::SaveGame( const CHAR* strFile )
         return FALSE;
 
     // Allocate chunk memory
-    std::auto_ptr< DWORD > Chunk( new DWORD [ FILE_CHUNK_DWORDS ] );
+    std::unique_ptr< DWORD[] > Chunk( new DWORD [ FILE_CHUNK_DWORDS ] );  // auto_ptr is deprecated and does delete (not delete[])
     DWORD* pChunk = Chunk.get();
 
     // Generate some bogus save data. Your game would have less than bogus data.
@@ -1094,7 +1094,7 @@ BOOL CXBLoadSave::LoadGame()
         return FALSE;
     }
     // Allocate chunk memory
-    std::auto_ptr< DWORD > Chunk( new DWORD [ FILE_CHUNK_DWORDS ] );
+    std::unique_ptr< DWORD[] > Chunk( new DWORD [ FILE_CHUNK_DWORDS ] );  // auto_ptr is deprecated and does delete (not delete[])
     DWORD* pChunk = Chunk.get();
 
     // Start the signature hash

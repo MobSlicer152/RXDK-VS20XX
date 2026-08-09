@@ -335,6 +335,7 @@ CXBVirtualKeyboard::Key::Key( Xkey xk, DWORD w )
     // Special keys get their own names
     switch( xKey )
     {
+        default: break;
         case XK_SPACE:
             strName = GetString( STR_KEY_SPACE );
             break;
@@ -1681,6 +1682,7 @@ VOID CXBVirtualKeyboard::UpdateState( Event ev )
         case STATE_STARTSCREEN:
             switch( ev )
             {
+                default: break;
                 case EV_A_BUTTON:           // Select current key
                 case EV_START_BUTTON:
                     m_State = STATE_MENU;
@@ -1690,6 +1692,7 @@ VOID CXBVirtualKeyboard::UpdateState( Event ev )
         case STATE_MENU:
             switch( ev )
             {
+                default: break;
                 case EV_A_BUTTON:           // Select current key
                 case EV_START_BUTTON:
                     InitBoard();
@@ -1715,6 +1718,7 @@ VOID CXBVirtualKeyboard::UpdateState( Event ev )
         case STATE_KEYBOARD:
             switch( ev )
             {
+                default: break;
                 case EV_A_BUTTON:           // Select current key
                 case EV_START_BUTTON:
                     PressCurrent();
@@ -1866,6 +1870,7 @@ VOID CXBVirtualKeyboard::Press( Xkey xk )
     // Special cases
     else switch( xk )
     {
+        default: break;
         case XK_BACKSPACE:
             if( m_iPos > 0 )
             {
@@ -2349,6 +2354,7 @@ VOID CXBVirtualKeyboard::RenderKeyboardLatin() const
             // Handle special key coloring
             switch( key.xKey )
             {
+                default: break;
                 case XK_SHIFT:
                     switch( m_iCurrBoard )
                     {

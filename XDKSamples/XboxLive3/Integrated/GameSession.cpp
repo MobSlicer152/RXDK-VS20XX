@@ -568,7 +568,7 @@ VOID UpdateSession( CSession& hostedSession,
                     DWORD& dwSlotsInUse,
                     BOOL& bArbitrationStarted )
 {
-    assert( hostedSession.Exists() != NULL );
+    assert( hostedSession.Exists() );
 
     hostedSession.PublicFilled = dwSlotsInUse;
     hostedSession.PublicOpen   = MAX_MATCHERS - dwSlotsInUse;

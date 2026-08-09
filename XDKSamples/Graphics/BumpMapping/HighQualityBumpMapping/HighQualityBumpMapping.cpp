@@ -587,7 +587,7 @@ HRESULT CXBoxSample::Render()
 
     // Restore the state
     m_pd3dDevice->SetVertexShader( D3DFVF_XYZ );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTexture( 0, NULL );
     m_pd3dDevice->SetTexture( 1, NULL );
     m_pd3dDevice->SetTexture( 3, NULL );

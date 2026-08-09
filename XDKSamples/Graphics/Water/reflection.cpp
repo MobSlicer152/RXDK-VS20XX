@@ -137,7 +137,7 @@ HRESULT CReflection::RenderToTexture()
 
     // Render the scene into the texture
     g_pd3dDevice->Clear( 0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,
-                         0x00000000, 1.0f, NULL );
+                         0x00000000, 1.0f, 0 );
     g_pApp->m_pNonWater->Render( RF_ABOVE_WATER );
 
     // Restore state

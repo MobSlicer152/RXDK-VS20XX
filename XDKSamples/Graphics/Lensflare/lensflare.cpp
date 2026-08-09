@@ -294,7 +294,7 @@ HRESULT CLensFlare::SetNumFullLightPixels()
     //------------------------------------------
     // Set render state
     //------------------------------------------
-    g_pd3dDevice->SetPixelShader( NULL );
+    g_pd3dDevice->SetPixelShader( 0 );
     g_pd3dDevice->SetVertexShader( D3DFVF_XYZ | D3DFVF_TEX1 );
 
     g_pd3dDevice->SetRenderState( D3DRS_CULLMODE,         D3DCULL_CCW );
@@ -496,7 +496,7 @@ HRESULT CLensFlare::Render( const XGVECTOR3 WorldLightDirection, const XGMATRIX&
     //--------------------------------------
     // Set general render state
     //--------------------------------------
-    g_pd3dDevice->SetPixelShader( NULL );
+    g_pd3dDevice->SetPixelShader( 0 );
     g_pd3dDevice->SetVertexShader( D3DFVF_XYZ| D3DFVF_TEX1 );
     g_pd3dDevice->SetStreamSource( 0, m_pQuadVB, sizeof(SVert) );
 

@@ -140,7 +140,7 @@ CXBoxSample::CXBoxSample()
     m_pColumnVB        = NULL;
     m_pFloorTexture    = NULL;
 
-    m_dwVertexShader   = NULL;
+    m_dwVertexShader   = 0;
     m_bUseVertexShader = FALSE;
 }
 

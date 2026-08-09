@@ -747,7 +747,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
     m_pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
     m_pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
 
     // Show title, frame rate, and help
     if( m_bDrawHelp )

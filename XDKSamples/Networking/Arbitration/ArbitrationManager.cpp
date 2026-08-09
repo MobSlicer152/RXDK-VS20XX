@@ -518,6 +518,7 @@ VOID CXBoxSample::UpdateStateArbitratedGame( Event ev )
     // A switch within a switch. Sigh...
     switch( m_State )
     {
+        default: break;
     case STATE_REGISTER_WAIT:
         // We're waiting for other players to register. If we're the
         // host then we can start the game once everybody registers
@@ -571,6 +572,7 @@ VOID CXBoxSample::UpdateStateArbitratedGame( Event ev )
     
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_WHITE:
         m_NextState = m_State;
         m_State = STATE_HELP;

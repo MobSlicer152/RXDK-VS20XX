@@ -268,7 +268,7 @@ HRESULT CXBoxSample::Initialize()
 
     // Fill vertex buffer
     GROUNDVERTEX* pVertices;
-    m_pGroundVB->Lock( 0, 0, (BYTE**)&pVertices, NULL );
+    m_pGroundVB->Lock( 0, 0, (BYTE**)&pVertices, 0 );
     pVertices[0].v     = GROUND_SIZE * D3DXVECTOR3( -0.5f, 0.0f, -0.5f );
     pVertices[0].color = GROUND_COLOR;
     pVertices[0].tu    = 0.0f;
@@ -534,7 +534,7 @@ HRESULT CXBoxSample::UpdateParticleSystem( FLOAT fSecsPerFrame, DWORD dwNumParti
  
     // Lock vertex buffers
     PARTICLEVERTEX* pPointSpriteVertices;
-    m_pPointSpritesVB->Lock( 0, 0, (BYTE**)&pPointSpriteVertices, NULL );
+    m_pPointSpritesVB->Lock( 0, 0, (BYTE**)&pPointSpriteVertices, 0 );
     m_dwNumParticlesToRender = 0;
 
     // Update particles

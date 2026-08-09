@@ -255,7 +255,7 @@ HRESULT RecordPushBuffer( D3DPushBuffer* pPushBuffer,
         g_pd3dDevice->GetPushBufferOffset( pdwSetModelViewFixupOffset );
     g_pd3dDevice->SetModelView( &matDummy, &matDummy, &matDummy );
     g_pd3dDevice->SetVertexShader( D3DFVF_XYZ|D3DFVF_DIFFUSE );
-    g_pd3dDevice->SetPixelShader( NULL );
+    g_pd3dDevice->SetPixelShader( 0 );
     g_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG2 );
     g_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );
     g_pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
@@ -266,7 +266,7 @@ HRESULT RecordPushBuffer( D3DPushBuffer* pPushBuffer,
 
     // Restore state
     g_pd3dDevice->SetModelView( NULL, NULL, NULL );
-    g_pd3dDevice->SetVertexShaderInput( NULL, 0, NULL );
+    g_pd3dDevice->SetVertexShaderInput( 0, 0, NULL );
 
     // Stop recording the push buffer
     g_pd3dDevice->EndPushBuffer();
@@ -624,7 +624,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->RunPushBuffer( m_pActivePushBuffer, m_pActiveFixup );
 
     // Whack state back to reality after running a static push buffer
-    m_pd3dDevice->SetVertexShader( NULL );
+    m_pd3dDevice->SetVertexShader( 0 );
 
     // Show title, frame rate, and help
     if( m_bDrawHelp )

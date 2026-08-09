@@ -64,6 +64,7 @@ HRESULT CTreeBranch::Create(CHAR *strName, CXBPackedResource *pResource)
     // TODO: fix media instead of this
     if (m_pMesh->m_dwNumFrames == 1)
         if (m_pMesh->m_dwNumFrames == 1)
+          {
             if (m_pMesh->m_pMeshFrames->m_MeshData.m_dwNumSubsets == 2)
             {
                 if (!strcmp(m_pMesh->m_pMeshFrames->m_MeshData.m_pSubsets[1].strTexture, "leaf2"))
@@ -76,6 +77,7 @@ HRESULT CTreeBranch::Create(CHAR *strName, CXBPackedResource *pResource)
             {
                 m_pMesh->m_pMeshFrames->m_MeshData.m_pSubsets[0].mtrl.Diffuse.a = 0.9999f;  // branches, too
             }
+          }
 #endif
     m_pMesh->ComputeBoundingBox(&m_vMin, &m_vMax);
     return S_OK;

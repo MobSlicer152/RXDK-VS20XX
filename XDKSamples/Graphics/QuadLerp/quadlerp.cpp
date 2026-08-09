@@ -487,7 +487,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
 
     // Restore states
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
     // Clear the textures so that future renders aren't slowed down by having excessive
     // texture fetches.

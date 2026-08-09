@@ -456,6 +456,7 @@ VOID CXBoxSample::UpdateStateLoggingOn( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         {
@@ -558,6 +559,7 @@ VOID CXBoxSample::UpdateStateError( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         // A exits
         m_State = m_NextState;
@@ -582,6 +584,7 @@ VOID CXBoxSample::UpdateStateHelp( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
     case EV_BUTTON_B:
     case EV_BUTTON_WHITE:
@@ -797,6 +800,7 @@ VOID CXBoxSample::UpdateStateFriendEnum( Event ev )
 
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
         // Cancel the task
         m_NextState = STATE_SELECT_ACCOUNT;
@@ -967,6 +971,7 @@ VOID CXBoxSample::UpdateStateMainMenu( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_dwCurrItem)
         {
@@ -1094,6 +1099,7 @@ VOID CXBoxSample::UpdateStateEndGame( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_A:
         BeginWriteGameStats();
         break;
@@ -1288,6 +1294,7 @@ VOID CXBoxSample::UpdateStateViewFriendsStats( Event ev )
     
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         m_State = STATE_MAIN_MENU;
@@ -1335,6 +1342,7 @@ VOID CXBoxSample::UpdateStateStatGet( Event ev )
     
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         m_hStatsReadTask.Close();
@@ -1387,6 +1395,7 @@ VOID CXBoxSample::UpdateStateStatSet( Event ev )
 
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         m_hStatsWriteTask.Close();
@@ -1517,6 +1526,7 @@ VOID CXBoxSample::UpdateStateLeaderEnum( Event ev )
 
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         m_hStatsEnumTask.Close();
@@ -1632,6 +1642,7 @@ VOID CXBoxSample::UpdateStateViewLeaderboard( Event ev )
 {
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
         m_State = STATE_MAIN_MENU;
         return;
@@ -1701,6 +1712,7 @@ VOID CXBoxSample::UpdateStateResetStats( Event ev )
 
     switch( ev )
     {
+        default: break;
     case EV_BUTTON_B:
     case EV_BUTTON_BACK:
         m_hStatsResetTask.Close();

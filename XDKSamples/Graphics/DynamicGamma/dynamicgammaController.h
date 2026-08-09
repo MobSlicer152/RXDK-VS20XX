@@ -424,7 +424,7 @@ VOID DynamicGammaController::GetLuminance( D3DTexture* pTextureSrc,
     // Restore state
     D3DDevice::SetTexture( 0, NULL );
     D3DDevice::SetScreenSpaceOffset( 0.0f, 0.0f );
-    D3DDevice::SetPixelShader( NULL );
+    D3DDevice::SetPixelShader( 0 );
 };
 
 

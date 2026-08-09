@@ -125,7 +125,7 @@ HRESULT CSky::Render( ICullFrustum* pCullFrustumObject )
     m_SkyMesh.Render( XBMESH_NOMATERIALS|XBMESH_NOTEXTURES|XBMESH_NOFVF );
 
     // Restore state
-    g_pd3dDevice->SetPixelShader( NULL );
+    g_pd3dDevice->SetPixelShader( 0 );
     g_pd3dDevice->SetRenderState( D3DRS_CULLMODE,         dwCullMode );
     g_pd3dDevice->SetRenderState( D3DRS_FOGENABLE,        dwFog );
     g_pd3dDevice->SetRenderState( D3DRS_ZWRITEENABLE,     dwZWrite );

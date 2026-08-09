@@ -768,7 +768,7 @@ HRESULT CXBoxSample::FrameMove()
         m_pd3dDevice->SetVertexShaderConstant( 43, &fLocalFog,           1 ); // Fog factors
 
         // Render the dolphin into the shadow texture
-        m_pd3dDevice->SetPixelShader( NULL );
+        m_pd3dDevice->SetPixelShader( 0 );
         m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_DISABLE );
         m_pd3dDevice->SetVertexShader( m_dwDolphinVertexShader );
         m_pd3dDevice->SetStreamSource( 0, &m_pDolphinMesh1->m_VB, m_pDolphinMesh1->m_dwVertexSize );
@@ -915,7 +915,7 @@ HRESULT CXBoxSample::RenderBubbles()
     // Set projection matrix
     m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &m_matProj );
     
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetRenderState( D3DRS_FOGENABLE, FALSE );
 
     // Set states for rendering the particles. Note that point sprites use 

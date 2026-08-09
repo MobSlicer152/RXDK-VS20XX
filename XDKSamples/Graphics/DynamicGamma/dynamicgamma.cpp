@@ -210,6 +210,7 @@ HRESULT CXBoxSample::FrameMove()
     // Adjust dynamic gamma parameters
     switch( m_Adjust )
     {
+        default: break;
         case ADJUST_BIAS:
         {
             if( m_DefaultGamepad.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT )
@@ -436,6 +437,7 @@ HRESULT CXBoxSample::Render()
     
     switch( CurrentStage )
     {
+        default: break;
         case STAGE_GET_LUM:
         {
             // Make D3DTexture wrapper around current render target

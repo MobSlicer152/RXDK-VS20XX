@@ -1003,6 +1003,7 @@ void PhysicsSystem::ComputeBVector(const ConstraintList& Constraints, float* vec
     
         switch(c.Type)
         {
+            default: break;
             /*
             case Constraint::Bilateral:
             {

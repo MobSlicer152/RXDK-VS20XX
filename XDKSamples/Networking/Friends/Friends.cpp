@@ -510,6 +510,7 @@ VOID CXBoxSample::UpdateStateLoggingOn( Event ev )
     
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
         case EV_BUTTON_BACK:
             // Cancel the task
@@ -612,6 +613,7 @@ VOID CXBoxSample::UpdateStateFriendList( Event ev )
 {               
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_B:
         case EV_BUTTON_BACK:        
             m_bCloaked    = FALSE;
@@ -642,6 +644,7 @@ VOID CXBoxSample::UpdateStateFriendList( Event ev )
     {
         switch( ev )
         {
+            default: break;
             case EV_BUTTON_Y:
                 m_State = STATE_NEW_FRIEND;
                 m_dwCurrItem = 0;            
@@ -673,6 +676,7 @@ VOID CXBoxSample::UpdateStateFriendList( Event ev )
     
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             // Track the current friend
             m_dwCurrFriend = m_dwCurrItem;
@@ -734,6 +738,7 @@ VOID CXBoxSample::UpdateStateActionMenu( Event ev )
 { 
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_WHITE:
             m_NextState = m_State;
             m_State     = STATE_HELP;
@@ -742,6 +747,7 @@ VOID CXBoxSample::UpdateStateActionMenu( Event ev )
         case EV_BUTTON_A:
             switch( m_Actions[ m_dwCurrItem ] )
             {
+                default: break;
                 case ACTION_INVITE:
                     g_FriendsManager.SendGameInvite( m_dwUserIndex, SESSION_ID, 
                                                      m_dwCurrFriend );
@@ -877,6 +883,7 @@ VOID CXBoxSample::UpdateStateNewFriend( Event ev )
     {
         switch( ev )
         {
+            default: break;
             case EV_BUTTON_A:
             case EV_BUTTON_B:
             case EV_BUTTON_BACK:
@@ -889,6 +896,7 @@ VOID CXBoxSample::UpdateStateNewFriend( Event ev )
     
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             hr = g_FriendsManager.AddPlayerToFriendsList( m_dwUserIndex,
                                                           m_PotentialFriendList[ m_dwCurrItem ].xuid );        
@@ -966,6 +974,7 @@ VOID CXBoxSample::UpdateStateConfirmRemove( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             if( m_dwCurrItem == CONFIRM_REMOVE_YES )
             {
@@ -1018,6 +1027,7 @@ VOID CXBoxSample::UpdateStateError( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
             m_State = m_NextState;
             break;
@@ -1035,6 +1045,7 @@ VOID CXBoxSample::UpdateStateHelp( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_BUTTON_A:
         case EV_BUTTON_B:
         case EV_BUTTON_WHITE:
