@@ -214,6 +214,7 @@ HRESULT CXBoxSample::FrameMove()
     {
         switch( m_DefaultGamepad.Event )
         {
+            default: break;
             case XBGAMEPAD_START:
             case XBGAMEPAD_A:
             {

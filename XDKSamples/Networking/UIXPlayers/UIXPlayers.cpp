@@ -456,6 +456,7 @@ VOID CXBoxSample::StartScreen( WHICH_SCREEN whichScreen, DWORD portNumber /*= -1
     // Run any necessary startup code for this screen.
     switch ( m_WhichScreen )
     {
+        default: break;
     case SCREEN_ERROR:
         break;
 
@@ -1248,6 +1249,7 @@ HRESULT CXBoxSample::Render()
 
     switch ( m_WhichScreen )
     {
+        default: break;
     case SCREEN_MAINMENU:
         m_Font.DrawText( 320, 140, 0xffffffff,
                 L"Press " GLYPH_A_BUTTON L" for the 'lobby'\n"

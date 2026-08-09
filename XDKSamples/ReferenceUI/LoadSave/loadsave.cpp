@@ -620,6 +620,7 @@ HRESULT CXBLoadSave::FrameMove()
     // Process the current state
     switch( m_State )
     {
+        default: break;
         case GAME_SAVE:
             if( !SaveGame() )
             {
@@ -1498,6 +1499,7 @@ VOID CXBLoadSave::UpdateState( Event ev )
         // Check for events
         switch( ev )
         {
+            default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
         case EV_B_BUTTON:
@@ -1542,6 +1544,7 @@ VOID CXBLoadSave::UpdateStateStartScreen( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             m_State = MENU_MAIN;
@@ -1560,6 +1563,7 @@ VOID CXBLoadSave::UpdateStateMainMenu( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             // If any MUs inserted, allow device selection, otherwise
@@ -1616,6 +1620,7 @@ VOID CXBLoadSave::UpdateStateDevice( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
         {
@@ -1754,6 +1759,7 @@ VOID CXBLoadSave::UpdateStateGameList( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             if( m_Mode == MODE_LOAD )
@@ -1878,6 +1884,7 @@ VOID CXBLoadSave::UpdateStateOverwrite( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             if( m_Answer == ANSWER_YES )
@@ -1927,6 +1934,7 @@ VOID CXBLoadSave::UpdateStateDelete( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_A_BUTTON:
         case EV_START_BUTTON:
             if( m_Answer == ANSWER_YES )

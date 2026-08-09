@@ -599,6 +599,7 @@ VOID CXBEnumSoundtrack::UpdateState( Event ev )
 {
     switch( ev )
     {
+        default: break;
         case EV_NULL:
             break;
         case EV_A_BUTTON:

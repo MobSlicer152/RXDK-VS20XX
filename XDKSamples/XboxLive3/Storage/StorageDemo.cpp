@@ -1613,6 +1613,7 @@ INT CXBoxSample::GetMenuPosition( INT iCurMenuPosition, INT iNumMenuItems, Event
 {
     switch( event )
     {
+        default: break;
     case EV_UP:
         --iCurMenuPosition;
 
@@ -1817,6 +1818,7 @@ VOID CXBoxSample::UpdateStateSelectAccount( INT iUser, Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_UP: // Move the roster list up until we hit the top
         m_wCurUserIndex = ( m_wCurUserIndex > 0 ) ? ( m_wCurUserIndex - 1 ) : 0;
 
@@ -1988,6 +1990,7 @@ VOID CXBoxSample::UpdateStateLogin( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B: // Allow the user to cancel and use a different account
         // Close the task to allow for somone else to signon
         if ( m_bUserSignedIn || m_bIsSigningIn )
@@ -2414,6 +2417,7 @@ VOID CXBoxSample::UpdateStateMain( Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         assert( m_iItemSelected >= 0 );
         assert( m_iItemSelected < NUM_ITEMS_MAIN_MENU );
@@ -2576,6 +2580,7 @@ VOID CXBoxSample::UpdateStateRecentPlayers( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_UP: // Move the roster list up until we hit the top
         m_dwPlayerSelected = ( m_dwPlayerSelected > 0 ) ? 
                              ( m_dwPlayerSelected - 1 ) : 0;
@@ -2746,6 +2751,7 @@ VOID CXBoxSample::UpdateStateContentManagement( Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_iItemSelected )
         {
@@ -2887,6 +2893,7 @@ VOID CXBoxSample::UpdateStateListSavedContent( Event event )
     // Controll the selected user and the scrolling mechanism
     switch( event )
     {
+        default: break;
     case EV_UP: // Move the roster list up until we hit the top
         m_dwSaveSelected = ( m_dwSaveSelected > 0 ) ? ( m_dwSaveSelected - 1 ) : 0;
 
@@ -2910,6 +2917,7 @@ VOID CXBoxSample::UpdateStateListSavedContent( Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         // Attempt to load the saved game selected.
         if( m_dwSaveSelected < m_dwNumContentSaves )
@@ -3057,6 +3065,7 @@ VOID CXBoxSample::UpdateStateViewMyTeams( Event event)
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         // Try to view the roster of the team selected
 
@@ -3236,6 +3245,7 @@ VOID CXBoxSample::UpdateStateViewTeamRoster( Event event)
 
     switch( event )
     {
+        default: break;
     case EV_UP: // Move the roster list up until we hit the top
         m_dwTeamMemberSelected = ( m_dwTeamMemberSelected > 0 ) ? ( m_dwTeamMemberSelected - 1 ) : 0;
 
@@ -3494,6 +3504,7 @@ VOID CXBoxSample::UpdateStateLocalContentOptions( Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_iItemSelected )
         {
@@ -3643,6 +3654,7 @@ VOID CXBoxSample::UpdateStateViewTeammateIcon( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
         PopState();
         break;
@@ -3863,6 +3875,7 @@ VOID CXBoxSample::UpdateStateSettingsEdit( Event event )
     // Move the cursor / turtle around
     switch( event )
     {
+        default: break;
     case EV_UP:
         // decrement item/setting index
         --m_iItemSelected;
@@ -4105,6 +4118,7 @@ VOID CXBoxSample::UpdateStateContentEdit( Event event )
     // Move the cursor / turtle around
     switch( event )
     {
+        default: break;
     case EV_UP:
         // Move the turtle up and wrap to the bottom when we go past the top
         --m_iTurtleY;
@@ -4137,6 +4151,7 @@ VOID CXBoxSample::UpdateStateContentEdit( Event event )
     // Paint the scene with user input!
     switch( event )
     {
+        default: break;
     case EV_BUTTON_START:
         m_userContent.SetDirty( FALSE );
 
@@ -4344,6 +4359,7 @@ VOID CXBoxSample::UpdateStateMessageWindow( Event event )
 {
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         PopState();
         break;

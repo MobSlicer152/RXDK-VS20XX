@@ -670,6 +670,7 @@ void CXBoxSample::UpdateBoneTransforms()
 {
     switch( m_Mode )
     {
+        default: break;
         case ANIMATE_SINE:
             // Update transform for each bone.
             for( int i = 0; i < m_iNumberOfBones; i++ )

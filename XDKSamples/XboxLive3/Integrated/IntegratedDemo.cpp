@@ -1107,6 +1107,7 @@ CXBoxSample::EVoiceMessageSuccess CXBoxSample::SendVoiceMessage(
     {
         switch( eProtocol )
         {
+            default: break;
         case VOICE_MAIL_SENT_TO_TEAM_SAVE_SELF:
             // user the provided team ID instead
             xuidTeamIDToRoster = xuidSendingTeam;
@@ -2486,6 +2487,7 @@ VOID CXBoxSample::UpdateStateMain( DWORD dwControllerPort, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         assert( m_iItemSelected >= 0 );
         assert( m_iItemSelected < NUM_ITEMS_MAIN_MENU );
@@ -2766,6 +2768,7 @@ VOID CXBoxSample::UpdateStateSettingsEdit( DWORD dwControllerPort, Event event )
     // Move the cursor / turtle around
     switch( event )
     {
+        default: break;
     case EV_UP:
         // decrement item/setting index
         --m_iItemSelected;
@@ -2974,6 +2977,7 @@ VOID CXBoxSample::UpdateStateTeamsLeaderboard( DWORD dwControllerPort, Event eve
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
         PopState();
         break;
@@ -3074,6 +3078,7 @@ VOID CXBoxSample::UpdateStateTeams( DWORD dwControllerPort, Event event)
 
         switch( event )
         {
+            default: break;
             case EV_BUTTON_A:
                 assert( m_iItemSelected >= 0 );
                 assert( m_iItemSelected < NUM_ITEMS_TEAMS_MENU );
@@ -3235,6 +3240,7 @@ VOID CXBoxSample::UpdateStateRecentPlayers( DWORD dwControllerPort, Event event 
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A: // Select the team to send an invite from
         if ( m_rwLocalUsers[m_wControllingUser].m_wUserIndex != m_dwPlayerSelected )
         {
@@ -3353,6 +3359,7 @@ VOID CXBoxSample::UpdateStateSelectInviteTeam( DWORD dwControllerPort, Event eve
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A: // The user has choosen a team
 
         switch( SendTeamInvite( dwControllerPort,
@@ -3780,6 +3787,7 @@ VOID CXBoxSample::UpdateStateGameLobby( DWORD dwControllerPort, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
         // User wants to leave the lobby
         if ( m_bIsHost )
@@ -3954,6 +3962,7 @@ VOID CXBoxSample::UpdateStateGameSession( DWORD dwControllerPort, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         // Send a score message to the host
         SendScore( dwControllerPort );
@@ -4201,6 +4210,7 @@ VOID CXBoxSample::UpdateStateInbox( DWORD dwControllerPort, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A: // Accept or decline the invite
         {
             XONLINE_MSG_SUMMARY& msgSummary = m_rwMessagesSummaries[ m_dwMessageSelected ];
@@ -4425,6 +4435,7 @@ VOID CXBoxSample::UpdateStateInviteDetails( DWORD dwControllerPort, Event event 
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_dwInviteResponseSelected )
         {
@@ -4662,6 +4673,7 @@ VOID CXBoxSample::UpdateStateViewMyTeams( DWORD dwControllerPort, Event event)
 
     switch( event )
     {
+        default: break;
     // Team selected - move to submenu
     case EV_BUTTON_A:
         if( m_dwTeamCount < 1 )
@@ -4815,6 +4827,7 @@ VOID CXBoxSample::UpdateStateSendMessage( DWORD dwControllerPort, Event event )
         // fails
         switch( event )
         {
+            default: break;
         case EV_BUTTON_B:
             hrStopRecording = g_XHVVoiceManager.StopVoiceMail();
             if ( FAILED( hrStopRecording ) )
@@ -4833,6 +4846,7 @@ VOID CXBoxSample::UpdateStateSendMessage( DWORD dwControllerPort, Event event )
         // fails
         switch( event )
         {
+            default: break;
         case EV_BUTTON_B:
             hrStopPlaying = g_XHVVoiceManager.StopVoiceMail();
             if ( FAILED( hrStopPlaying ) )
@@ -4848,6 +4862,7 @@ VOID CXBoxSample::UpdateStateSendMessage( DWORD dwControllerPort, Event event )
         // pop state and reinitialize previous state when user backs out
         switch( event )
         {
+            default: break;
         case EV_BUTTON_B:
             m_bMessageSent = FALSE;
 
@@ -4868,6 +4883,7 @@ VOID CXBoxSample::UpdateStateSendMessage( DWORD dwControllerPort, Event event )
 
         switch( event )
         {
+            default: break;
         // Attach/record voice mail
         case EV_BUTTON_BLACK:
             // if communicator is inserted and there is no voice attachment
@@ -5069,6 +5085,7 @@ VOID CXBoxSample::RenderStateSendMessage()
         // render header of send message screen depending on message sending protocol
         switch( m_eMessageProtocol )
         {
+            default: break;
         case VOICE_MAIL_SENT_TO_TEAM_SAVE_SELF:
             {
                 // Screen title
@@ -5233,6 +5250,7 @@ VOID CXBoxSample::UpdateStateShowMessage( DWORD dwControllerPort, Event event )
         // if users requests stopping playback, do so. Show error if one occurs.
         switch( event )
         {
+            default: break;
         case EV_BUTTON_B:
             hrStopPlaying = g_XHVVoiceManager.StopVoiceMail();
             if ( FAILED( hrStopPlaying ) )
@@ -5249,6 +5267,7 @@ VOID CXBoxSample::UpdateStateShowMessage( DWORD dwControllerPort, Event event )
         // go back to previous state (inbox) when user requests it
         switch( event )
         {
+            default: break;
         case EV_BUTTON_B:
             m_bMessageDeleted = FALSE;
 
@@ -5263,6 +5282,7 @@ VOID CXBoxSample::UpdateStateShowMessage( DWORD dwControllerPort, Event event )
 
         switch( event )
         {
+            default: break;
 
         // play back voice attachment if exists
         case EV_BUTTON_X:
@@ -5463,6 +5483,7 @@ VOID CXBoxSample::UpdateStateTeamOps( DWORD dwControllerPort, Event event )
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
         PopState();
         break;
@@ -5703,6 +5724,7 @@ VOID CXBoxSample::UpdateStateListAvailableComps( DWORD dwControllerPort, Event e
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_B:
         PopState();
         break;
@@ -5864,6 +5886,7 @@ VOID CXBoxSample::UpdateStateViewTeamRoster( DWORD dwControllerPort, Event event
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         // If we selected ourselves then edit our icon
         if( m_rwTeamMembers[m_dwTeamMemberSelected].qwUserID
@@ -6185,6 +6208,7 @@ VOID CXBoxSample::UpdateStateTeamMemberOps( DWORD dwControllerPort, Event event 
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
         switch( m_rwLocalUsers[dwControllerPort].m_iCurSelection )
         {
@@ -6341,6 +6365,7 @@ VOID CXBoxSample::UpdateStateContentEdit( DWORD dwControllerPort, Event event )
     // Move the cursor / turtle around
     switch( event )
     {
+        default: break;
     case EV_UP:
         // Move the turtle up and wrap to the bottom when we go past the top
         --m_iTurtleY;
@@ -6373,6 +6398,7 @@ VOID CXBoxSample::UpdateStateContentEdit( DWORD dwControllerPort, Event event )
     // Paint the scene with user input!
     switch( event )
     {
+        default: break;
     case EV_BUTTON_START:
         m_userContent.SetDirty( FALSE );
 
@@ -6566,6 +6592,7 @@ VOID CXBoxSample::UpdateStateListTourneys( DWORD dwControllerPort, Event event )
 
     switch( event )
     {
+        default: break;
     // Return to the previous menu
     case EV_BUTTON_B:
         PopState( TRUE );
@@ -6763,6 +6790,7 @@ VOID CXBoxSample::UpdateStateTourneyRender( DWORD dwControllerPort, Event event 
 
     switch( event )
     {
+        default: break;
     // Toggle the screen (if we can)
     case EV_BUTTON_BLACK:
         if( !bNotSwitchable )
@@ -7203,6 +7231,7 @@ VOID CXBoxSample::UpdateStateMessageWindow( DWORD dwControllerPort, Event event 
 
     switch( event )
     {
+        default: break;
     case EV_BUTTON_A:
     case EV_BUTTON_B:
         PopState( m_bReInitAfterWindowMessage );

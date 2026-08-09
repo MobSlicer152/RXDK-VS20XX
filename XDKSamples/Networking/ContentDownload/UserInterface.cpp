@@ -308,6 +308,7 @@ VOID UserInterface::RenderContentDetails( ContentInfo& content,
         const WCHAR* strTax = NULL;
         switch(content.GetPrice().Tax)
         {
+            default: break;
             case NO_TAX: strTax = L", No Tax"; break;
             case DEFAULT: strTax = L", Default"; break;
             case GST: strTax = L", GST"; break;

@@ -28,6 +28,7 @@ DWORD GetMenuPosition( DWORD dwCurMenuPosition,
 {
     switch( event )
     {
+        default: break;
     case EV_UP:
         // Move the roster list up until we hit the top
         dwCurMenuPosition = ( dwCurMenuPosition > 0 ) ? ( dwCurMenuPosition - 1 ) : 0;
@@ -70,6 +71,7 @@ INT GetMenuPosition( INT iCurMenuPosition,
 {
     switch( event )
     {
+        default: break;
     case EV_UP:
         --iCurMenuPosition;
 

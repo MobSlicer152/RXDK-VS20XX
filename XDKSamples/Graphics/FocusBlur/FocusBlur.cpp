@@ -666,6 +666,7 @@ HRESULT CXBoxSample::Render()
     // Draw the current effect
     switch( m_eEffectMode )
     {
+        default: break;
         case EM_NOEFFECT:
             break;
 
@@ -677,6 +678,7 @@ HRESULT CXBoxSample::Render()
         case EM_DEBUG_SHOWDEPTHBUFFER:
             switch( m_eDepthMode )
             {
+                default: break;
                 case DM_RAW:
                     DebugDrawDepthRaw();         // raw depths
                     break;
@@ -693,6 +695,7 @@ HRESULT CXBoxSample::Render()
             Blur();                 // blur back buffer
             switch( m_eDepthMode )
             {
+                default: break;
                 case DM_RAW:    // this should not happen, but just in case, fall through to range depth mapping
                 case DM_RANGE:
                     DrawFocusEffectUsingRange();       // blur the backbuffer into a texture, then use current depth range to choose between sharp or blurred focus

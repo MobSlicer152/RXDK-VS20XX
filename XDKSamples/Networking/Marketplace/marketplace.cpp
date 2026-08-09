@@ -357,6 +357,7 @@ HRESULT Marketplace::FrameMove()
 
     switch ( m_State )
     {
+        default: break;
     case STATE_ERROR:
         if ( m_DefaultGamepad.bPressedAnalogButtons[ XINPUT_GAMEPAD_A ] )
             m_State = m_ErrorNextState;
@@ -783,6 +784,7 @@ HRESULT Marketplace::Render()
     
     switch ( m_State )
     {
+        default: break;
     case STATE_ERROR:
         m_Font.DrawText( 160, 200, 0xffffffff, m_ErrorMsg );
         if ( m_ErrorNextState != STATE_ERROR )

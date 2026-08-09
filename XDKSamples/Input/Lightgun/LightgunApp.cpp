@@ -332,6 +332,7 @@ HRESULT CXBoxSample::FrameMove()
         // Advance the state
         switch( m_AppState )
         {
+            default: break;
             case APPSTATE_CONTROLTEST:     InitCrosshairsTestPage(); 
                                            break;
             case APPSTATE_CROSSHAIRSTEST:  InitBulletHolesTestPage(); 
@@ -344,6 +345,7 @@ HRESULT CXBoxSample::FrameMove()
     // Go to app-state specific control handling
     switch( m_AppState )
     {
+        default: break;
         case APPSTATE_CONTROLTEST:     FrameMoveControlTestPage();
                                        break;
         case APPSTATE_CROSSHAIRSTEST:  FrameMoveCrosshairsTestPage();
@@ -1031,6 +1033,7 @@ HRESULT CXBoxSample::Render()
     {
         switch( m_AppState )
         {
+            default: break;
             case APPSTATE_CONTROLTEST:     RenderControlTestPage();
                                            break;
             case APPSTATE_CROSSHAIRSTEST:  RenderCrosshairsTestPage();

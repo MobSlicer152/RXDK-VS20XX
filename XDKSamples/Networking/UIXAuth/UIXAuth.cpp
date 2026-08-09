@@ -357,6 +357,7 @@ VOID CXBoxSample::UpdateStateSelectUserCount()
 {
     switch( m_DefaultGamepad.Event )
     {
+        default: break;
     case XBGAMEPAD_START:
     case XBGAMEPAD_A:
         switch( m_dwCurrItem )
@@ -539,6 +540,7 @@ VOID CXBoxSample::UpdateStateSignedOn()
 
     switch( m_DefaultGamepad.Event )
     {
+        default: break;
     case XBGAMEPAD_X:
         {
             for( DWORD i = 0; i < XONLINE_MAX_LOGON_USERS; i++ )
@@ -671,6 +673,7 @@ VOID CXBoxSample::UpdateStateError()
 {
     switch( m_DefaultGamepad.Event )
     {
+        default: break;
     case XBGAMEPAD_START:
     case XBGAMEPAD_A:
         m_State = m_NextState;
