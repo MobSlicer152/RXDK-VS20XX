@@ -29,6 +29,14 @@ public partial class MainWindow : Window
         };
     }
 
+    private async void CopyLog_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is not MainViewModel vm) return;
+        var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+        if (clipboard is not null)
+            await clipboard.SetTextAsync(vm.Log ?? "");
+    }
+
     private async Task<string?> PickExeAsync()
     {
         var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions

@@ -41,6 +41,7 @@
       <Button Content="Refresh" Command="{Binding RefreshCommand}" Margin="0,0,6,0"/>
       <Button Content="Build All" Command="{Binding BuildAllCommand}" Margin="0,0,6,0"/>
       <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="0,0,12,0"/>
+      <Button DockPanel.Dock="Right" Content="Copy Log" Click="CopyLog_Click" Margin="6,0,0,0"/>
       <TextBlock Text="{Binding Status}" VerticalAlignment="Center" Foreground="#CCCCCC"/>
     </DockPanel>
 
