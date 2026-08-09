@@ -493,12 +493,12 @@ HRESULT CXBoxSample::FrameMove()
             // when rotated, so we'll just use the first 2.
             dwExp = rand() % 2;
 
-            vPos.x = 20.0f * rand() / RAND_MAX - 10.0f;
-            vPos.z = 20.0f * rand() / RAND_MAX - 10.0f;
+            vPos.x = 20.0f * rand() / (FLOAT)RAND_MAX - 10.0f;
+            vPos.z = 20.0f * rand() / (FLOAT)RAND_MAX - 10.0f;
             vPos.y = fHeightFn( vPos.x, vPos.z );
 
-            fRadius = 0.6f + 0.5f * rand() / RAND_MAX;
-            fDuration = 4.0f * rand() / RAND_MAX + 3.0f;
+            fRadius = 0.6f + 0.5f * rand() / (FLOAT)RAND_MAX;
+            fDuration = 4.0f * rand() / (FLOAT)RAND_MAX + 3.0f;
 
             m_apExplosion[i] = new CExplosion( m_pd3dDevice,
                                                m_pExp[dwExp], m_pExpD[dwExp],

@@ -23,6 +23,11 @@
 
 // STL container headers used for testing
 #pragma warning( disable: 4702 ) // ignore unreachable code
+// This sample deliberately exercises the classic (pre-C++17) std::allocator
+// interface -- address/allocate/construct/destroy/max_size/rebind/pointer/
+// const_pointer -- which is exactly what it demonstrates. Those members are
+// deprecated in later standards; silence that here rather than gut the sample.
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <vector>
 #include <deque>
 #include <list>
@@ -194,13 +199,13 @@ void BaseTest( const T& t, const Alloc& a )
     assert( !bDiff );
     
     // rebind
-    Alloc::rebind<char>::other b(a); // template copy ctor
+    typename Alloc::rebind<char>::other b(a); // template copy ctor
     
     // rebind to void (all allocators should provide specialized version for void)
     // Default-constructed rather than converted from a: libc++'s allocator<void>
     // specialization declares only typedefs, with no constructor to convert from
     // allocator<T>. Instantiating the type is what this line is checking anyway.
-    Alloc::rebind<void>::other c;
+    typename Alloc::rebind<void>::other c;
     (void)c;
     
     // comparison operators with different types
@@ -210,12 +215,12 @@ void BaseTest( const T& t, const Alloc& a )
     assert( !bDiff );
     
     // address
-    Alloc::const_pointer address = a.address( t );
+    typename Alloc::const_pointer address = a.address( t );
     assert( address != NULL );
     (void)address;
     
     // allocate
-    Alloc::pointer p = copy.allocate( 2, NULL );
+    typename Alloc::pointer p = copy.allocate( 2, NULL );
     
     // construct
     copy.construct( p, t );
@@ -233,7 +238,7 @@ void BaseTest( const T& t, const Alloc& a )
     copy.deallocate( p, 1 );
     
     // max_size
-    Alloc::size_type ms = a.max_size();
+    typename Alloc::size_type ms = a.max_size();
     (void)ms;
 }
 

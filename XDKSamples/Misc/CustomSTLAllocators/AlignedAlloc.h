@@ -63,8 +63,8 @@ public:
     {
     }
 
-    template< typename U, int Alignment >
-    AlignedAlloc( const AlignedAlloc< U, Alignment >& )
+    template< typename U, int Alignment2 >   // Alignment2: don't shadow the class template's Alignment
+    AlignedAlloc( const AlignedAlloc< U, Alignment2 >& )
     {
     }
 
@@ -190,8 +190,8 @@ public:
     {
     }
 
-    template< typename U, int Alignment >
-    AlignedAlloc( const AlignedAlloc< U, Alignment >& )
+    template< typename U, int Alignment2 >   // Alignment2: don't shadow the class template's Alignment
+    AlignedAlloc( const AlignedAlloc< U, Alignment2 >& )
     {
     }
 

@@ -52,7 +52,7 @@ SCREENVERTEX g_vQuads[4*MAX_QUADS];
 
 
 // Helper macro
-#define rnd()  (((FLOAT)rand() ) / RAND_MAX) 
+#define rnd()  (((FLOAT)rand() ) / (FLOAT)RAND_MAX)
 
 
 

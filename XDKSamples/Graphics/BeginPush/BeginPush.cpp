@@ -72,7 +72,7 @@ const FLOAT cfPitchToSpeedRatio      = 0.002f;
 VOID UpdateFlock();
 
 // Helper macro
-#define rnd()  (((FLOAT)rand() ) / RAND_MAX) 
+#define rnd()  (((FLOAT)rand() ) / (FLOAT)RAND_MAX)
 
 
 

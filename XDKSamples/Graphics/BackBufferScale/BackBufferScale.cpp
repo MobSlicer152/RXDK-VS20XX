@@ -48,7 +48,7 @@ struct Tree
 
 inline FLOAT GaussianRand( FLOAT min, FLOAT max, FLOAT width )
 {
-    FLOAT x = (FLOAT)(rand()-rand())/RAND_MAX;
+    FLOAT x = (FLOAT)(rand()-rand())/(FLOAT)RAND_MAX;
     return (max-min)*expf( -width*x*x) + min;
 }
 
@@ -137,14 +137,14 @@ CXBoxSample::CXBoxSample()
     for( DWORD i=0; i<NUM_TREES; i++ )
     {
         // Position and size the trees randomly
-        FLOAT z = 5.0f + ( 60.0f * rand() ) / RAND_MAX;
-        FLOAT x = ( 0.6f * z * (rand()-rand()) ) / RAND_MAX;
+        FLOAT z = 5.0f + ( 60.0f * rand() ) / (FLOAT)RAND_MAX;
+        FLOAT x = ( 0.6f * z * (rand()-rand()) ) / (FLOAT)RAND_MAX;
         FLOAT w = GaussianRand( 5.0f, 2.0f, 2.0f );
         FLOAT h = GaussianRand( 7.0f, 4.0f, 2.0f );
 
         // Each tree is a random color between red and green
-        DWORD r = (DWORD)(255 * ( (0.25f) + (0.75f*rand())/RAND_MAX) );
-        DWORD g = (DWORD)(255 * ( (0.25f) + (0.75f*rand())/RAND_MAX) );
+        DWORD r = (DWORD)(255 * ( (0.25f) + (0.75f*rand())/(FLOAT)RAND_MAX) );
+        DWORD g = (DWORD)(255 * ( (0.25f) + (0.75f*rand())/(FLOAT)RAND_MAX) );
         DWORD b = 0x00;
         DWORD color = (0xff<<24)|(r<<16)|(g<<8)|(b);
 

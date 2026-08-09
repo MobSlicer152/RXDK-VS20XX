@@ -79,7 +79,7 @@ inline FLOAT HeightField( FLOAT x, FLOAT y )
 
 inline FLOAT GaussianRand( FLOAT min, FLOAT max, FLOAT width )
 {
-    FLOAT x = (FLOAT)(rand()-rand())/RAND_MAX;
+    FLOAT x = (FLOAT)(rand()-rand())/(FLOAT)RAND_MAX;
     return (max-min)*expf( -width*x*x) + min;
 }
 
@@ -165,8 +165,8 @@ CXBoxSample::CXBoxSample()
         FLOAT x = 60.0f * ( (FLOAT)(i%side) - (FLOAT)(side/2) ) / (FLOAT)(side/2);
         FLOAT z = 60.0f * ( (FLOAT)(i/side) - (FLOAT)(side/2) ) / (FLOAT)(side/2);
 
-        x += 60.0f * 0.1f * ((FLOAT)(rand()-rand())/RAND_MAX) / (FLOAT)(side/2);
-        z += 60.0f * 0.1f * ((FLOAT)(rand()-rand())/RAND_MAX) / (FLOAT)(side/2);
+        x += 60.0f * 0.1f * ((FLOAT)(rand()-rand())/(FLOAT)RAND_MAX) / (FLOAT)(side/2);
+        z += 60.0f * 0.1f * ((FLOAT)(rand()-rand())/(FLOAT)RAND_MAX) / (FLOAT)(side/2);
         
         FLOAT y = HeightField( x, z );
 
@@ -175,8 +175,8 @@ CXBoxSample::CXBoxSample()
         FLOAT fHeight = GaussianRand( 7.0f, 4.0f, 2.0f );
 
         // Each tree is a random color between red and green
-        FLOAT r = (1.0f-0.75f) + (0.75f*rand())/RAND_MAX;
-        FLOAT g = (1.0f-0.75f) + (0.75f*rand())/RAND_MAX;
+        FLOAT r = (1.0f-0.75f) + (0.75f*rand())/(FLOAT)RAND_MAX;
+        FLOAT g = (1.0f-0.75f) + (0.75f*rand())/(FLOAT)RAND_MAX;
         FLOAT b = 0.0f;
 
         m_Trees[i].vPosition      = D3DXVECTOR4( x, y, z, 1.0f );
