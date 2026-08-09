@@ -127,7 +127,7 @@ HRESULT CXBoxSample::Initialize()
     
     DmRegisterPerformanceCounter( "X Button",
                                   DMCOUNT_EVENT | DMCOUNT_FREQ100MS | DMCOUNT_SYNC,
-                                  GetXButtonPresses );
+                                  (PVOID)GetXButtonPresses );
     DmRegisterPerformanceCounter( "Y Button",
                                   DMCOUNT_VALUE | DMCOUNT_ASYNC64,
                                   &g_liYButtonValue );

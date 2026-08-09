@@ -478,7 +478,7 @@ VOID Player::UpdateAnimation( FLOAT fDt )
         if ( m_dwPlayerFlags & PLAYERFLAG_ONPRIVATECHANNEL )
             m_dObj.SetSublabel( (WCHAR*)L"P", 0xffa03030 ) ;
         else if ( m_dwPlayerFlags & PLAYERFLAG_BOT )
-            m_dObj.SetSublabel( GLYPH_BOT_ICON , 0xffa0a0a0 );
+            m_dObj.SetSublabel( (WCHAR*)GLYPH_BOT_ICON , 0xffa0a0a0 );
         else
             m_dObj.SetSublabel( NULL, 0x00000000 ) ;
 

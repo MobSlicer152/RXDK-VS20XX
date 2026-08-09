@@ -157,11 +157,11 @@ HRESULT CXBoxSample::LogModuleInfo()
         //       performance reasons.
         CHAR strFormattedOutput[g_iModuleOutputMaxChars];
         DWORD dwOutputChars = sprintf(strFormattedOutput,
-                                      "%s%s%s0x%08x%s0x%08x%s0x%08x%s",
+                                      "%s%s%s0x%08lx%s0x%08lx%s0x%08lx%s",
                                       g_strModuleOutputStart,
                                       module.Name,
                                       g_strModuleOutputSeparator,
-                                      module.BaseAddress,
+                                      (ULONG)(ULONG_PTR)module.BaseAddress,
                                       g_strModuleOutputSeparator,
                                       module.Size,
                                       g_strModuleOutputSeparator,
@@ -222,7 +222,7 @@ HRESULT CXBoxSample::LogCallStack()
         if( dwCurrentAddress == 0 )
             break; // bail out of the loop
 
-        sprintf(pOutputWrite, "0x%08x%s", dwCurrentAddress, g_strStackOutputSeparator);
+        sprintf(pOutputWrite, "0x%08lx%s", dwCurrentAddress, g_strStackOutputSeparator);
         pOutputWrite += 10 + g_iCharCountStackOutputSeparator;
     }
 

@@ -163,7 +163,7 @@ HRESULT CHeapAlloc::HeapAlloc( VOID** ppvBuffer, DWORD dwZeroInitialize )
     // Find the next free space in our heap free
     // array if one exists.
     BOOL bBitFound = FALSE;
-    for( dwCurrentByte; dwCurrentByte < m_cbSpaceMapArray; dwCurrentByte++ )
+    for( ; dwCurrentByte < m_cbSpaceMapArray; dwCurrentByte++ )
     {
         for( dwCurrentBit = 0; dwCurrentBit < 8; dwCurrentBit++)
         {

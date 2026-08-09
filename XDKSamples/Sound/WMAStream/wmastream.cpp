@@ -47,7 +47,7 @@ CWMAFileStream::~CWMAFileStream()
         m_pDestXMO->Release();
 
     if( m_pvSourceBuffer )
-        delete[] m_pvSourceBuffer;
+        delete[] (BYTE*)m_pvSourceBuffer;
 }
 
 

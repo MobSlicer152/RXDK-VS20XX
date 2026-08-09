@@ -47,7 +47,7 @@ struct PRELITVERTEX
 //-----------------------------------------------------------------------------
 CXBFur::CXBFur()
 {
-    ZeroMemory( this, sizeof(CXBFur) );
+    ZeroMemory( (VOID*)this, sizeof(CXBFur) );   // no vtable; members are POD + pointers
 
     // Init default patch
     m_fXSize = 0.1f;

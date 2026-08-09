@@ -1072,7 +1072,7 @@ HRESULT CXBoxSample::RenderButtonQuantizationPage()
         }
 
         // Draw label
-        m_Font12.DrawText( 20.0f*x+80.0f, 376.0f, 0xffffffff, L"A\0B\0X\0Y\0B\0W\0L\0R\0"+2*x, XBFONT_CENTER_X );
+        m_Font12.DrawText( 20.0f*x+80.0f, 376.0f, 0xffffffff, &L"A\0B\0X\0Y\0B\0W\0L\0R\0"[2*x], XBFONT_CENTER_X );
     }
 
     // Display quantized thumbstick values
@@ -1102,7 +1102,7 @@ HRESULT CXBoxSample::RenderButtonQuantizationPage()
         }
 
         // Draw label
-        m_Font12.DrawText( 30.0f*x+260.0f, 376.0f, 0xffffffff, L"LX\0LY\0RX\0RY\0"+3*x, XBFONT_CENTER_X );
+        m_Font12.DrawText( 30.0f*x+260.0f, 376.0f, 0xffffffff, &L"LX\0LY\0RX\0RY\0"[3*x], XBFONT_CENTER_X );
     }
 
     // Show the number of unique values each analog control has hit

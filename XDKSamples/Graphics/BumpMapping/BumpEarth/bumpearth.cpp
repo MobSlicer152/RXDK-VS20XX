@@ -309,8 +309,8 @@ HRESULT CXBoxSample::InitBumpMap()
                    NULL, XGBytesPerPixelFromFormat(m_BumpMapFormat) );
     m_psBumpMap->UnlockRect(0);
 
-    delete[] pSrcBits;
-    delete[] pDstBits;
+    delete[] (DWORD*)pSrcBits;
+    delete[] (BYTE*)pDstBits;   // WORD[] or DWORD[] by format; both trivially destructible
 
     return S_OK;
 }
@@ -536,7 +536,7 @@ HRESULT CXBoxSample::Render()
     m_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, m_dwNumSphereVertices-2 );
 
     // Restore state
-    m_pd3dDevice->SetPixelShader( NULL );
+    m_pd3dDevice->SetPixelShader( 0 );
     m_pd3dDevice->SetTextureStageState( 1, D3DTSS_COLORSIGN, 0 );
 
     // Show title, frame rate, and help

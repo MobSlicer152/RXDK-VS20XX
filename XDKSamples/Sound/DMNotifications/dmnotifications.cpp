@@ -374,49 +374,50 @@ HRESULT CXBoxSample::FrameMove()
         IDirectMusicSegmentState8 * pSegState = NULL;
 
         if( SUCCEEDED( pPMsg->punkUser->QueryInterface( IID_IDirectMusicSegmentState8, (void **)&pSegState ) ) )
-
-        // We're interested in segment notifications on the secondary 
-        // segment, and beat notifications on the primary segment
-        if( pPMsg->guidNotificationType == GUID_NOTIFICATION_SEGMENT )
         {
-            if( pSegState == m_aStates[1].pSegState )
+            // We're interested in segment notifications on the secondary
+            // segment, and beat notifications on the primary segment
+            if( pPMsg->guidNotificationType == GUID_NOTIFICATION_SEGMENT )
             {
-                // Got a segment notification for the secondary...
-                switch( pPMsg->dwNotificationOption )
+                if( pSegState == m_aStates[1].pSegState )
                 {
-                    case DMUS_NOTIFICATION_SEGABORT:
-                        swprintf( m_strSegment, L"Secondary Segment Aborted" );
-                        m_aStates[1].bPlaying = FALSE;
-                        break;
-                    case DMUS_NOTIFICATION_SEGALMOSTEND:
-                        swprintf( m_strSegment, L"Secondary Segment almost at end" );
-                        break;
-                    case DMUS_NOTIFICATION_SEGLOOP:
-                        swprintf( m_strSegment, L"Secondary Segment has looped" );
-                        break;
-                    case DMUS_NOTIFICATION_SEGSTART:
-                        swprintf( m_strSegment, L"Secondary Segment Playing" );
-                        m_aStates[1].bPlaying = TRUE;
-                        break;
-                    case DMUS_NOTIFICATION_SEGEND:
-                        swprintf( m_strSegment, L"Secondary Segment Completed" );
-                        m_aStates[1].bPlaying = FALSE;
-                        break;
+                    // Got a segment notification for the secondary...
+                    switch( pPMsg->dwNotificationOption )
+                    {
+                        case DMUS_NOTIFICATION_SEGABORT:
+                            swprintf( m_strSegment, L"Secondary Segment Aborted" );
+                            m_aStates[1].bPlaying = FALSE;
+                            break;
+                        case DMUS_NOTIFICATION_SEGALMOSTEND:
+                            swprintf( m_strSegment, L"Secondary Segment almost at end" );
+                            break;
+                        case DMUS_NOTIFICATION_SEGLOOP:
+                            swprintf( m_strSegment, L"Secondary Segment has looped" );
+                            break;
+                        case DMUS_NOTIFICATION_SEGSTART:
+                            swprintf( m_strSegment, L"Secondary Segment Playing" );
+                            m_aStates[1].bPlaying = TRUE;
+                            break;
+                        case DMUS_NOTIFICATION_SEGEND:
+                            swprintf( m_strSegment, L"Secondary Segment Completed" );
+                            m_aStates[1].bPlaying = FALSE;
+                            break;
+                    }
+                }
+                else if( pSegState == m_aStates[0].pSegState && 
+                         pPMsg->dwNotificationOption == DMUS_NOTIFICATION_SEGEND )
+                {
+                    // Primary segment ended - restart
+                    m_pDMPerformance->PlaySegmentEx( m_aStates[0].pSegment, NULL, NULL, 0, 
+                                                     0, &m_aStates[0].pSegState, NULL, NULL );
                 }
             }
-            else if( pSegState == m_aStates[0].pSegState && 
-                     pPMsg->dwNotificationOption == DMUS_NOTIFICATION_SEGEND )
+            else if( pSegState == m_aStates[0].pSegState &&
+                     pPMsg->guidNotificationType == GUID_NOTIFICATION_MEASUREANDBEAT )
             {
-                // Primary segment ended - restart
-                m_pDMPerformance->PlaySegmentEx( m_aStates[0].pSegment, NULL, NULL, 0, 
-                                                 0, &m_aStates[0].pSegState, NULL, NULL );
+                // Got a beat notification for the primary segment
+                m_fBeat = BEAT_DISPLAY_TIME;
             }
-        }
-        else if( pSegState == m_aStates[0].pSegState &&
-                 pPMsg->guidNotificationType == GUID_NOTIFICATION_MEASUREANDBEAT )
-        {
-            // Got a beat notification for the primary segment
-            m_fBeat = BEAT_DISPLAY_TIME;
         }
 
         m_pDMPerformance->FreePMsg( (DMUS_PMSG*)pPMsg );

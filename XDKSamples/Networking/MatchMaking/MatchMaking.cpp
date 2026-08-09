@@ -1829,7 +1829,7 @@ VOID CXBoxSample::BeginCreateSession()
 //-----------------------------------------------------------------------------
 VOID CXBoxSample::UpdateSession( )
 {
-    assert( m_HostedSession.Exists() != NULL );
+    assert( m_HostedSession.Exists() );
 
     m_HostedSession.PublicFilled = m_dwSlotsInUse;
     m_HostedSession.PublicOpen   = MAX_PLAYERS - m_dwSlotsInUse;

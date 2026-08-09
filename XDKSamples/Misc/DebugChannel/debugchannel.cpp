@@ -205,7 +205,7 @@ HRESULT CXBoxSample::FrameMove()
     }
     if( m_DefaultGamepad.bPressedAnalogButtons[XINPUT_GAMEPAD_B]  )
     {
-        if( g_strTextureName && g_strTextureName[0] )
+        if( g_strTextureName[0] )
             DebugConsolePrintf( "Current texture is %s\n", g_strTextureName );
         else
             DebugConsolePrintf( "No texture is currently set\n" );

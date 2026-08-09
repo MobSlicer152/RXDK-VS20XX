@@ -639,7 +639,7 @@ HRESULT Decimate( LPDIRECT3DSURFACE8 pSurfaceDst,
         if (xx != 0) // add in results of final filter coefficients
         {
             // zero out rest of texture stage coefficients
-            for (xx; xx < 4; xx++)
+            for ( ; xx < 4; xx++)
             {
                 g_pd3dDevice->SetPixelShaderConstant(xx, rfZero, 1);        // positive coeff set to zero
                 g_pd3dDevice->SetPixelShaderConstant(xx + 4, rfZero, 1);    // negative coeff set to zero
@@ -747,7 +747,7 @@ HRESULT Decimate( LPDIRECT3DSURFACE8 pSurfaceDst,
         if (xx != 0) // add in results of final filter coefficients
         {
             // zero out rest of texture stage coefficients
-            for (xx; xx < 4; xx++)
+            for ( ; xx < 4; xx++)
             {
                 g_pd3dDevice->SetPixelShaderConstant(xx, rfZero, 1);        // positive coeff set to zero
                 g_pd3dDevice->SetPixelShaderConstant(xx + 4, rfZero, 1);    // negative coeff set to zero

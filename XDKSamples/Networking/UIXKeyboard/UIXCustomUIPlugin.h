@@ -104,7 +104,9 @@ public:
                       FLOAT RenderWidth, FLOAT RenderHeight );
 
     CUIObject() {}
-    ~CUIObject() {}
+    // virtual: objects are deleted through CUIObject* (see RemoveObject/
+    // RemoveAllObjects), so the derived destructors must run
+    virtual ~CUIObject() {}
 };
 
 

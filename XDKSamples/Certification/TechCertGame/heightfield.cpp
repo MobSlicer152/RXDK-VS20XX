@@ -519,9 +519,6 @@ BOOL HeightField::ComputeIntersectionInfo( const Transformation& ta,
 
             for( INT i = 0; i < quad.iNumTris; ++i )
             {
-                // Do a quick test against the triangle
-                quad.pTris[i];
-
                 // Build a polyhedron for the triangle
                 Polyhedron polyTri( m_pVerts[quad.pTris[i]->Verts[2]],
                                     m_pVerts[quad.pTris[i]->Verts[1]],

@@ -414,7 +414,7 @@ HRESULT CXBoxSample::CreateMinnaertMap( DWORD dwWidth, DWORD dwHeight, FLOAT k )
     XGSwizzleRect( pSrcBits, lock.Pitch, NULL, lock.pBits, dwWidth, dwHeight, NULL, 4 );
     m_pMinnaertTexture->UnlockRect( 0 );
 
-    delete[] pSrcBits;
+    delete[] (DWORD*)pSrcBits;
 
     return S_OK;
 }
@@ -456,7 +456,7 @@ HRESULT CXBoxSample::CreateSatinMap( DWORD dwWidth, DWORD dwHeight )
     XGSwizzleRect( pSrcBits, lock.Pitch, NULL, lock.pBits, dwWidth, dwHeight, NULL, 4 );
     m_pSatinTexture->UnlockRect( 0 );
 
-    delete[] pSrcBits;
+    delete[] (DWORD*)pSrcBits;
 
     return S_OK;
 }
@@ -496,7 +496,7 @@ HRESULT CXBoxSample::CreateVelvetMap( DWORD dwWidth, DWORD dwHeight )
     XGSwizzleRect( pSrcBits, lock.Pitch, NULL, lock.pBits, dwWidth, dwHeight, NULL, 4 );
     m_pVelvetTexture->UnlockRect( 0 );
 
-    delete[] pSrcBits;
+    delete[] (DWORD*)pSrcBits;
 
     return S_OK;
 }

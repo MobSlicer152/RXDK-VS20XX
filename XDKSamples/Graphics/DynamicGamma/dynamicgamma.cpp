@@ -551,7 +551,7 @@ HRESULT CXBoxSample::Render()
         m_pd3dDevice->DrawVerticesUP( D3DPT_QUADLIST, 4, Verts, sizeof(Verts[0]) );
 
         // Restore state
-        m_pd3dDevice->SetPixelShader( NULL );
+        m_pd3dDevice->SetPixelShader( 0 );
         m_pd3dDevice->SetTexture( 0, NULL );
         m_pd3dDevice->SetTexture( 1, NULL );
         m_pd3dDevice->SetTexture( 2, NULL );

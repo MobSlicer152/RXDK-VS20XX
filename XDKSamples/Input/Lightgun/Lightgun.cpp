@@ -185,7 +185,7 @@ CHAR* CLightgun::GetCalibrationDataFilename( LIGHTGUN_CALIBRATION_DATA* pCalibra
 {
     // Generate a filename
     static CHAR strFilename[100];
-    sprintf( strFilename, "t:\\Lightgun_%04lx%04lx%04lx%s%s.dat",
+    sprintf( strFilename, "t:\\Lightgun_%04hx%04hx%04hx%s%s.dat",
                           pCalibrationData->DeviceDesc.wProductID,
                           pCalibrationData->DeviceDesc.wVendorID,
                           pCalibrationData->DeviceDesc.wVersion,

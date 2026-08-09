@@ -484,7 +484,7 @@ bool PhysicsSystem::ProcessCollisionsAndForces( float cur_time, FLOAT& fRumble )
         break;
         }
     }
-#endif;
+#endif
 
     // Get rid of active constraints.
     for (i = 0; i < ActiveConstraints.size(); i++)

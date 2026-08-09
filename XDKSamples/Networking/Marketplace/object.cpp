@@ -197,9 +197,9 @@ void DisplayedObject::Render()
     if ( m_iIdx == -1 ) return;
     g_Marketplace.DrawScaledObject( m_vPos, m_dwObjectColor, m_iIdx );
 
-    if ( m_pLabel && m_pLabel[0] )
+    if ( m_pLabel[0] )
         g_Marketplace.DrawScaledGlyph( m_vPos.x, m_vPos.y, -80.0f, 1.0f, m_pLabel, m_dwLabelColor );
-    if ( m_pSublabel && m_pSublabel[0] )
+    if ( m_pSublabel[0] )
     {
         g_Marketplace.DrawScaledGlyph( m_vPos.x + 2.8f, m_vPos.y, -50.0f, 1.0f, m_pSublabel, m_dwSublabelColor );
     }

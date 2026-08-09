@@ -95,9 +95,12 @@ HRESULT CFriendsManager::Initialize()
         goto Cleanup;
     }
 
-    // Determine which users are currently logged on.  Note that you MUST 
+    // Determine which users are currently logged on.  Note that you MUST
     // have logged at least one user on before calling Initialize
-    XONLINE_USER* pLoggedOnUsers = XOnlineGetLogonUsers();
+    // (declared then assigned so the goto above doesn't jump over an
+    // initialization, which ISO C++ forbids)
+    XONLINE_USER* pLoggedOnUsers;
+    pLoggedOnUsers = XOnlineGetLogonUsers();
     assert( pLoggedOnUsers );
 
     for( DWORD i = 0; i < XONLINE_MAX_LOGON_USERS; i++ )
@@ -363,10 +366,13 @@ HRESULT CFriendsManager::StopUpdatingFriends( DWORD dwUser )
 
     // Tell the online service to stop enumerating friends - this call should
     // never fail
-    HRESULT hr = XOnlineFriendsEnumerateFinish( m_aFriendsLists[ dwUser ].hEnumerate );
+    // (declared then assigned so the goto above doesn't jump over an
+    // initialization, which ISO C++ forbids)
+    HRESULT hr;
+    hr = XOnlineFriendsEnumerateFinish( m_aFriendsLists[ dwUser ].hEnumerate );
     assert( SUCCEEDED( hr ) );
-    
-    (hr);
+
+    (void)hr;
     m_aFriendsLists[ dwUser ].dwState = STATE_CLOSING;
 
 Cleanup:
@@ -784,7 +790,10 @@ HRESULT CFriendsManager::PumpFriends()
     }
 
     // Pump each individual user's friends enumeration task
-    HRESULT hrEnumerate = XONLINETASK_S_SUCCESS;
+    // (declared then assigned so the goto above doesn't jump over an
+    // initialization, which ISO C++ forbids)
+    HRESULT hrEnumerate;
+    hrEnumerate = XONLINETASK_S_SUCCESS;
     for( DWORD i = 0; i < XONLINE_MAX_LOGON_USERS; i++ )
     {
         switch( m_aFriendsLists[ i ].dwState )

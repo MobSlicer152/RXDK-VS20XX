@@ -369,7 +369,7 @@ private:
     VOID RenderRequestJoin();
     VOID RenderError();
     VOID RenderHeader();
-    VOID RenderFooter( WCHAR* strLeftText, WCHAR* strRightText );
+    VOID RenderFooter( const WCHAR* strLeftText, const WCHAR* strRightText );
 
     VOID InitiateJoin( DWORD );
     VOID Wave();
@@ -1212,7 +1212,7 @@ VOID CXBoxSample::RenderHeader()
 // Name: RenderFooter()
 // Desc: Display standard text
 //-----------------------------------------------------------------------------
-VOID CXBoxSample::RenderFooter( WCHAR* strLeftText, WCHAR* strRightText )
+VOID CXBoxSample::RenderFooter( const WCHAR* strLeftText, const WCHAR* strRightText )
 {
     if( strLeftText )
         m_Font.DrawText( 48, 480-36-24, 0xffffffff, strLeftText );

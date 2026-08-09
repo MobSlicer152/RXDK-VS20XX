@@ -206,7 +206,10 @@ HRESULT CXBFurMesh::ExtractFins( UINT BinFactor, float fFinDotProductThreshold,
     // For each fin, find the bin with the smallest dot-product
     // deviation and increment the count for that bin.  Each fin is
     // put into a single fin bin.
-    float fBackfaceThreshold = -0.2f; // allow the normals to face slightly backwards
+    // (declared then assigned so the error-path gotos above don't jump
+    // over an initialization, which ISO C++ forbids)
+    float fBackfaceThreshold;
+    fBackfaceThreshold = -0.2f; // allow the normals to face slightly backwards
     for (UINT iFin = 0; iFin < nFin; iFin++)
     {
         // calculate face normal
@@ -361,13 +364,15 @@ HRESULT CXBFurMesh::ExtractFins( UINT BinFactor, float fFinDotProductThreshold,
     // Original test: acos(NdotE) > acos(NdotB) + acos(fFinDotProductThreshold)
     // Modified test: NdotE > cos(acos(NdotB) + acos(fFinDotProductThreshold))
     // Runtime test: NdotE > fDirectionThreshold
-    float f = acosf(m_fFinDotProductThreshold);
-    for (iFinBin = 0; iFinBin < m_dwNumFinBins; iFinBin++)
     {
-        FinBin* pFinBin = &m_rFinBin[iFinBin];
-        pFinBin->m_fDirectionThreshold = cosf(acosf(pFinBin->m_fDirectionThreshold) + f);
+        float f = acosf(m_fFinDotProductThreshold);
+        for (iFinBin = 0; iFinBin < m_dwNumFinBins; iFinBin++)
+        {
+            FinBin* pFinBin = &m_rFinBin[iFinBin];
+            pFinBin->m_fDirectionThreshold = cosf(acosf(pFinBin->m_fDirectionThreshold) + f);
+        }
     }
-    
+
 e_Exit:
     if (rFin)
         delete [] rFin;

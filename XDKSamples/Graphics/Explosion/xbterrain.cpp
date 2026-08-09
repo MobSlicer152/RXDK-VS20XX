@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------------
 CXBTerrain::CXBTerrain( )
 {
-    ZeroMemory( this, sizeof( CXBTerrain ) );
+    ZeroMemory( (VOID*)this, sizeof( CXBTerrain ) );   // no vtable; members are POD + pointers
 }
 
 

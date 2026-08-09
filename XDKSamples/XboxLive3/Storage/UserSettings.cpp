@@ -411,7 +411,8 @@ BOOL CUserSettings::ExitDownload( CXBOnlineTask& taskSettings ,
     taskSettings.Close();
 
     // copy results buffer into temporary settings variable
-    memcpy( this , pReceiveBuffer , sizeof( *this ) );
+    // (no vtable; the settings block is a flat POD image)
+    memcpy( (VOID*)this , pReceiveBuffer , sizeof( *this ) );
 
     return TRUE;
 }

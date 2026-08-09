@@ -132,7 +132,7 @@ class CXBoxSample : public CXBApplication
     BOOL            m_bControlSource;               // Control source (TRUE) or
                                                     // listener (FALSE)
 
-    HRESULT CXBoxSample::LoadSounds();              // Loads list of wav files
+    HRESULT LoadSounds();                           // Loads list of wav files
 
 public:
     virtual HRESULT Initialize();

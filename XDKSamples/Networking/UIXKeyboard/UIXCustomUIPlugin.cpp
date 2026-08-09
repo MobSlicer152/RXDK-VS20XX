@@ -1225,7 +1225,7 @@ HRESULT CUIPlugin::SetState( D3DSurface* pRenderTarget )
     //       this code to save state so it can be restored later
 
     // Use the fixed function pixel shader
-    D3DDevice::SetPixelShader( NULL );
+    D3DDevice::SetPixelShader( 0 );
 
     // Switch to 96CONSTANTS mode to use fixed function pipeline
     D3DDevice::SetShaderConstantMode( D3DSCM_96CONSTANTS );

@@ -1791,8 +1791,8 @@ VOID CXBVirtualKeyboard::UpdateState( Event ev )
 
 //-----------------------------------------------------------------------------
 // Name: UpdateStateJapan()
-// Desc: ì˙ñ{åÍì¸óÕÇÃéqâπÅAãyÇ—Ç–ÇÁÇ™Ç»Å^ÉJÉ^ÉJÉiêÿë÷ÇÇ±Ç±Ç≈Ç∑ÇÈÅB
-//       Ç‹ÇΩâüÇ≥ÇÍÇΩÉ{É^ÉìÇ…ÇÊÇ¡ÇƒÇÕÉNÉäÉbÉNâπÇ‡èoÇ∑ÅB
+// Desc: ÔøΩÔøΩÔøΩ{ÔøΩÔøΩÔøΩÔøΩÕÇÃéqÔøΩÔøΩÔøΩAÔøΩyÔøΩ—Ç–ÇÁÇ™ÔøΩ»Å^ÔøΩJÔøΩ^ÔøΩJÔøΩiÔøΩÿë÷ÇÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ≈ÇÔøΩÔøΩÔøΩB
+//       ÔøΩ‹ÇÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÍÇΩÔøΩ{ÔøΩ^ÔøΩÔøΩÔøΩ…ÇÔøΩÔøΩÔøΩƒÇÕÉNÔøΩÔøΩÔøΩbÔøΩNÔøΩÔøΩÔøΩÔøΩÔøΩoÔøΩÔøΩÔøΩB
 //-----------------------------------------------------------------------------
 VOID CXBVirtualKeyboard::UpdateStateJapan()
 {
@@ -1814,7 +1814,7 @@ VOID CXBVirtualKeyboard::UpdateStateJapan()
         PlayClick();
 
     // "Key press"
-    if( m_xNextKeyJpn != NULL )
+    if( m_xNextKeyJpn != XK_NULL )
         Press( m_xNextKeyJpn );
 }
 
@@ -2471,27 +2471,27 @@ VOID CXBVirtualKeyboard::RenderKeyboardJapan() const
 
     const WCHAR *strDESCRIPTION[8] =
     {
-        { JK_DASH JH_SO JH_U JH_SA JH_SE JH_TU JH_ME JH_I JK_DASH },
-        { JH_HI JH_DA JH_RI JH_NO JK_A JK_NA JK_RO JK_GU JK_PA JK_LTU JK_DO 
+        JK_DASH JH_SO JH_U JH_SA JH_SE JH_TU JH_ME JH_I JK_DASH,
+        JH_HI JH_DA JH_RI JH_NO JK_A JK_NA JK_RO JK_GU JK_PA JK_LTU JK_DO
           JH_DE JH_SI JH_I JH_N JH_WO JH_KI JH_ME JH_TE L"\n"
-          JH_MI JH_GI JH_NO JK_BO JK_TA JK_N JH_DE JH_MO JH_ZI JH_WO JH_U 
-          JH_TI JH_MA JH_SU },
-        { JH_U JH_RA JH_GA JH_WA JH_NI JH_A JH_RU JH_MI JH_GI JH_NO JK_TO JK_RI JK_GA JH_DE JH_SI JH_I 
-          JH_N JH_WO }, 
-        { JH_HI JH_DA JH_RI JH_NO JK_TO JK_RI JK_GA JH_DE JH_HI JH_RA JH_GA
+          JH_MI JH_GI JH_NO JK_BO JK_TA JK_N JH_DE JH_MO JH_ZI JH_WO JH_U
+          JH_TI JH_MA JH_SU,
+        JH_U JH_RA JH_GA JH_WA JH_NI JH_A JH_RU JH_MI JH_GI JH_NO JK_TO JK_RI JK_GA JH_DE JH_SI JH_I
+          JH_N JH_WO,
+        JH_HI JH_DA JH_RI JH_NO JK_TO JK_RI JK_GA JH_DE JH_HI JH_RA JH_GA
           JH_NA JH_TO JK_KA JK_TA JK_KA JK_NA JH_WO L"\n"
-          JH_KO JH_U JH_GO JH_NI JH_KI JH_RI JH_KA JH_E JH_RU JH_KO JH_TO 
-          JH_GA JH_DE JH_KI JH_MA JH_SU },
-        { JK_DE JK_ZI JK_TA JK_RU JK_PA JK_LTU JK_DO JH_NO JH_SA JH_YU JH_U 
+          JH_KO JH_U JH_GO JH_NI JH_KI JH_RI JH_KA JH_E JH_RU JH_KO JH_TO
+          JH_GA JH_DE JH_KI JH_MA JH_SU,
+        JK_DE JK_ZI JK_TA JK_RU JK_PA JK_LTU JK_DO JH_NO JH_SA JH_YU JH_U
           JH_NO JK_KI JK_DASH JH_DE L"\n"
-          JK_KA JK_DASH JK_SO JK_RU JH_GA JH_I JH_DO JH_U JH_SI JH_MA JH_SU },
-        { JH_MO JH_SI JH_U JH_TI JH_MA JH_TI JH_GA JH_E JH_TA JH_RA L"\n"
-          JH_KU JH_RO JH_KA JH_SI JH_RO JH_NO JK_BO JK_TA JK_N JH_DE JH_MO 
-          JH_ZI JH_WO JH_SA JH_KU JH_ZI JH_LYO JH_SI JH_TE JH_KU JH_DA JH_SA JH_I },
-        { JK_BA JK_LTU JK_KU JK_BO JK_TA JK_N JH_WO JH_O JH_SU JH_TO L"\n"
-          JK_KI JK_DASH JK_BO JK_DASH JK_DO JK_SE JK_RE JK_KU JK_TO JH_NO 
-          JK_ME JK_NI JK_LYU JK_DASH JH_NI JH_MO JH_DO JH_RI JH_MA JH_SU },
-        { L"" }
+          JK_KA JK_DASH JK_SO JK_RU JH_GA JH_I JH_DO JH_U JH_SI JH_MA JH_SU,
+        JH_MO JH_SI JH_U JH_TI JH_MA JH_TI JH_GA JH_E JH_TA JH_RA L"\n"
+          JH_KU JH_RO JH_KA JH_SI JH_RO JH_NO JK_BO JK_TA JK_N JH_DE JH_MO
+          JH_ZI JH_WO JH_SA JH_KU JH_ZI JH_LYO JH_SI JH_TE JH_KU JH_DA JH_SA JH_I,
+        JK_BA JK_LTU JK_KU JK_BO JK_TA JK_N JH_WO JH_O JH_SU JH_TO L"\n"
+          JK_KI JK_DASH JK_BO JK_DASH JK_DO JK_SE JK_RE JK_KU JK_TO JH_NO
+          JK_ME JK_NI JK_LYU JK_DASH JH_NI JH_MO JH_DO JH_RI JH_MA JH_SU,
+        L""
     };
 
     // Determine color and direction values

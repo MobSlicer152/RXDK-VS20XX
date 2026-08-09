@@ -55,7 +55,7 @@ CWMAFileStream::~CWMAFileStream()
     if( m_pRenderFilter )
         m_pRenderFilter->Release();
 
-    delete[] m_pvSourceBuffer;
+    delete[] (BYTE*)m_pvSourceBuffer;
     delete[] m_pFileBuffer;
 
     if( m_hFile != INVALID_HANDLE_VALUE )

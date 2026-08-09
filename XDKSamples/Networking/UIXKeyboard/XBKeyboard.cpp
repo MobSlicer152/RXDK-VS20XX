@@ -198,9 +198,9 @@ WCHAR* CXBKeyboard::GetKeyName( DWORD xKey )
             case XK_SYMBOLS:    return GetString(XBKEYBOARD_STR_KEY_SYMBOLS);
             case XK_ACCENTS:    return GetString(XBKEYBOARD_STR_KEY_ACCENTS);
             case XK_OK:         return GetString(XBKEYBOARD_STR_KEY_DONE);
-            case XK_HIRAGANA:   return JH_HI JH_RA JH_GA JH_NA;
-            case XK_KATAKANA:   return JK_KA JK_TA JK_KA JK_NA;
-            case XK_EISUUKIGOU: return JH_E JH_I JH_SU JH_U JH_KI JH_GO JH_U;
+            case XK_HIRAGANA:   return (WCHAR*)( JH_HI JH_RA JH_GA JH_NA );
+            case XK_KATAKANA:   return (WCHAR*)( JK_KA JK_TA JK_KA JK_NA );
+            case XK_EISUUKIGOU: return (WCHAR*)( JH_E JH_I JH_SU JH_U JH_KI JH_GO JH_U );
         }
     }
 
@@ -822,7 +822,7 @@ VOID CXBKeyboard::RenderLatinKeyboard( FLOAT fStartX, FLOAT fStartY )
 
                 case XK_NULL:
                     bVisible = FALSE;
-                    false;
+                    break;
             }
 
             if( bVisible )

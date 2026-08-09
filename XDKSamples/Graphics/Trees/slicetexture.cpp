@@ -31,7 +31,7 @@ extern LPDIRECT3DDEVICE8 g_pd3dDevice;
 //-----------------------------------------------------------------------------
 CSliceTexture::CSliceTexture()
 {
-    ZeroMemory(this, sizeof(CSliceTexture));
+    ZeroMemory((VOID*)this, sizeof(CSliceTexture));   // no vtable; members are POD + pointers
 }
 
 //-----------------------------------------------------------------------------

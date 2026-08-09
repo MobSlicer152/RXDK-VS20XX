@@ -824,7 +824,7 @@ BOOL CUserContent::Upload( const DWORD dwControllingUserPort,
         assert( wszFilename );
 
         if( wszFilename )
-            ZeroMemory( wszFilename, sizeof( wszFilename ) );
+            ZeroMemory( wszFilename, MAX_GAMENAME * sizeof( WCHAR ) );
 
         _snwprintf( wszFilename, MAX_GAMENAME, L"%08x%08x",
                     iHi, iLo );
@@ -953,7 +953,7 @@ HRESULT CUserContent::Download( const DWORD dwControllingUserPort,
         assert( wszFilename );
 
         if( wszFilename )
-            ZeroMemory( wszFilename, sizeof( wszFilename ) );
+            ZeroMemory( wszFilename, MAX_GAMENAME * sizeof( WCHAR ) );
 
         _snwprintf( wszFilename, MAX_GAMENAME, L"%08x%08x",
                     iHi, iLo );

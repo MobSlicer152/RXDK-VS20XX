@@ -50,9 +50,9 @@ CWMAFileStream::~CWMAFileStream()
 {
     SAFE_RELEASE( m_pSourceFilter );
     SAFE_RELEASE( m_pRenderFilter );
-    delete[] m_pvSourceBuffer;
+    delete[] (BYTE*)m_pvSourceBuffer;
     delete[] m_pFileBuffer;
-    delete[] m_pFileBuffer;
+    delete[] m_pBackBuffer;
     CloseHandle( m_hFile );
 
     // Kill the thread 

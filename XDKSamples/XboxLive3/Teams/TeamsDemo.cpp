@@ -2832,9 +2832,6 @@ VOID CXBoxSample::RenderStateInbox()
         XBUtil_GetWide( m_rwMessagesSummaries[i].szSenderName,
                         szwGamerTag, XONLINE_GAMERTAG_SIZE );
 
-        m_rwMessagesSummaries[i].dwMessageFlags;
-        m_rwMessagesSummaries[i].qwMessageContext;
-
         // Get the message type
         WCHAR szwMessageType[MAX_TITLENAME_SIZE];
 

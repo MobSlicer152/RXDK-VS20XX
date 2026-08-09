@@ -490,7 +490,7 @@ VOID CXBoxSample::RemovePlayer()
 //-------------------------------------------------------------------------------------
 VOID CXBoxSample::UpdateSession()
 {
-    assert( m_hostedSession.Exists() != NULL );
+    assert( m_hostedSession.Exists() );
 
     m_hostedSession.m_dwPublicFilled = m_dwSlotsInUse;
     m_hostedSession.m_dwPublicOpen   = MAX_PLAYERS_PER_GAME - m_dwSlotsInUse;
