@@ -63,6 +63,12 @@ public static class XdkLink
         args.AddRange(new[]
         {
             "-target", "x86-windows-gnu",
+            // Must match XboxBuild.cs's compile recipe. -rtlib=compiler-rt below makes zig
+            // build/select compiler-rt for the *link* target, and without a CPU pinned that
+            // resolves to zig's x86 baseline (pentium4), whose codegen uses SSE2 for double
+            // and 64-bit integer math. The Xbox is a Coppermine Pentium III -- CPUID reports
+            // SSE but not SSE2 -- so those encodings are invalid opcodes on the console.
+            "-march=pentium3",
             "-nostdlib", "-nostartfiles",
             "-Wl,--image-base=0x10000",
             "-O0",

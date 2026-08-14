@@ -31,11 +31,17 @@ public static class PackXiso
         Directory.CreateDirectory(Path.GetDirectoryName(outputIso)!);
         File.Copy(xbe, defaultXbe, overwrite: true);
 
+        var packRoot = Path.GetFullPath(packDir + Path.DirectorySeparatorChar);
         foreach (var entry in stageFiles ?? Array.Empty<StageFileEntry>())
         {
             var src = Path.GetFullPath(entry.Source);
             if (!File.Exists(src)) throw new FileNotFoundException($"StageFile source not found: {src}");
-            var dest = Path.Combine(packDir, entry.RelativeDest.Replace('/', Path.DirectorySeparatorChar));
+            var dest = Path.GetFullPath(Path.Combine(packDir, entry.RelativeDest.Replace('/', Path.DirectorySeparatorChar)));
+            // xdvdfs only packs packDir, so a destination that resolves outside it would be
+            // copied but silently left out of the image.
+            if (!dest.StartsWith(packRoot, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException(
+                    $"StageFile destination escapes the image root: \"{entry.RelativeDest}\" -> {dest}");
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
             File.Copy(src, dest, overwrite: true);
         }
@@ -59,9 +65,17 @@ public static class PackXiso
             var cleanRel = relPath.Replace('\\', '/').TrimEnd('/');
             var localPath = Path.Combine(projectRoot, cleanRel.Replace('/', Path.DirectorySeparatorChar));
 
+            // The destination is always inside the image/remote root: a deploy path may reach
+            // outside the project dir (imported XDK samples use "..\media"), but its files still
+            // land under that directory's name, matching the XDK deployment tool.
+            var destRel = string.Join('/', cleanRel.Split('/')
+                .Where(s => s.Length > 0 && s != "." && s != ".."));
+            if (destRel.Length == 0)
+                destRel = Path.GetFileName(localPath.TrimEnd(Path.DirectorySeparatorChar));
+
             if (File.Exists(localPath))
             {
-                outList.Add(new StageFileEntry(localPath, cleanRel));
+                outList.Add(new StageFileEntry(localPath, destRel));
                 continue;
             }
             if (!Directory.Exists(localPath))
@@ -79,7 +93,7 @@ public static class PackXiso
             foreach (var file in files)
             {
                 var relFile = Path.GetRelativePath(localPath, file).Replace('\\', '/');
-                outList.Add(new StageFileEntry(file, $"{cleanRel}/{relFile}"));
+                outList.Add(new StageFileEntry(file, $"{destRel}/{relFile}"));
             }
         }
         return outList;
