@@ -5,6 +5,9 @@ obj/
 [Rr]elease/
 *.user
 
+# Scratch sweep/probe logs and screenshots written at the repo root
+/_*
+
 # VS / Rider
 .vs/
 .idea/

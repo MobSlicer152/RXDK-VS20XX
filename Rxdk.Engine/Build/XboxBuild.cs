@@ -97,6 +97,10 @@ public static class XboxBuild
             // Keep Clang from inline-expanding memmove/memcpy-shaped calls past picolibc's
             // -fno-builtin implementations, and pin the retail (_DEBUG-off) SDK link path.
             "-fno-builtin", "-U_DEBUG",
+            // picolibc's default assert() calls __assert_no_args(), which prints a bare
+            // "assertion failed" -- useless for locating a fault in a title. Ask for the
+            // variant that reports the expression, file and line.
+            "-D__ASSERT_VERBOSE",
             // Thread-local storage: emulated TLS (a per-thread table reached via
             // __emutls_get_address, backed by libc tss/emutls.c) instead of the native
             // Windows __tls_index/TEB %fs model, which the RXDK runtime never sets up.
@@ -194,22 +198,22 @@ public static class XboxBuild
         var rdfs = new List<string>();
         if (manifest.Resources is { Count: > 0 })
         {
+            // A missing .rdf produces no .xpr, so the media never reaches the ISO and a title
+            // that loads it by name links clean and then dies in Initialize() with
+            // XBAPPERR_MEDIANOTFOUND before the first frame. Fail here instead.
+            var missing = new List<string>();
             foreach (var rel in manifest.Resources)
             {
                 if (string.IsNullOrWhiteSpace(rel)) continue;
                 if (!rel.EndsWith(".rdf", StringComparison.OrdinalIgnoreCase)) continue;
                 var p = Path.GetFullPath(Path.Combine(projectRoot, rel.Replace('/', Path.DirectorySeparatorChar)));
-                if (!File.Exists(p))
-                {
-                    // Imported XDK vcprojs often list stale .rdf references (e.g. a shared
-                    // Font.rdf/Gamepad.rdf that isn't shipped with the sample). Skip rather
-                    // than fail — if the resource is truly needed, the compile fails on the
-                    // missing generated header, which is the accurate error.
-                    log?.Invoke($"Warning: resource .rdf not found, skipping: {p}");
-                    continue;
-                }
-                rdfs.Add(p);
+                if (!File.Exists(p)) missing.Add(p);
+                else rdfs.Add(p);
             }
+            if (missing.Count > 0)
+                throw new FileNotFoundException(
+                    "Missing resource .rdf file(s), so their .xpr media cannot be built: " +
+                    string.Join(", ", missing));
         }
         else
         {
@@ -226,8 +230,11 @@ public static class XboxBuild
             foreach (var rdf in rdfs)
             {
                 log?.Invoke($"Compiling resources: {Path.GetFileName(rdf)}");
-                var result = await ProcessRunner.RunStreamedAsync(
-                    bundler, new[] { rdf, "-q" }, log, Path.GetDirectoryName(rdf), ct);
+                // Pass the bare filename (the working dir is already the .rdf's folder): bundler
+                // echoes the path it was given into the generated header, so an absolute one
+                // would bake this machine's paths into a checked-in file.
+                var result = await RunHostToolAsync(
+                    bundler, new[] { Path.GetFileName(rdf), "-q" }, log, Path.GetDirectoryName(rdf), ct);
                 if (!result.Success)
                     throw new InvalidOperationException(
                         $"bundler failed on {Path.GetFileName(rdf)} (exit {result.ExitCode})");
@@ -279,7 +286,7 @@ public static class XboxBuild
         foreach (var xap in unique)
         {
             log?.Invoke($"Compiling XACT project: {Path.GetFileName(xap)}");
-            var result = await ProcessRunner.RunStreamedAsync(
+            var result = await RunHostToolAsync(
                 xactbld, new[] { xap, "-q" }, log, Path.GetDirectoryName(xap), ct);
             if (!result.Success)
                 throw new InvalidOperationException(
@@ -312,14 +319,23 @@ public static class XboxBuild
             if (File.Exists(p)) shaders.Add(p);
         }
 
-        // Auto-discover if none listed: every *.vsh / *.psh under the project, excluding the
-        // build-output trees (out/, obj/, bin/) so deployed copies are not recompiled.
+        // Auto-discover if none listed: every *.vsh / *.psh under the project, plus the sample
+        // root one level up — XDK samples keep their shader sources in Media\Shaders beside the
+        // .vcxproj directory rather than inside it, and the title loads the assembled .xvu from
+        // that same media tree. Build-output trees (out/, obj/, bin/) are excluded so deployed
+        // copies are not recompiled.
         if (shaders.Count == 0)
         {
-            foreach (var pat in new[] { "*.vsh", "*.psh" })
-                foreach (var f in Directory.EnumerateFiles(projectRoot, pat, SearchOption.AllDirectories))
-                    if (!IsBuildOutputPath(f, projectRoot))
-                        shaders.Add(Path.GetFullPath(f));
+            var roots = new List<string> { projectRoot };
+            var sampleRoot = Path.GetDirectoryName(
+                projectRoot.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+            if (sampleRoot is not null && Directory.Exists(sampleRoot)) roots.Add(sampleRoot);
+
+            foreach (var root in roots)
+                foreach (var pat in new[] { "*.vsh", "*.psh" })
+                    foreach (var f in Directory.EnumerateFiles(root, pat, SearchOption.AllDirectories))
+                        if (!IsBuildOutputPath(f, root))
+                            shaders.Add(Path.GetFullPath(f));
         }
 
         var unique = shaders
@@ -340,11 +356,46 @@ public static class XboxBuild
             var dir = Path.GetDirectoryName(src)!;
             log?.Invoke($"Compiling shader: {Path.GetFileName(src)} -> {Path.GetFileName(outPath)}");
             // -I <dir>: fur/fin-style shaders #include sibling fragments from their own directory.
-            var result = await ProcessRunner.RunStreamedAsync(
+            var result = await RunHostToolAsync(
                 xsasm, new[] { src, "-o", outPath, "-I", dir }, log, dir, ct);
             if (!result.Success)
                 throw new InvalidOperationException(
                     $"xsasm failed on {Path.GetFileName(src)} (exit {result.ExitCode})");
+        }
+    }
+
+    /// <summary>
+    /// Runs a host tool, retrying the transient failures that appear when something outside the
+    /// build (realtime antivirus, the search indexer) is still holding a file the tool has just
+    /// generated — either mapping a section on it or keeping it open. Both clear themselves
+    /// within a few hundred milliseconds; left alone they fail a parallel sweep on a different
+    /// random sample every run.
+    /// </summary>
+    private static async Task<ProcessResult> RunHostToolAsync(
+        string tool,
+        IReadOnlyList<string> args,
+        Action<string>? log,
+        string? workingDirectory,
+        CancellationToken ct)
+    {
+        const int MaxAttempts = 4;
+        ProcessResult result;
+        for (var attempt = 1; ; attempt++)
+        {
+            result = await ProcessRunner.RunStreamedAsync(tool, args, log, workingDirectory, ct);
+            if (result.Success || attempt == MaxAttempts) return result;
+
+            var output = result.StdOut + result.StdErr;
+            var transient =
+                output.Contains("user-mapped section open", StringComparison.OrdinalIgnoreCase) ||
+                output.Contains("being used by another process", StringComparison.OrdinalIgnoreCase);
+            if (!transient) return result;
+
+            var delayMs = 250 * attempt;
+            log?.Invoke(
+                $"{Path.GetFileNameWithoutExtension(tool)}: output file is held by another " +
+                $"process, retrying in {delayMs}ms");
+            await Task.Delay(delayMs, ct);
         }
     }
 
@@ -699,17 +750,21 @@ public static class XboxBuild
 
             if (manifest.CreateIso ?? true)
             {
+                var stageFiles = PackXiso.ResolveDeployPaths(projectRoot, manifest.DeployPaths, log);
+                if (stageFiles.Count > 0)
+                    log?.Invoke($"Staging {stageFiles.Count} deployPaths file(s) into ISO");
                 try
                 {
-                    var stageFiles = PackXiso.ResolveDeployPaths(projectRoot, manifest.DeployPaths, log);
-                    if (stageFiles.Count > 0)
-                        log?.Invoke($"Staging {stageFiles.Count} deployPaths file(s) into ISO");
                     var iso = await PackXiso.PackAsync(xbe, projectName, outDir, xdvdfsPath, stageFiles, log, ct);
                     log?.Invoke($"Packed {iso}");
                 }
                 catch (Exception err)
                 {
-                    log?.Invoke($"Note: ISO pack skipped ({err.Message})");
+                    // Warning-and-continue leaves whatever stale ISO is already on disk, so the
+                    // title boots an old image and dies looking for media that is present in the
+                    // source tree. A read-only staged file is enough to trigger it.
+                    throw new InvalidOperationException(
+                        $"ISO pack failed for {projectName}: {err.Message}", err);
                 }
             }
             else
