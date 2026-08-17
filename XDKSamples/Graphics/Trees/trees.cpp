@@ -300,8 +300,8 @@ HRESULT CXBoxSample::Initialize()
 
     // Position the tree instances
     srand(123456);
-#define irand(a) ((rand()*(a))>>15)
-#define frand(a) ((float)rand()*(a)/32768.0f)
+#define irand(a) ((int)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
+#define frand(a) ((float)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
     m_TreeSortArray[0] = new TreeSort[ NMAXTREEINSTANCE ];
     m_TreeSortArray[1] = new TreeSort[ NMAXTREEINSTANCE ];
     m_TreeArray = new TreeData [ NMAXTREEINSTANCE ];

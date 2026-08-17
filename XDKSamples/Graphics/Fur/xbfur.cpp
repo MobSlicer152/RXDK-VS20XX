@@ -25,8 +25,8 @@
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;
 
-#define irand(a) ((rand()*(a))>>15)
-#define frand(a) ((float)rand()*(a)/32768.0f)
+#define irand(a) ((int)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
+#define frand(a) ((float)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
 
 float g_fOneInch = 0.01f;
 

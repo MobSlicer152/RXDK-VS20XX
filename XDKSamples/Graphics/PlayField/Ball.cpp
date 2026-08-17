@@ -80,7 +80,7 @@ HRESULT CBall::Render()
 HRESULT CBall::LaunchBall(const D3DXVECTOR3 &vFrom, const D3DXVECTOR3 &vTargetPosition)
 {
     // Pick a random velocity and position
-#define fUnitRand(fmin, fmax) ((float)rand()/32768.0f*((fmax) - (fmin)) + (fmin))
+#define fUnitRand(fmin, fmax) ((float)rand()/((float)RAND_MAX+1.0f)*((fmax) - (fmin)) + (fmin))
     float fTheta = 0.7f * D3DX_PI * fUnitRand(-0.5f, 0.5f);
     float fRadius = 1.f;
     float fX = cosf(fTheta);

@@ -388,8 +388,8 @@ HRESULT CXBoxSample::Initialize()
     if( m_pObjects == NULL )
         return E_OUTOFMEMORY;
 
-#define irand(a) ((rand()*(a))>>15)
-#define frand(a) ((float)rand()*(a)/32768.0f)
+#define irand(a) ((int)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
+#define frand(a) ((float)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
 
     float fScale = 100.0f;
     srand( 123456 );

@@ -48,10 +48,9 @@ XBHELP_CALLOUT g_HelpCallouts[] =
 
 #define NUM_HELP_CALLOUTS ( sizeof( g_HelpCallouts ) / sizeof( g_HelpCallouts[0] ) )
 
-// The log file will be generated in the sample's directory on the Xbox hard disk.
-// Unless you change its default location, this will probably be:
-//    xe:\Samples\CallStackLog\Log.txt
-const CHAR *g_LogFilename = "d:\\Log.txt";
+// The log goes to the title's scratch drive. On a devkit D: is the writable sample share,
+// but booting from a disc makes it a read-only DVD and the log cannot be created at all.
+const CHAR *g_LogFilename = "t:\\Log.txt";
 
 
 

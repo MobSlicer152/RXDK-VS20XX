@@ -1,0 +1,7 @@
+Texture ONLINEON
+{
+   Source srcmedia\icon-online-ON.bmp
+   AlphaSource srcmedia\icon-online-alpha.bmp
+   Levels 1
+   Format D3DFMT_A8R8G8B8
+}

@@ -98,6 +98,10 @@ MM_GAMESOUNDTRACK g_aGameSoundtracks[] =
 // This cue should not have anything important bound to it
 CONST CHAR g_strSoundtrackCue[] = "Cue1";
 
+// Used to seed the hard drive with a soundtrack on a console where the user
+// has never ripped any music
+CONST CHAR g_strSoundtrackSong[] = "d:\\media\\sounds\\soundtrack\\becky.wma";
+
 // A soundtrack category enables us to control various aspects
 // of multiple cues simultaneously (i.e. volume).
 #define SOUNDTRACK_CATEGORY XACT_CATEGORY_BGMUSIC
@@ -186,6 +190,7 @@ class CXBoxSample : public CXBApplication
     HRESULT PrevSong();                                         // Switch to prev song
 
     HRESULT LoadSoundtracks();                                  // Fill our soundtrack cache
+    UINT    AddUserSoundtracks();                               // Append the hard drive's soundtracks, returns how many
     HRESULT SelectSoundtrack( DWORD dwSoundtrack, BOOL fInitialize = FALSE ); // Switch to a soundtrack
 
 public:
@@ -531,7 +536,37 @@ HRESULT CXBoxSample::LoadSoundtracks()
     }
 
     // Add each user provided soundtrack to the soundtrack vector
+    if( 0 == AddUserSoundtracks() )
+    {
+        // Nothing has ever been ripped on this console, so the user soundtrack
+        // half of the sample would have nothing to show. Install the WMA that
+        // ships on the disc as a soundtrack, then enumerate again.
+        UINT uSoundtrackId;
+
+        if( XAddSoundtrack( L"Sample Soundtrack", &uSoundtrackId ) )
+        {
+            XAddSongToSoundtrack( uSoundtrackId, g_strSoundtrackSong, L"Becky",
+                                  NULL, NULL, NULL );
+            AddUserSoundtracks();
+        }
+    }
+
+    return S_OK;
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+// Name: AddUserSoundtracks()
+// Desc: Appends the soundtracks stored on the hard drive to the soundtrack
+//       vector, and returns how many were added
+//-----------------------------------------------------------------------------
+UINT CXBoxSample::AddUserSoundtracks()
+{
     XSOUNDTRACK_DATA stData;
+    UINT uAdded = 0;
+
     HANDLE hSoundtrack = XFindFirstSoundtrack( &stData );
     if( INVALID_HANDLE_VALUE != hSoundtrack )
     {
@@ -548,12 +583,13 @@ HRESULT CXBoxSample::LoadSoundtracks()
                 wcscpy( sndtrk.m_strName, stData.szName );
 
                 m_vSoundtracks.push_back( sndtrk );
+                ++uAdded;
             }
         } while( XFindNextSoundtrack( hSoundtrack, &stData ) );
     }
 
     XFindClose(hSoundtrack);
-    return S_OK;
+    return uAdded;
 }
 
 

@@ -105,6 +105,45 @@ HRESULT XBUtil_FindMediaFile( CHAR* strPath, const CHAR* strFilename )
 
 
 //-----------------------------------------------------------------------------
+// Name: XBUtil_GetSectorSize()
+// Desc: Returns the sector size of the volume the given file lives on, which is
+//       the alignment an unbuffered read of that file has to obey.
+//-----------------------------------------------------------------------------
+DWORD XBUtil_GetSectorSize( const CHAR* strFilename )
+{
+    // The DVD has the coarser sectors of the two media, so it is the safe answer
+    // when the volume cannot be asked: a request aligned for the DVD is also
+    // aligned for the hard disk.
+    DWORD dwSectorSize = 2048;
+
+    if( NULL == strFilename )
+        return dwSectorSize;
+
+    HANDLE hFile = CreateFile( strFilename, GENERIC_READ, FILE_SHARE_READ, NULL,
+                               OPEN_EXISTING, 0, NULL );
+    if( INVALID_HANDLE_VALUE != hFile )
+    {
+        IO_STATUS_BLOCK          iosb;
+        FILE_FS_SIZE_INFORMATION fsSize;
+
+        if( NT_SUCCESS( NtQueryVolumeInformationFile( hFile, &iosb, &fsSize,
+                                                      sizeof(fsSize),
+                                                      FileFsSizeInformation ) ) &&
+            0 != fsSize.BytesPerSector )
+        {
+            dwSectorSize = fsSize.BytesPerSector;
+        }
+
+        CloseHandle( hFile );
+    }
+
+    return dwSectorSize;
+}
+
+
+
+
+//-----------------------------------------------------------------------------
 // Name: XBUtil_Timer()
 // Desc: Performs timer operations. Use the following commands:
 //          TIMER_RESET           - to reset the timer

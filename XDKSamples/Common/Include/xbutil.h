@@ -29,11 +29,7 @@
 #define SAFE_DELETE_ARRAY(p) { delete[] (p);   (p)=NULL; }
 #define SAFE_RELEASE(p)      { if(p) { (p)->Release(); (p)=NULL; } }
 
-#ifdef _DEBUG
-    #define OUTPUT_DEBUG_STRING(s) OutputDebugStringA(s)
-#else
-    #define OUTPUT_DEBUG_STRING(s) (VOID)(s)
-#endif
+#define OUTPUT_DEBUG_STRING(s) OutputDebugStringA(s)
 
 //-----------------------------------------------------------------------------
 // Name: XBUtil_DebugPrint()
@@ -57,6 +53,24 @@ inline DWORD FtoDW( FLOAT f ) { return *((DWORD*)&f); }
 //-----------------------------------------------------------------------------
 VOID    XBUtil_SetMediaPath( const CHAR* strPath );
 HRESULT XBUtil_FindMediaFile( CHAR* strPath, const CHAR* strFilename );
+
+
+
+
+//-----------------------------------------------------------------------------
+// Name: XBUtil_GetSectorSize()
+// Desc: Returns the sector size of the volume the given file lives on: 2048 on
+//       the DVD, 512 on the hard disk. A file opened with FILE_FLAG_NO_BUFFERING
+//       can only be read at offsets and in lengths that are multiples of this,
+//       and the two media do not agree - so anything doing its own unbuffered
+//       reads has to ask rather than assume. A development kit runs a title from
+//       its own folder on the hard disk while a burned disc runs it from the DVD,
+//       which is why a title that only ever ran on a kit can carry a 512-byte
+//       assumption and still fail the moment it boots from disc.
+//       Returns the DVD size if the volume cannot be queried, since a request
+//       aligned for the DVD is also aligned for the hard disk.
+//-----------------------------------------------------------------------------
+DWORD   XBUtil_GetSectorSize( const CHAR* strFilename );
 
 
 

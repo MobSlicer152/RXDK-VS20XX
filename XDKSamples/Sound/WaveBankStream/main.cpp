@@ -236,6 +236,14 @@ HRESULT CXBoxSample::LoadWaveBank( CHAR* strFilename )
     DWORD           dwIndex             = 0;
     DWORD           dwOffset            = 0;
 
+    // The bank is padded to whatever alignment its XACT project asked for, which
+    // for this sample is the hard disk's sector size. An unbuffered read has to
+    // obey the sector size of the medium the bank is actually on, and those two
+    // need not agree: a development kit runs the title from the hard disk, while
+    // a burned disc runs it from the DVD, whose sectors are four times coarser.
+    // So round every read below to whichever of the two is larger.
+    DWORD           dwAlignment         = XBUtil_GetSectorSize( strFilename );
+
     if( SUCCEEDED(hr) )
     {
         // The file is opened for asynchronous, un-buffered I/O. This requires
@@ -292,6 +300,13 @@ HRESULT CXBoxSample::LoadWaveBank( CHAR* strFilename )
         }
     }
 
+    if( SUCCEEDED(hr) )
+    {
+        // The bank may be padded more coarsely than the medium requires
+        if( dwAlignment < m_pWaveBankData->dwAlignment )
+            dwAlignment = m_pWaveBankData->dwAlignment;
+    }
+
     if( SUCCEEDED(hr) ) 
     {
         // Now that we've got the header, we need to make sure we've got the 
@@ -302,9 +317,9 @@ HRESULT CXBoxSample::LoadWaveBank( CHAR* strFilename )
             m_pWaveBankHeader->Segments[WAVEBANK_SEGIDX_ENTRYMETADATA].dwOffset;
 
         // Round up to our wave bank alignment
-        dwNewSize += m_pWaveBankData->dwAlignment - 1;
-        dwNewSize /= m_pWaveBankData->dwAlignment;
-        dwNewSize *= m_pWaveBankData->dwAlignment;
+        dwNewSize += dwAlignment - 1;
+        dwNewSize /= dwAlignment;
+        dwNewSize *= dwAlignment;
 
         // If this is more than the amount we've already allocated and read,
         // we'll need to re-allocate and re-read
@@ -402,8 +417,8 @@ HRESULT CXBoxSample::LoadWaveBank( CHAR* strFilename )
                 dwOffset = pWaveBankEntry->LoopRegion.dwOffset +
                            pWaveBankEntry->PlayRegion.dwOffset +
                            m_pWaveBankHeader->Segments[WAVEBANK_SEGIDX_ENTRYWAVEDATA].dwOffset;
-                dwOffset /= m_pWaveBankData->dwAlignment;
-                dwOffset *= m_pWaveBankData->dwAlignment;
+                dwOffset /= dwAlignment;
+                dwOffset *= dwAlignment;
                 
                 // Read the first packet of the loop region. This packet is 
                 // shared among all instances of the same streaming wave
@@ -424,7 +439,7 @@ HRESULT CXBoxSample::LoadWaveBank( CHAR* strFilename )
                                                   ( ( m_pWaveBankHeader->Segments[WAVEBANK_SEGIDX_ENTRYNAMES].dwOffset) ) + ( dwEntrySize * i ) );
                 hr = m_aStreams[i].Initialize( m_hWaveBank, m_pWaveBankHeader, pWaveBankEntry,                     
                                                pvLoopCacheBuffer, pszFriendlyName,
-                                               dwSize, &m_dwPercentCompleted[i] );
+                                               dwSize, dwAlignment, &m_dwPercentCompleted[i] );
             }
 
             if( FAILED(hr) && pvLoopCacheBuffer )
@@ -547,9 +562,7 @@ HRESULT CXBoxSample::FrameMove()
     if( !m_bPaused )
     {
         for( DWORD i = 0; i < m_dwNumStreams; i++ )
-        {
             m_aStreams[i].Process();
-        }
     }
 
     DirectSoundDoWork();

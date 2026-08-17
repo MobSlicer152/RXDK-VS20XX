@@ -198,18 +198,21 @@ HRESULT CXBoxSample::Initialize()
         return XBAPPERR_MEDIANOTFOUND;
 
     // Create DirectSound object
+    OUTPUT_DEBUG_STRING( "DM: DirectSoundCreate\n" );
     if( FAILED( DirectSoundCreate( NULL, &m_pDSound, NULL ) ) )
         return E_FAIL;
 
     // If the application doesn't care about vertical HRTF positioning,
     // calling DirectSoundUseLightHRTF can save about 60k of memory.
     // DirectSoundUseLightHRTF();
+    OUTPUT_DEBUG_STRING( "DM: UseFullHRTF\n" );
     DirectSoundUseFullHRTF();
 
     // download the standard DirectSound effects image
     DSEFFECTIMAGELOC EffectLoc;
     EffectLoc.dwI3DL2ReverbIndex = GraphI3DL2_I3DL2Reverb;
     EffectLoc.dwCrosstalkIndex   = GraphXTalk_XTalk;
+    OUTPUT_DEBUG_STRING( "DM: XAudioDownloadEffectsImage\n" );
     if( FAILED( XAudioDownloadEffectsImage( "d:\\media\\dmusicfx.bin", 
                                             &EffectLoc, 
                                             XAUDIO_DOWNLOADFX_EXTERNFILE, 
@@ -217,12 +220,14 @@ HRESULT CXBoxSample::Initialize()
         return E_FAIL;
 
     // Initialize DMusic
+    OUTPUT_DEBUG_STRING( "DM: heaps\n" );
     IDirectMusicHeap* pNormalHeap;
     DirectMusicCreateDefaultHeap( &pNormalHeap );
 
     IDirectMusicHeap* pPhysicalHeap;
     DirectMusicCreateDefaultPhysicalHeap( &pPhysicalHeap );
 
+    OUTPUT_DEBUG_STRING( "DM: DirectMusicInitializeEx\n" );
     DirectMusicInitializeEx( pNormalHeap, pPhysicalHeap, MyFactory );
 
     pNormalHeap->Release();
@@ -230,24 +235,30 @@ HRESULT CXBoxSample::Initialize()
 
 
     // Create DirectMusic loader object
+    OUTPUT_DEBUG_STRING( "DM: loader\n" );
     DirectMusicCreateInstance( CLSID_DirectMusicLoader, NULL, 
                                IID_IDirectMusicLoader8, (VOID**)&m_pLoader );
 
     // Create DirectMusic performance object
+    OUTPUT_DEBUG_STRING( "DM: performance\n" );
     DirectMusicCreateInstance( CLSID_DirectMusicPerformance, NULL,
                                IID_IDirectMusicPerformance8, (VOID**)&m_pPerformance );
 
     // Initialize the performance with a 3D audiopath.
+    OUTPUT_DEBUG_STRING( "DM: InitAudioX\n" );
     m_pPerformance->InitAudioX( DMUS_APATH_DYNAMIC_3D, 64, 128, 0 );
 
     // Tell DirectMusic where the default search path is
+    OUTPUT_DEBUG_STRING( "DM: SetSearchDirectory\n" );
     m_pLoader->SetSearchDirectory( GUID_DirectMusicAllTypes, 
                                    "D:\\Media\\Sounds", FALSE );
 
     // Get 3D audiopath.
+    OUTPUT_DEBUG_STRING( "DM: GetDefaultAudioPath\n" );
     m_pPerformance->GetDefaultAudioPath( &m_pAudioPath );
 
     // Max volume for music
+    OUTPUT_DEBUG_STRING( "DM: SetVolume\n" );
     m_pAudioPath->SetVolume( (LONG)m_fVolume, 0 );
     m_pAudioPath->GetObjectInPath( DMUS_PCHANNEL_ALL, 
                                    DMUS_PATH_BUFFER, 
@@ -258,8 +269,10 @@ HRESULT CXBoxSample::Initialize()
                                    (VOID **)&m_p3DBuffer );
 
 
+    OUTPUT_DEBUG_STRING( "DM: SwitchToSound\n" );
     m_bPlaying = TRUE;
     SwitchToSound( 0 );
+    OUTPUT_DEBUG_STRING( "DM: audio init done\n" );
 
     // Set the transform matrices
     D3DXVECTOR3 vEyePt      = D3DXVECTOR3( XMIN, 45.0f,  ZMAX / 2.0f );
@@ -321,7 +334,10 @@ HRESULT CXBoxSample::SwitchToSound( DWORD dwIndex )
 {
     // If we're currently playing, stop
     if( m_bPlaying )
+    {
+        OUTPUT_DEBUG_STRING( "DM:   StopEx\n" );
         m_pPerformance->StopEx( m_pSegment, 0, 0 );
+    }
 
     // Release the current sound
     if( m_pSegment )
@@ -335,14 +351,33 @@ HRESULT CXBoxSample::SwitchToSound( DWORD dwIndex )
     // Load the new sound
     char strFullPath[MAX_PATH];
     sprintf( strFullPath, "d:\\%S%S", g_strMediaDir, g_astrFileNames[m_dwCurrent] );
-    m_pLoader->LoadObjectFromFile( CLSID_DirectMusicSegment, IID_IDirectMusicSegment8,
+    {
+        CHAR sz[MAX_PATH + 64];
+        sprintf( sz, "DM:   LoadObjectFromFile '%s'\n", strFullPath );
+        OUTPUT_DEBUG_STRING( sz );
+    }
+    HRESULT hrLoad = m_pLoader->LoadObjectFromFile( CLSID_DirectMusicSegment, IID_IDirectMusicSegment8,
                                    strFullPath, (VOID **)&m_pSegment );
+    {
+        CHAR sz[128];
+        sprintf( sz, "DM:   LoadObjectFromFile hr=0x%08lx seg=%p\n", hrLoad, m_pSegment );
+        OUTPUT_DEBUG_STRING( sz );
+    }
+    if( m_pSegment == NULL )
+    {
+        OUTPUT_DEBUG_STRING( "DM:   no segment, bailing\n" );
+        return E_FAIL;
+    }
     m_pSegment->SetRepeats( DMUS_SEG_REPEAT_INFINITE );
 
     // If we were playing before, restart playback now
     if( m_bPlaying )
+    {
+        OUTPUT_DEBUG_STRING( "DM:   PlaySegmentEx\n" );
         m_pPerformance->PlaySegmentEx( m_pSegment, NULL, NULL, 0, 0, 
                                        NULL, NULL, NULL );
+        OUTPUT_DEBUG_STRING( "DM:   PlaySegmentEx done\n" );
+    }
 
     return S_OK;
 }

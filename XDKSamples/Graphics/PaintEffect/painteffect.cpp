@@ -170,7 +170,7 @@ public:
             hr = g_pd3dDevice->CreateVertexBuffer( Width * Height * sizeof(PAINTVERTEX), 0, 0, D3DPOOL_DEFAULT, &m_rpPaintVertexBuffer[iVB]);
             if( FAILED(hr) )
                 return hr;
-#define frand(a) ((FLOAT)rand()*(a)/32768.0f)
+#define frand(a) ((FLOAT)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
 
             PAINTVERTEX* pv;
             hr = m_rpPaintVertexBuffer[iVB]->Lock( 0, 0, (BYTE**)&pv, 0 );
@@ -563,8 +563,8 @@ HRESULT CXBoxSample::Initialize()
     m_rObjects = new Object[m_nObjectCount];
     if( m_rObjects == NULL )
         return E_OUTOFMEMORY;
-#define irand(a) ((rand()*(a))>>15)
-#define frand(a) ((FLOAT)rand()*(a)/32768.0f)
+#define irand(a) ((int)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
+#define frand(a) ((FLOAT)(rand()*(double)(a)/((double)RAND_MAX+1.0)))
     FLOAT fScale = 100.0f;
     srand( 123456 );
     for( UINT i = 0; i < m_nObjectCount; i++ )

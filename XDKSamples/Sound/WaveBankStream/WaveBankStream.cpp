@@ -32,6 +32,9 @@ CWaveBankStream::CWaveBankStream()
 
     m_dwStartOffset     = 0;
     m_dwLastPacketIndex = -1;
+    m_dwAlignment       = WAVEBANK_ALIGNMENT_DVD;
+    m_dwLeadIn          = 0;
+    m_dwLoopLeadIn      = 0;
 
     m_bPaused           = FALSE;
 }
@@ -68,6 +71,7 @@ HRESULT CWaveBankStream::Initialize( HANDLE          hFile,
                                      VOID*           pvLoopCache, 
                                      CHAR*           pszFriendlyName, 
                                      DWORD           dwPacketSize, 
+                                     DWORD           dwAlignment,
                                      DWORD*          pdwPercentCompleted )
 {
     HRESULT hr;
@@ -75,6 +79,7 @@ HRESULT CWaveBankStream::Initialize( HANDLE          hFile,
     
     m_pdwPercentCompleted = pdwPercentCompleted;
     m_dwPacketSize        = dwPacketSize;
+    m_dwAlignment         = dwAlignment;
     m_pvLoopCachePacket   = pvLoopCache;
     m_pszFriendlyName     = pszFriendlyName;
     m_pWaveBankEntry      = pWaveBankEntry;
@@ -127,14 +132,28 @@ HRESULT CWaveBankStream::Initialize( HANDLE          hFile,
         return hr;
 
     // save absolute play region file offset
-    m_dwStartOffset = pWaveBankEntry->PlayRegion.dwOffset + 
-                      pWaveBankHeader->Segments[WAVEBANK_SEGIDX_ENTRYWAVEDATA].dwOffset;
+    DWORD dwPlayStart = pWaveBankEntry->PlayRegion.dwOffset + 
+                        pWaveBankHeader->Segments[WAVEBANK_SEGIDX_ENTRYWAVEDATA].dwOffset;
+
+    // The bank is padded to whatever alignment its XACT project asked for, and
+    // that need not be as coarse as the sectors of the medium it is streamed
+    // from: a bank authored for the hard disk has entries on 512 byte bounds,
+    // while the same bank burned to a disc is read in 2048 byte sectors, so
+    // some of its entries no longer begin on one.  An unbuffered read has to
+    // name a sector boundary, so begin at the boundary below the wave and drop
+    // the bytes ahead of it when the first packet goes out to the renderer.
+    m_dwLeadIn      = dwPlayStart % m_dwAlignment;
+    m_dwStartOffset = dwPlayStart - m_dwLeadIn;
+
+    // The loop region gets the same treatment when the stream wraps
+    m_dwLoopLeadIn = ( dwPlayStart + pWaveBankEntry->LoopRegion.dwOffset ) % m_dwAlignment;
     
     // Calculate the amount of bytes we need to stream on the first pass.
     // If the wave entry has a loop region, only calculate to the end of the loop region.
     // If it has no loop region, bytesRemaining will equal the size of the play region
     m_dwStreamBytesRemaining = pWaveBankEntry->LoopRegion.dwOffset + 
-                               pWaveBankEntry->LoopRegion.dwLength;
+                               pWaveBankEntry->LoopRegion.dwLength +
+                               m_dwLeadIn;
     m_dwFileLength = m_dwStreamBytesRemaining;
 
     // Allocate data buffers. If the wavebank entry we are streaming is ADPCM 
@@ -283,9 +302,9 @@ HRESULT CWaveBankStream::ProcessSource( DWORD dwPacketIndex )
         m_aContexts[dwPacketIndex].dwPacketSize = xmp.dwMaxSize;
 
         // Round the read size up to the next sector multiple
-        xmp.dwMaxSize += m_pWaveBankData->dwAlignment - 1;
-        xmp.dwMaxSize /= m_pWaveBankData->dwAlignment;
-        xmp.dwMaxSize *= m_pWaveBankData->dwAlignment;
+        xmp.dwMaxSize += m_dwAlignment - 1;
+        xmp.dwMaxSize /= m_dwAlignment;
+        xmp.dwMaxSize *= m_dwAlignment;
 
         // We can't submit zero-length reads to the source XMO.  This would
         // only happen if the entire loop region were contained in the loop
@@ -324,7 +343,7 @@ HRESULT CWaveBankStream::ProcessSource( DWORD dwPacketIndex )
 
         // We need to start at the sector boundary just before the beginning
         // of the loop region
-        m_dwStreamBytesRemaining += m_pWaveBankEntry->LoopRegion.dwOffset % m_pWaveBankData->dwAlignment;
+        m_dwStreamBytesRemaining += m_dwLoopLeadIn;
 
         // Reset file offset to start of loop region aligned to the nearest
         // previous sector boundary. This will not affect playback, since it 
@@ -332,9 +351,8 @@ HRESULT CWaveBankStream::ProcessSource( DWORD dwPacketIndex )
         // back the loop cached packet
         m_dwStartOffset = m_pWaveBankHeader->Segments[WAVEBANK_SEGIDX_ENTRYWAVEDATA].dwOffset +
                           m_pWaveBankEntry->PlayRegion.dwOffset +
-                          m_pWaveBankEntry->LoopRegion.dwOffset;
-        m_dwStartOffset /= m_pWaveBankData->dwAlignment;
-        m_dwStartOffset *= m_pWaveBankData->dwAlignment;
+                          m_pWaveBankEntry->LoopRegion.dwOffset -
+                          m_dwLoopLeadIn;
 
         // Since we are going to use the loop cache packet after the last 
         // packet of the stream is played, adjust the file offset and 
@@ -385,6 +403,15 @@ HRESULT CWaveBankStream::ProcessRenderer( DWORD dwPacketIndex )
     xmp.dwMaxSize = m_aContexts[dwPacketIndex].dwPacketSize;
     xmp.pdwStatus = &m_aContexts[dwPacketIndex].dwPacketStatus;
 
+    // The very first packet begins with whatever the medium's sector size made
+    // us read ahead of the play region, which is not part of this wave
+    if( m_dwLeadIn )
+    {
+        xmp.pvBuffer   = (BYTE*)xmp.pvBuffer + m_dwLeadIn;
+        xmp.dwMaxSize -= m_dwLeadIn;
+        m_dwLeadIn     = 0;
+    }
+
     // Mark this packet as owned by the destination
     m_aContexts[dwPacketIndex].poPacketOwner = PACKET_OWNER_DEST;
 
@@ -409,8 +436,7 @@ HRESULT CWaveBankStream::ProcessRenderer( DWORD dwPacketIndex )
         // If we allowed loop regions of less than a packet, we'd have to cut
         // down xmp.dwMaxSize to stop at the end of the loop region, as well
         // as making sure it starts at the beginning
-        DWORD dwLoopStartOffset = m_pWaveBankEntry->LoopRegion.dwOffset % 
-                                  m_pWaveBankData->dwAlignment;
+        DWORD dwLoopStartOffset = m_dwLoopLeadIn;
         xmp.pvBuffer  = (BYTE*)m_pvLoopCachePacket + dwLoopStartOffset;
         xmp.dwMaxSize = m_aContexts[dwPacketIndex].dwPacketSize - dwLoopStartOffset;
         xmp.pdwStatus = NULL;

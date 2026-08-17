@@ -184,9 +184,9 @@ HRESULT CXBoxSample::Initialize()
 
     for( DWORD i=0; i<MAX_SPHERE; i++ )
     {
-        m_vSpherePosition[i] = D3DXVECTOR3( (float)rand()*100.0f/32768.0f-50.0f, 
-                                                  (float)rand()*100.0f/32768.0f-50.0f, 
-                                                  30.0f+(float)rand()*100.0f/32768.0f );
+        m_vSpherePosition[i] = D3DXVECTOR3( (float)rand()*100.0f/((float)RAND_MAX+1.0f)-50.0f, 
+                                                  (float)rand()*100.0f/((float)RAND_MAX+1.0f)-50.0f, 
+                                                  30.0f+(float)rand()*100.0f/((float)RAND_MAX+1.0f) );
         m_vSphereRotation[i] = D3DXVECTOR3( 0.0f, (FLOAT)i, 0.0f );
     }
 

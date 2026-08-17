@@ -41,6 +41,32 @@
 
 
 //-----------------------------------------------------------------------------
+// Name: DebugAllocStats
+// Desc: One tally of what this allocator has outstanding, shared by every
+//       instance. The statistics have to belong to the allocations rather than
+//       to an allocator object: a container is handed a copy of the allocator
+//       it was built with and rebinds it for its node type, so a block is
+//       routinely allocated through one instance and freed through another.
+//       Counters kept per instance are then decremented on an instance that
+//       never counted the allocation, which trips the assertions in
+//       deallocate() below. (Keeping them per instance happened to work
+//       against the VC++ 7.x library this sample was written for, which gave
+//       each container a single long-lived allocator object.)
+//-----------------------------------------------------------------------------
+struct DebugAllocStats
+{
+    DWORD dwAllocCount;         // Number of outstanding allocations
+    DWORD dwBytesAllocated;     // Number of bytes outstanding
+};
+
+inline DebugAllocStats& GetDebugAllocStats()
+{
+    static DebugAllocStats stats = { 0, 0 };
+    return stats;
+}
+
+
+//-----------------------------------------------------------------------------
 // Name: DebugAlloc()
 // Desc: Allocator that validates the heap and tracks allocations
 //-----------------------------------------------------------------------------
@@ -63,25 +89,18 @@ public:
     //-------------------------------------------------------------------------
     // Constructors/Destructor
     //-------------------------------------------------------------------------
+    // Nothing to carry: the statistics live with the allocations, so a copy or a
+    // rebind of this allocator is already looking at the same tally.
     DebugAlloc()
-    :
-        m_dwAllocCount( 0 ),
-        m_dwBytesAllocated( 0 )
     {
     }
 
-    DebugAlloc( const DebugAlloc< T >& a )
-    :
-        m_dwAllocCount( a.GetAllocationCount() ),
-        m_dwBytesAllocated( a.GetBytesAllocated() )
+    DebugAlloc( const DebugAlloc< T >& )
     {
     }
 
     template< typename U >
-    DebugAlloc( const DebugAlloc< U >& a )
-    :
-        m_dwAllocCount( a.GetAllocationCount() ),
-        m_dwBytesAllocated( a.GetBytesAllocated() )
+    DebugAlloc( const DebugAlloc< U >& )
     {
     }
 
@@ -154,9 +173,11 @@ public:
             throw std::bad_alloc();
         }
             
-        // Track statistics
-        ++m_dwAllocCount;
-        m_dwBytesAllocated += dwBytes;
+        // Track statistics. Count what the heap actually handed out, so the running
+        // total matches what HeapSize reports back in deallocate().
+        DebugAllocStats& stats = GetDebugAllocStats();
+        ++stats.dwAllocCount;
+        stats.dwBytesAllocated += HeapSize( GetProcessHeap(), 0, p );
         
         // Validate the heap
         #ifdef _DEBUG
@@ -182,12 +203,14 @@ public:
         // Find out the size of the allocation
         DWORD dwBytes = HeapSize( GetProcessHeap(), 0, p );
 
-        assert( m_dwBytesAllocated >= dwBytes );
-        m_dwBytesAllocated -= dwBytes;
+        DebugAllocStats& stats = GetDebugAllocStats();
+
+        assert( stats.dwBytesAllocated >= dwBytes );
+        stats.dwBytesAllocated -= dwBytes;
 
         // Track statistics
-        assert( m_dwAllocCount > 0 );
-        --m_dwAllocCount;
+        assert( stats.dwAllocCount > 0 );
+        --stats.dwAllocCount;
         
         // Free the memory
         HeapFree( GetProcessHeap(), 0, p );
@@ -198,19 +221,16 @@ public:
     //-------------------------------------------------------------------------
     DWORD GetAllocationCount() const
     {
-        return m_dwAllocCount;
+        return GetDebugAllocStats().dwAllocCount;
     }
     
     DWORD GetBytesAllocated() const
     {
-        return m_dwBytesAllocated;
+        return GetDebugAllocStats().dwBytesAllocated;
     }
     
 private:
 
-    DWORD m_dwAllocCount;       // Number of outstanding allocations
-    DWORD m_dwBytesAllocated;   // Number of bytes allocated
-    
     DebugAlloc< T >& operator=( const DebugAlloc< T >& );
     
 };

@@ -62,6 +62,9 @@ protected:
     DWORD               m_dwStreamBytesRemaining;                 // Remaining bytes in the loop play/loop region
     DWORD               m_dwLastPacketIndex;                      // When != -1, it tells the renderer to use the loop cache
     DWORD               m_dwPacketSize;                           // Size of packet to use
+    DWORD               m_dwAlignment;                            // Sector alignment every read must obey
+    DWORD               m_dwLeadIn;                               // Bytes read ahead of the play region to reach a sector boundary
+    DWORD               m_dwLoopLeadIn;                           // Bytes read ahead of the loop region to reach a sector boundary
     DWORD*              m_pdwPercentCompleted;                    // Pointer to percentage completed
 
     BOOL                m_bPaused;                                // Is stream paused?
@@ -88,6 +91,7 @@ public:
                         VOID*           pvLoopCache, 
                         CHAR*           pszFriendlyName, 
                         DWORD           dwPacketSize, 
+                        DWORD           dwAlignment,
                         DWORD*          pdwPercent );
 
     // Play control
