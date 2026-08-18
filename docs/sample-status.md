@@ -31,9 +31,17 @@ xemu's own F12 screenshots go to `D:\Git\xemu-devkit\screenshots`, which the
 sweep empties before each attempt so a grab can tell its own shot from a stale
 one.
 
-Latest full sweep after the calling-convention fix: **152 RUNS, 25 with no
-framework, 3 stopped in main, 1 emulator abort** — the whole
-UIX / SimpleVoice / FastLoad cluster is fixed.
+Latest full sweep (2026-08-18, `rxdk-sweep-furfix`, after the Fur shader fix +
+the RXDK-Tools resync): **153 RUNS, 25 no framework, 2 stopped in main, 1 emulator
+abort**; within RUNS the report now separates **51 FROZEN** (presented once, frame
+never changed) and **6 NO PICTURE** (reached the loop, never presented). Versus
+the prior `rxdk-sweep-postconv` baseline exactly one verdict moved and nothing
+regressed: **DMTool STOPPED IN MAIN → RUNS**. The bundler alpha/precision/quantiser
+changes and the shader-pipeline fix rebuilt all 190 projects with zero build or run
+regressions. **Fur is fixed and visually confirmed** — it now loads its 16 variant
+`.xvu` and renders the shell-fur teddy bears (was: "Could not find file
+[Shaders\fur_wind…xvu]" ×16). The UIX / SimpleVoice / FastLoad cluster remains
+fixed.
 
 ## Recently closed (for context, do not redo)
 
@@ -87,16 +95,19 @@ UIX / SimpleVoice / FastLoad cluster is fixed.
   loads the pre-computed `MoonPoly1`/`MoonPoly2`/`MoonColor` from `Resource.xpr`
   plus `MoonCoeffs.txt`, all of which ship. The 46 `TestImage*.bmp` are only read
   by the `#if`-disabled `ComputePolynomialTextures()` authoring path and exist in
-  no source tree — they are not the blank-quad cause. The blank quad is a shader /
-  render issue (PTM.xvu/PTM.xpu), to triage against the render tail.
+  no source tree — they are not the blank-quad cause. The sweep shows it never
+  presents at all (stuck on the BIOS splash, ~14.6s), so the real fault is in
+  `Initialize()` before the first present — a shader (PTM.xvu/PTM.xpu) or resource
+  step — not a blank quad and not media. Triage against the render/init tail.
 - **SpeechRecognition**'s `SampleSRBank_en.xsr` is still absent. Only the source
   grammar (`SampleSRBank_en.txt`) ships; the `.xsr` is a compiled bank and needs a
   speech-bank compiler we do not yet have — the one genuine remaining media gap.
 
 ### Behaviour to investigate
-- **DMTool** renders its text but no note quads and no audio level meters, and
-  the frame never changes. Check whether libdmusic delivers note PMSGs to the
-  title's `IDirectMusicTool`.
+- **DMTool** now **RUNS** (was *stopped in main*): it presents and renders its
+  text, but the frame never changes — still no note quads and no audio level
+  meters. Check whether libdmusic delivers note PMSGs to the title's
+  `IDirectMusicTool`.
 - **SilentAuth** is now *stopped in main*. Compare against the earlier baseline
   to decide whether this is a regression.
 - **UIX samples** present a menu once and then never change. That may be correct
