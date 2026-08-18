@@ -147,13 +147,19 @@ VOID Render()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: Vertices: main\n" );
+
     // Initialize Direct3D
     if( FAILED( InitD3D() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Vertices: FAILED at InitD3D() - exiting\n" );
         return;
+    }
 
     // Initialize the vertex buffer
     InitVB();
 
+    OutputDebugStringA( "SAMPLE: Vertices: render loop\n" );
     while( TRUE )
     {
         // Render the scene

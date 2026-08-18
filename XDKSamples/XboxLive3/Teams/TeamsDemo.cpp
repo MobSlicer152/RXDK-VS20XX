@@ -3924,10 +3924,16 @@ CXBoxSample::~CXBoxSample()
 //-------------------------------------------------------------------------------------
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: TEAMS: main\n" );
+
     CXBoxSample xbApp;
 
     if( FAILED( xbApp.Create() ) )
+    {
+        OutputDebugStringA( "SAMPLE: TEAMS: FAILED at Create - exiting\n" );
         return;
+    }
 
+    OutputDebugStringA( "SAMPLE: TEAMS: render loop\n" );
     xbApp.Run();
 }

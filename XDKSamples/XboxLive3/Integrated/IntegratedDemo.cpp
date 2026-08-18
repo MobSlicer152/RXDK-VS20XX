@@ -9245,8 +9245,14 @@ static CXBoxSample g_xbApp;
 //-------------------------------------------------------------------------------------
 VOID __cdecl main()
 {
-    if( FAILED( g_xbApp.Create() ) )
-        return;
+    OutputDebugStringA( "SAMPLE: INTEGRATED: main\n" );
 
+    if( FAILED( g_xbApp.Create() ) )
+    {
+        OutputDebugStringA( "SAMPLE: INTEGRATED: FAILED at Create - exiting\n" );
+        return;
+    }
+
+    OutputDebugStringA( "SAMPLE: INTEGRATED: render loop\n" );
     g_xbApp.Run();
 }

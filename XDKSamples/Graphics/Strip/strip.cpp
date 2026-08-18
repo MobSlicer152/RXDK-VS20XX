@@ -199,9 +199,16 @@ public:
 //-----------------------------------------------------------------------------
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: Strip: main\n" );
+
     CXBoxSample xbApp;
     if( FAILED( xbApp.Create() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Strip: FAILED at xbApp.Create() - exiting\n" );
         return;
+    }
+
+    OutputDebugStringA( "SAMPLE: Strip: render loop\n" );
     xbApp.Run();
 }
 

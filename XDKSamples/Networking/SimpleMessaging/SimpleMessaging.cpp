@@ -59,6 +59,8 @@ XONLINETASK_HANDLE hLogonTask;
 // Desc: Entry point to the program.
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: SimpleMessaging: main\n" );
+
     XONLINE_USER StoredUsers[XONLINE_MAX_STORED_ONLINE_USERS];
     DWORD dwNumStoredUsers;
     XONLINE_USER LogonUsers[XONLINE_MAX_LOGON_USERS]= {0};
@@ -291,6 +293,7 @@ VOID __cdecl main()
     
     // When a title is through with the XBox Live APIs, it can call XOnlineCleanup
     // to perform final cleanup for the online functions.
+    OutputDebugStringA( "SAMPLE: SimpleMessaging: exit\n" );
     XOnlineCleanup();
     
     ::Sleep( 10000 ); // Wait for any debug output to finish

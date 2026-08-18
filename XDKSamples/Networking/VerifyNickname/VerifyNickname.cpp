@@ -46,6 +46,8 @@ const WCHAR *g_strNickName = L"happy";
 //-----------------------------------------------------------------------------
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: VerifyNickname: main\n" );
+
     HRESULT hrLogon;
 
     // Sign in and verify g_strNickName
@@ -109,6 +111,8 @@ VOID __cdecl main()
         XOnlineTaskClose( g_hLogonTask );    
  
     XOnlineCleanup();
+
+    OutputDebugStringA( "SAMPLE: VerifyNickname: exit\n" );
 
     BootToDash( XLD_LAUNCH_DASHBOARD_MAIN_MENU );
 }

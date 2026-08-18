@@ -90,10 +90,16 @@ VOID Render()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: CreateDevice: main\n" );
+
     // Initialize Direct3D
     if( FAILED( InitD3D() ) )
+    {
+        OutputDebugStringA( "SAMPLE: CreateDevice: FAILED at InitD3D() - exiting\n" );
         return;
+    }
 
+    OutputDebugStringA( "SAMPLE: CreateDevice: render loop\n" );
     while( TRUE )
     {
         // Render the scene

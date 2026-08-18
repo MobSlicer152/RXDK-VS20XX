@@ -101,6 +101,24 @@ $rows = @(foreach ($name in ($bySample.Keys | Sort-Object)) {
         if ($missing) { $detail = "runs, but missing: $($missing -join ', ')" }
         elseif ($frozen[$name]) { $detail = 'frame never changed' }
     }
+    elseif ($t -match 'SAMPLE: [^\r\n]*FAILED at ([^\r\n]+?)(?:\s*-|\r|\n|$)') {
+        # A non-framework sample emitted its own diagnostic marker naming the phase it
+        # died in (see the SAMPLE: convention in the tutorial/online samples).
+        $verdict = 'INIT FAILED'
+        $detail = if ($missing) { "missing: $($missing -join ', ')" } else { "failed at $($Matches[1].Trim())" }
+    }
+    elseif ($t -match 'SAMPLE: [^\r\n]*:\s*exit') {
+        # A console/test sample ran its work and exited cleanly - not a hang.
+        $verdict = 'COMPLETED'
+        $detail = 'ran to completion and exited'
+    }
+    elseif ($t -match 'SAMPLE: [^\r\n]*:\s*render loop') {
+        # A non-framework sample confirmed it reached its render loop.
+        $verdict = 'RUNS'
+        if ($missing) { $detail = "runs, but missing: $($missing -join ', ')" }
+        elseif ($frozen[$name]) { $detail = 'frame never changed' }
+        else { $detail = 'running (no XBApp framework)' }
+    }
     elseif ($t -match 'RXDK\.start: main') {
         # no framework trace at all: either a title that does not use XBApp, or one that
         # wedged before saying anything. The screenshot is what separates the two.
@@ -176,7 +194,7 @@ if ($ref) {
 
 $rows | Export-Csv (Join-Path $OutDir 'report.csv') -NoTypeInformation
 
-$order = 'RUNS', 'RUNS (no framework)', 'RUNS (frozen)', 'INIT FAILED', 'CRASHED', 'HUNG IN MAIN', 'WILL NOT LOAD', 'NO BOOT', 'NO SERIAL OUTPUT'
+$order = 'RUNS', 'RUNS (no framework)', 'RUNS (frozen)', 'COMPLETED', 'INIT FAILED', 'CRASHED', 'HUNG IN MAIN', 'WILL NOT LOAD', 'NO BOOT', 'NO SERIAL OUTPUT'
 '==== verdicts ===='
 foreach ($v in $order) {
     $c = ($rows | Where-Object Verdict -eq $v | Measure-Object).Count

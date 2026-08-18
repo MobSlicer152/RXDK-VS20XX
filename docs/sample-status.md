@@ -118,7 +118,10 @@ fixed.
 ### Emulator gaps (not RXDK bugs)
 - **Render target aliased as a vertex stream** reads stale guest RAM, because
   xemu never writes rendered surfaces back. Affects PaintEffect and
-  DisplacementMap.
+  DisplacementMap. **Fire** is likely the same class: it RUNS at 60fps and draws
+  the skybox + ground, but the animated volumetric flames are absent — the fire
+  is a render-to-texture feedback loop, which the same "surfaces never written
+  back" gap would break. Confirm it is the effect (not a shader) before filing.
 - **`D3DFMT_V16U16`** is missing from xemu and aborts HighQualityBumpMapping.
   Our format table matches the leak byte-for-byte, so the choice is to add the
   format to xemu or accept that the sample cannot run.

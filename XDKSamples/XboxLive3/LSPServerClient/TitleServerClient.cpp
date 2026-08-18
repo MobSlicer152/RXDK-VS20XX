@@ -149,7 +149,9 @@ TSADDR             g_TitleServerAddress; // TitleServer address
 //-------------------------------------------------------------------------------------
 VOID __cdecl main()
 {
-    // Initialize Input Devices this is required for account enumeration on 
+    OutputDebugStringA( "SAMPLE: LSPSERVERCLIENT: main\n" );
+
+    // Initialize Input Devices this is required for account enumeration on
     // Memory Units
     // Note: using zero and null, respectively, as parameters allows this call to 
     //       initialize the maximum number of devices available
@@ -280,6 +282,7 @@ VOID __cdecl main()
 #endif // USE_LOCAL_MACHINE
 
     // reboots
+    OutputDebugStringA( "SAMPLE: LSPSERVERCLIENT: exit\n" );
     BootToDash( XLD_LAUNCH_DASHBOARD_MAIN_MENU );
 }
 

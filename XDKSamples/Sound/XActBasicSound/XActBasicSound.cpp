@@ -30,6 +30,8 @@
 //-----------------------------------------------------------------------------
 HRESULT __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: XActBasicSound: main\n" );
+
     HRESULT                 hr                  = S_OK;         // Return code
     IXACTEngine*            pXACT               = NULL;         // XACT Engine instance
     IXACTWaveBank*          pStreamingWaveBank  = NULL;         // XACT Wave Bank
@@ -52,6 +54,7 @@ HRESULT __cdecl main()
     if( FAILED( hr = XACTEngineCreate( &xrParams, &pXACT ) ) )
     {
         TRACE_FAIL( "XACTEngineCreate", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at XACTEngineCreate - exiting\n" );
         return hr;
     }
 
@@ -64,6 +67,7 @@ HRESULT __cdecl main()
     if( INVALID_HANDLE_VALUE == hStreamingWaveBank )
     {
         DbgPrint( "XActBasicSound: cannot open XactSounds_streaming.xwb, error %d\n", GetLastError() );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at CreateFile - exiting\n" );
         return XBAPPERR_MEDIANOTFOUND;
     }
 
@@ -78,6 +82,7 @@ HRESULT __cdecl main()
     if( FAILED( hr = pXACT->RegisterStreamedWaveBank( &wbParams, &pStreamingWaveBank ) ) )
     {
         TRACE_FAIL( "RegisterStreamedWaveBank", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at RegisterStreamedWaveBank - exiting\n" );
         return hr;
     }
 
@@ -89,6 +94,7 @@ HRESULT __cdecl main()
     if( FAILED( hr = XBUtil_LoadFile( "D:\\media\\sounds\\XactSounds.xsb", (VOID **)&pbSoundBank, &dwFileSize ) ) )
     {
         TRACE_FAIL( "loading XactSounds.xsb", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at XBUtil_LoadFile - exiting\n" );
         return hr;
     }
 
@@ -98,6 +104,7 @@ HRESULT __cdecl main()
     if( FAILED( hr = pXACT->CreateSoundBank( pbSoundBank, dwFileSize, &pSoundBank ) ) )
     {
         TRACE_FAIL( "CreateSoundBank", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at CreateSoundBank - exiting\n" );
         return hr;
     }
 
@@ -113,6 +120,7 @@ HRESULT __cdecl main()
                                                  NULL ) ) )
     {
         TRACE_FAIL( "XAudioDownloadEffectsImage", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at XAudioDownloadEffectsImage - exiting\n" );
         return E_FAIL;
     }
 
@@ -122,6 +130,7 @@ HRESULT __cdecl main()
     if( FAILED( hr = pXACT->CreateSoundSource( XACT_FLAG_SOUNDSOURCE_3D, &pSoundSource ) ) )
     {
         TRACE_FAIL( "CreateSoundSource", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at CreateSoundSource - exiting\n" );
         return hr;
     }
 
@@ -133,6 +142,7 @@ HRESULT __cdecl main()
                                                                    &dwSoundCueIndex ) ) )   // Pointer to the returned SoundCue index for friendly name
     {
         TRACE_FAIL( "GetSoundCueIndexFromFriendlyName(\"MusicMono\")", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at GetSoundCueIndexFromFriendlyName - exiting\n" );
         return hr;
     }
 
@@ -151,6 +161,7 @@ HRESULT __cdecl main()
     if( FAILED( hr = pXACT->RegisterNotification( &xactNotificationDesc ) ) )
     {
         TRACE_FAIL( "RegisterNotification", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at RegisterNotification - exiting\n" );
         return hr;
     }
 
@@ -158,6 +169,7 @@ HRESULT __cdecl main()
     if( FAILED( hr = pSoundBank->Play( dwSoundCueIndex, pSoundSource, XACT_FLAG_SOUNDCUE_AUTORELEASE, NULL) ) )
     {
         TRACE_FAIL( "Play", hr );
+        OutputDebugStringA( "SAMPLE: XActBasicSound: FAILED at Play - exiting\n" );
         return hr;
     }
 
@@ -185,6 +197,8 @@ HRESULT __cdecl main()
     SAFE_RELEASE( pXACT );
 
     TRACE( "done, rebooting" );
+
+    OutputDebugStringA( "SAMPLE: XActBasicSound: exit\n" );
 
     // Reboot the Xbox console
     XLaunchNewImage( NULL, NULL );

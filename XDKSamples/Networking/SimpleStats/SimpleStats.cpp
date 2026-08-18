@@ -119,11 +119,13 @@ XONLINETASK_HANDLE hLogonTask;
 // Desc: Entry point to the program.
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: SimpleStats: main\n" );
+
     XONLINE_USER StoredUsers[XONLINE_MAX_STORED_ONLINE_USERS];
     DWORD dwNumStoredUsers;
     XONLINE_USER LogonUsers[XONLINE_MAX_LOGON_USERS]= {0};
-    
-   // Initialize Input Devices this is required for account enumeration on 
+
+   // Initialize Input Devices this is required for account enumeration on
     // Memory Units
     XInitDevices( 0, NULL );
     
@@ -227,6 +229,7 @@ VOID __cdecl main()
     XOnlineCleanup();
     
     ::Sleep( 10000 ); // Wait for any debug output to finish
+    OutputDebugStringA( "SAMPLE: SimpleStats: exit\n" );
     BootToDash( XLD_LAUNCH_DASHBOARD_MAIN_MENU );
 }
 

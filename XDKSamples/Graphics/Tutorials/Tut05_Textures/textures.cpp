@@ -344,15 +344,24 @@ VOID Render()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: Textures: main\n" );
+
     // Initialize Direct3D
     if( FAILED( InitD3D() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Textures: FAILED at InitD3D() - exiting\n" );
         return;
+    }
 
     // Create the scene geometry
     if( FAILED( InitGeometry() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Textures: FAILED at InitGeometry() - exiting\n" );
         return;
+    }
 
     // Enter render loop
+    OutputDebugStringA( "SAMPLE: Textures: render loop\n" );
     while( TRUE )
     {
         Render();

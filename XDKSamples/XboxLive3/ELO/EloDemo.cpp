@@ -3388,10 +3388,16 @@ HRESULT CXBoxSample::Initialize()
 //-------------------------------------------------------------------------------------
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: ELO: main\n" );
+
     CXBoxSample xbApp;
 
     if( FAILED( xbApp.Create() ) )
+    {
+        OutputDebugStringA( "SAMPLE: ELO: FAILED at Create - exiting\n" );
         return;
+    }
 
+    OutputDebugStringA( "SAMPLE: ELO: render loop\n" );
     xbApp.Run();
 }

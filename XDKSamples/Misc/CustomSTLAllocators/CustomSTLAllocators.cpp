@@ -786,6 +786,8 @@ void TestPoolAlloc()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: CustomSTLAllocators: main\n" );
+
     OutputDebugStringA( "Custom STL Allocator tests started\n" );
 
     TestDefaultAlloc();    
@@ -797,5 +799,7 @@ void __cdecl main()
     TestPoolAlloc();
 
     OutputDebugStringA( "Custom STL Allocator tests complete\n" );
+
+    OutputDebugStringA( "SAMPLE: CustomSTLAllocators: exit\n" );
     for(;;);
 }

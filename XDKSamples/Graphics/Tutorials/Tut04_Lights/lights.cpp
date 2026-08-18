@@ -230,15 +230,24 @@ VOID Render()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: Lights: main\n" );
+
     // Initialize Direct3D
     if( FAILED( InitD3D() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Lights: FAILED at InitD3D() - exiting\n" );
         return;
+    }
 
     // Create the geometry
     if( FAILED( InitGeometry() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Lights: FAILED at InitGeometry() - exiting\n" );
         return;
+    }
 
     // Enter the render loop
+    OutputDebugStringA( "SAMPLE: Lights: render loop\n" );
     while( TRUE )
     {
         Render();

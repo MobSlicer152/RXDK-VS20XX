@@ -44,7 +44,9 @@ XONLINETASK_HANDLE g_hLogonTask;
 //-----------------------------------------------------------------------------
 VOID __cdecl main()
 {
-    // Initialize Input Devices this is required for account enumeration on 
+    OutputDebugStringA( "SAMPLE: SimpleAuth: main\n" );
+
+    // Initialize Input Devices this is required for account enumeration on
     // Memory Units
     XInitDevices( 0, NULL );
 
@@ -80,6 +82,7 @@ VOID __cdecl main()
     }
     
     XOnlineCleanup();    
+    OutputDebugStringA( "SAMPLE: SimpleAuth: exit\n" );
     BootToDash( XLD_LAUNCH_DASHBOARD_MAIN_MENU );
 }
 

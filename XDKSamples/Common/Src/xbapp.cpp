@@ -89,17 +89,17 @@ HRESULT CXBApplication::Create()
     OUTPUT_DEBUG_STRING( "XBApp: Creating Direct3D...\n" );
     if( NULL == ( m_pD3D = Direct3DCreate8(D3D_SDK_VERSION) ) )
     {
-        OUTPUT_DEBUG_STRING( "XBApp: Unable to create Direct3D!\n" );
+        OUTPUT_DEBUG_STRING( "XBApp: Unable to create Direct3D! - application will exit\n" );
         return E_FAIL;
     }
 
     // Create the device
     OUTPUT_DEBUG_STRING( "XBApp: Creating the D3D device...\n" );
-    if( FAILED( hr = m_pD3D->CreateDevice( 0, D3DDEVTYPE_HAL, NULL, 
-                                           D3DCREATE_HARDWARE_VERTEXPROCESSING, 
+    if( FAILED( hr = m_pD3D->CreateDevice( 0, D3DDEVTYPE_HAL, NULL,
+                                           D3DCREATE_HARDWARE_VERTEXPROCESSING,
                                            &m_d3dpp, &m_pd3dDevice ) ) )
     {
-        OUTPUT_DEBUG_STRING( "XBApp: Could not create D3D device!\n" );
+        XBUtil_DebugPrint( "XBApp: Could not create D3D device! (hr=0x%08X) - application will exit\n", hr );
         return hr;
     }
 
@@ -119,7 +119,7 @@ HRESULT CXBApplication::Create()
     OUTPUT_DEBUG_STRING( "XBApp: Creating gamepad devices...\n" );
     if( FAILED( hr = XBInput_CreateGamepads( &m_Gamepad ) ) )
     {
-        OUTPUT_DEBUG_STRING( "XBApp: Call to CreateGamepads() failed!\n" );
+        XBUtil_DebugPrint( "XBApp: Call to CreateGamepads() failed! (hr=0x%08X) - application will exit\n", hr );
         return hr;
     }
 
@@ -127,10 +127,11 @@ HRESULT CXBApplication::Create()
     OUTPUT_DEBUG_STRING( "XBApp: Initializing the app...\n" );
     if( FAILED( hr = Initialize() ) )
     {
-        OUTPUT_DEBUG_STRING( "XBApp: Call to Initialize() failed!\n" );
+        XBUtil_DebugPrint( "XBApp: Call to Initialize() failed! (hr=0x%08X) - application will exit\n", hr );
         return hr;
     }
 
+    OUTPUT_DEBUG_STRING( "XBApp: Create() succeeded.\n" );
     return S_OK;
 }
 

@@ -61,9 +61,11 @@ const DWORD USER_1 = 1;
 
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: SimpleTeams: main\n" );
+
     XONLINE_USER StoredUsers[XONLINE_MAX_STORED_ONLINE_USERS];
     DWORD dwNumStoredUsers;
-    
+
     // random seed for team name
     srand( time( 0 ) );
    
@@ -351,6 +353,7 @@ VOID __cdecl main()
     XOnlineCleanup();
     
     ::Sleep( 10000 ); // Wait for any debug output to finish
+    OutputDebugStringA( "SAMPLE: SimpleTeams: exit\n" );
     BootToDash( XLD_LAUNCH_DASHBOARD_MAIN_MENU );
 }
 

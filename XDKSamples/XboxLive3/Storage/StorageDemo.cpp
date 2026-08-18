@@ -4649,10 +4649,16 @@ CXBoxSample::~CXBoxSample()
 //-------------------------------------------------------------------------------------
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: STORAGE: main\n" );
+
     CXBoxSample xbApp;
 
     if( FAILED( xbApp.Create() ) )
+    {
+        OutputDebugStringA( "SAMPLE: STORAGE: FAILED at Create() - exiting\n" );
         return;
+    }
 
+    OutputDebugStringA( "SAMPLE: STORAGE: render loop\n" );
     xbApp.Run();
 }

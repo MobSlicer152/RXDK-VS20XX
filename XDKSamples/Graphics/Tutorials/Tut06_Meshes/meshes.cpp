@@ -496,15 +496,24 @@ VOID Render()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: Meshes: main\n" );
+
     // Initialize Direct3D
     if( FAILED( InitD3D() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Meshes: FAILED at InitD3D() - exiting\n" );
         return;
+    }
 
     // Create the scene geometry
     if( FAILED( InitGeometry() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Meshes: FAILED at InitGeometry() - exiting\n" );
         return;
+    }
 
     // Enter render loop
+    OutputDebugStringA( "SAMPLE: Meshes: render loop\n" );
     while( TRUE )
     {
         Render();

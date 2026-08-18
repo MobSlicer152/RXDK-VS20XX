@@ -54,8 +54,14 @@ Marketplace g_Marketplace;
 //-----------------------------------------------------------------------------
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: Marketplace: main\n" );
+
     if( FAILED( g_Marketplace.Create() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Marketplace: FAILED at Create - exiting\n" );
         return;
+    }
+    OutputDebugStringA( "SAMPLE: Marketplace: render loop\n" );
     g_Marketplace.Run();
 }
 

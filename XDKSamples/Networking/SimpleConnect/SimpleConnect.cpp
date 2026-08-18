@@ -83,6 +83,8 @@ XONLINETASK_HANDLE hLogonTask;
 //-----------------------------------------------------------------------------
 VOID __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: SimpleConnect: main\n" );
+
     XONLINE_USER StoredUsers[XONLINE_MAX_STORED_ONLINE_USERS];
     DWORD dwNumStoredUsers;
     XONLINE_USER LogonUsers[XONLINE_MAX_LOGON_USERS]= {0};
@@ -267,6 +269,7 @@ VOID __cdecl main()
     
     // When a title is through with the XBox Live APIs, it can call XOnlineCleanup
     // to perform final cleanup for the online functions.
+    OutputDebugStringA( "SAMPLE: SimpleConnect: exit\n" );
     XOnlineCleanup();
     
     BootToDash( XLD_LAUNCH_DASHBOARD_MAIN_MENU );

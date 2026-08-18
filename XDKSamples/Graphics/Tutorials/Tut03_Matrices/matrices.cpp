@@ -182,13 +182,19 @@ VOID Render()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: Matrices: main\n" );
+
     // Initialize Direct3D
     if( FAILED( InitD3D() ) )
+    {
+        OutputDebugStringA( "SAMPLE: Matrices: FAILED at InitD3D() - exiting\n" );
         return;
+    }
 
     // Initialize the vertex buffer
     InitGeometry();
 
+    OutputDebugStringA( "SAMPLE: Matrices: render loop\n" );
     while( TRUE )
     {
         // Render the scene

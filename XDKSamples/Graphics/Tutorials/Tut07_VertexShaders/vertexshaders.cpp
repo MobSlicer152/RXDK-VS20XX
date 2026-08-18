@@ -187,11 +187,17 @@ VOID Render()
 //-----------------------------------------------------------------------------
 void __cdecl main()
 {
+    OutputDebugStringA( "SAMPLE: VertexShaders: main\n" );
+
     // Initialize Direct3D
     if( FAILED( InitD3D() ) )
+    {
+        OutputDebugStringA( "SAMPLE: VertexShaders: FAILED at InitD3D() - exiting\n" );
         return;
+    }
 
     // Enter render loop
+    OutputDebugStringA( "SAMPLE: VertexShaders: render loop\n" );
     while( TRUE )
     {
         // Animate the scene
