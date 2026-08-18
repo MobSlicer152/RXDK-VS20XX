@@ -229,15 +229,19 @@ public static class XboxBuild
 
             foreach (var rdf in rdfs)
             {
-                log?.Invoke($"Compiling resources: {Path.GetFileName(rdf)}");
-                // Pass the bare filename (the working dir is already the .rdf's folder): bundler
-                // echoes the path it was given into the generated header, so an absolute one
-                // would bake this machine's paths into a checked-in file.
+                // Pass the bare filename as it is spelled on disk. The working dir is already the
+                // .rdf's folder, and the bundler derives both the header comment and the macro
+                // prefix from the spelling it is handed, so an absolute path would bake this
+                // machine's paths into a checked-in file and the project file's casing (imported
+                // vcxprojs disagree with the file system) would rename every macro the sources
+                // #include.
+                var name = OnDiskFileName(rdf);
+                log?.Invoke($"Compiling resources: {name}");
                 var result = await RunHostToolAsync(
-                    bundler, new[] { Path.GetFileName(rdf), "-q" }, log, Path.GetDirectoryName(rdf), ct);
+                    bundler, new[] { name, "-q" }, log, Path.GetDirectoryName(rdf), ct);
                 if (!result.Success)
                     throw new InvalidOperationException(
-                        $"bundler failed on {Path.GetFileName(rdf)} (exit {result.ExitCode})");
+                        $"bundler failed on {name} (exit {result.ExitCode})");
             }
         }
 
@@ -362,6 +366,19 @@ public static class XboxBuild
                 throw new InvalidOperationException(
                     $"xsasm failed on {Path.GetFileName(src)} (exit {result.ExitCode})");
         }
+    }
+
+    /// <summary>
+    /// The file's name as the file system spells it, which can differ in case from the path a
+    /// project file gave us. Falls back to the requested spelling if the file is gone.
+    /// </summary>
+    private static string OnDiskFileName(string path)
+    {
+        var dir = Path.GetDirectoryName(path);
+        var name = Path.GetFileName(path);
+        if (string.IsNullOrEmpty(dir)) return name;
+        var match = Directory.EnumerateFiles(dir, name).FirstOrDefault();
+        return match is null ? name : Path.GetFileName(match);
     }
 
     /// <summary>
