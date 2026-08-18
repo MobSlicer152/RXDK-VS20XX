@@ -68,11 +68,30 @@ UIX / SimpleVoice / FastLoad cluster is fixed.
 ## Open items
 
 ### Missing or incomplete media
-- **Fur** shader `.xvu` files and **SpeechRecognition**'s `SampleSRBank_en.xsr`
-  are still absent.
-- **PolynomialTextureMaps** needs 46 `TestImage` BMPs — this is why its quad
-  never rasterizes, so the media gap and the blank-quad symptom are one item.
-- **GlobalFX** references `d:\media\image.bin`, which is not on its disc.
+- **Fur — FIXED (regenerate the `.xvu` from source).** The title loads 16
+  combinatorial variants (`fur_wind%d_local%d_self%d.xvu` + `fin_*`), whose `.vsh`
+  sources ship but are nothing more than a few `#define`s and `#include "fur.vsh"`.
+  The shader pipeline's `HasShaderVersionLine` gate skipped any file whose first
+  non-comment line is a `#` directive, so it treated every variant as an include
+  fragment and only assembled the two base shaders. Fixed to also assemble a file
+  that pulls in a shader body via `#include`; a Fur build now emits all 16 variant
+  `.xvu` plus the bases. No binaries were scavenged — they come from the `.vsh`.
+- **GlobalFX — not a media gap.** `DownloadEffectsImage((CHAR*)"d:\\media\\image.bin")`
+  ignores its argument; the body `XLoadSection("DSPImage")` +
+  `XAudioDownloadEffectsImage("DSPImage", …, XAUDIO_DOWNLOADFX_XBESECTION, …)` loads
+  the DSP image from the embedded XBE section, which the project supplies via
+  `RxdkEmbed ..\Media\DSPImage.bin|DSPImage`. `DSPImage.bin` is present. If GlobalFX
+  fails it is DSP/APU emulation, not missing media — reclassify as an emulator gap.
+- **PolynomialTextureMaps — not a media gap.** `COMPUTE_POLYNOMIAL_TEXTURE_MAPS`
+  is `0` (matching both the 5849 XDK and the leak), so the `#else` branch runs: it
+  loads the pre-computed `MoonPoly1`/`MoonPoly2`/`MoonColor` from `Resource.xpr`
+  plus `MoonCoeffs.txt`, all of which ship. The 46 `TestImage*.bmp` are only read
+  by the `#if`-disabled `ComputePolynomialTextures()` authoring path and exist in
+  no source tree — they are not the blank-quad cause. The blank quad is a shader /
+  render issue (PTM.xvu/PTM.xpu), to triage against the render tail.
+- **SpeechRecognition**'s `SampleSRBank_en.xsr` is still absent. Only the source
+  grammar (`SampleSRBank_en.txt`) ships; the `.xsr` is a compiled bank and needs a
+  speech-bank compiler we do not yet have — the one genuine remaining media gap.
 
 ### Behaviour to investigate
 - **DMTool** renders its text but no note quads and no audio level meters, and

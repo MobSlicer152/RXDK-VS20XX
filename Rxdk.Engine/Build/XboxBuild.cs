@@ -426,9 +426,14 @@ public static class XboxBuild
     }
 
     /// <summary>
-    /// True when a .vsh/.psh begins (past comments/blank lines) with a shader version directive
-    /// such as vs.1.1 / xvs.1.1 / xvss.1.1 / ps.1.1 / xps.1.1. Files without one are shared
-    /// include fragments, not standalone shaders.
+    /// True when a .vsh/.psh is a standalone shader we should assemble to microcode, rather than
+    /// a shared include fragment. A shader qualifies either by beginning (past comments/blank
+    /// lines) with a version directive such as vs.1.1 / xvs.1.1 / xvss.1.1 / ps.1.1 / xps.1.1, or
+    /// by pulling in one via <c>#include</c>. The XDK's combinatorial variants (Fur's
+    /// <c>fur_wind0_local0_self0.vsh</c> and friends) are nothing but a few <c>#define</c>s and
+    /// <c>#include "fur.vsh"</c> — the include supplies the version line after preprocessing, and
+    /// the title loads exactly those variant .xvu, so they must be assembled even though the raw
+    /// file never starts with a version directive.
     /// </summary>
     private static bool HasShaderVersionLine(string file)
     {
@@ -438,7 +443,10 @@ public static class XboxBuild
             int c = line.IndexOf("//", StringComparison.Ordinal); if (c >= 0) line = line[..c];
             int s = line.IndexOf(';'); if (s >= 0) line = line[..s];
             line = line.Trim();
-            if (line.Length == 0 || line.StartsWith('#')) continue;
+            if (line.Length == 0) continue;
+            // An #include of the shader body makes this a compilable variant, not a fragment.
+            if (line.StartsWith("#include", StringComparison.OrdinalIgnoreCase)) return true;
+            if (line.StartsWith('#')) continue;   // other directives (#define, #ifdef) precede the body
             return Regex.IsMatch(line, @"^(xvss|xvsw|xvs|vs|xps|ps)\s*\.\s*\d", RegexOptions.IgnoreCase);
         }
         return false;
