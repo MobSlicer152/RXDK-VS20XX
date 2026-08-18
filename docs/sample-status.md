@@ -5,6 +5,32 @@ fixes that came out of it. Sweep entry points live in `scripts/`
 (`Invoke-SampleSweep.ps1`, `Invoke-SampleRunSweep.ps1`,
 `Get-SampleRunReport.ps1`).
 
+## Running a sweep, and where the evidence lands
+
+```powershell
+scripts\Invoke-SampleRunSweep.ps1 -OutDir "$env:TEMP\rxdk-sweep-<name>"
+scripts\Get-SampleRunReport.ps1   -OutDir "$env:TEMP\rxdk-sweep-<name>"
+```
+
+A full sweep takes roughly an hour and writes four files per sample into
+`-OutDir`: `<Sample>.a<attempt>.png` (the final-frame screenshot, which is the
+actual evidence — the serial trace alone cannot tell a rendering title from a
+wedged one), plus `.log`, `.stdout.txt` and `.stderr.txt`. `Get-SampleRunReport`
+re-reads those logs and screenshots to produce the verdicts, so classification
+can be revised without booting every title again.
+
+**Always pass `-OutDir`.** It defaults to `$env:TEMP\rxdk-runsweep` and the
+script wipes that directory on entry, so an unnamed run destroys the previous
+one's screenshots. The last trustworthy full runs are
+`$env:TEMP\rxdk-sweep-postconv` (182 shots, the post-calling-convention sweep
+this status reflects) and `$env:TEMP\rxdk-runsweep-honest` (189, the first with
+corrected verdicts). Being under `TEMP`, they are one cleanup away from gone —
+copy a run somewhere durable before relying on it as a baseline.
+
+xemu's own F12 screenshots go to `D:\Git\xemu-devkit\screenshots`, which the
+sweep empties before each attempt so a grab can tell its own shot from a stale
+one.
+
 Latest full sweep after the calling-convention fix: **152 RUNS, 25 with no
 framework, 3 stopped in main, 1 emulator abort** — the whole
 UIX / SimpleVoice / FastLoad cluster is fixed.
