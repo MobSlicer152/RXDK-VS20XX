@@ -296,6 +296,20 @@ INT CXBApplication::Run()
             fLastTime = m_fTime;
             dwFrames  = 0L;
             swprintf( m_strFrameRate, L"%0.02f fps", m_fFPS );
+
+            // Liveness heartbeat for the run-sweep: a title that keeps emitting
+            // this is animating; one whose loop wedged stops emitting it. Gated on
+            // the value changing (to hundredths, as displayed) so it is at most one
+            // line per second, not per frame. Real FPS jitters, so a live loop keeps
+            // logging while a static-but-alive scene still ticks; a frozen loop goes
+            // silent here because it never reaches this block again.
+            long fps100 = (long)( m_fFPS * 100.0f + 0.5f );
+            static long s_lastFps100 = -1;
+            if( fps100 != s_lastFps100 )
+            {
+                s_lastFps100 = fps100;
+                XBUtil_DebugPrint( "XBApp: fps %ld.%02ld\n", fps100 / 100, fps100 % 100 );
+            }
         }
 
         //-----------------------------------------
