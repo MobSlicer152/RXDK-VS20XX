@@ -125,6 +125,15 @@ $rows = @(foreach ($name in ($bySample.Keys | Sort-Object)) {
         $verdict = 'CRASHED'
         $detail = "bugcheck $($Matches[1]) during '$stage'"
     }
+    elseif ($t -match 'assertion "(.*?)" failed: file "([^"]*)", line (\d+)') {
+        # A debug ASSERT fired and the title _exit'd (leaving the BIOS logo up). That is a
+        # controlled failure with a named site - not a hang and not a clean exit - so surface the
+        # file:line. Common for the online samples, whose auth/login asserts with no Live server.
+        $verdict = 'ASSERTED'
+        $file = Split-Path ($Matches[2] -replace '/', '\') -Leaf
+        $cond = if ($Matches[1] -and $Matches[1] -ne 'FALSE') { " ($($Matches[1]))" } else { '' }
+        $detail = "ASSERT$cond at ${file}:$($Matches[3])"
+    }
     elseif ($t -match 'XBApp: Call to Initialize\(\) failed') {
         $verdict = 'INIT FAILED'
         $detail = if ($missing) { "missing: $($missing -join ', ')" } else { "failed at '$stage'" }
@@ -272,7 +281,7 @@ if ($bestN -ge 3 -and $launchRef) {
 
 $rows | Export-Csv (Join-Path $OutDir 'report.csv') -NoTypeInformation
 
-$order = 'RUNS', 'RUNS (no framework)', 'RUNS (frozen)', 'COMPLETED', 'EXITED TO LAUNCHER', 'INIT FAILED', 'CRASHED', 'HUNG IN MAIN', 'WILL NOT LOAD', 'NO BOOT', 'NO SERIAL OUTPUT'
+$order = 'RUNS', 'RUNS (no framework)', 'RUNS (frozen)', 'COMPLETED', 'EXITED TO LAUNCHER', 'ASSERTED', 'INIT FAILED', 'CRASHED', 'HUNG IN MAIN', 'WILL NOT LOAD', 'NO BOOT', 'NO SERIAL OUTPUT'
 '==== verdicts ===='
 foreach ($v in $order) {
     $c = ($rows | Where-Object Verdict -eq $v | Measure-Object).Count
