@@ -63,9 +63,7 @@ using System.Security.Cryptography;
 using System.Threading;
 
 public class XemuShot {
-    [DllImport("user32.dll")] static extern bool PrintWindow(IntPtr h, IntPtr hdc, uint flags);
     [DllImport("user32.dll")] static extern bool IsHungAppWindow(IntPtr h);
-    [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr h, out RECT r);
     [DllImport("user32.dll")] static extern bool SetForegroundWindow(IntPtr h);
     [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr h, int cmd);
     [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
@@ -75,19 +73,6 @@ public class XemuShot {
     [DllImport("user32.dll")] static extern bool BringWindowToTop(IntPtr h);
     [DllImport("user32.dll")] static extern IntPtr SetActiveWindow(IntPtr h);
     [DllImport("kernel32.dll")] static extern uint GetCurrentThreadId();
-    [StructLayout(LayoutKind.Sequential)] struct RECT { public int L, T, R, B; }
-
-    // True when the last grab had to scrape the window because xemu could not be
-    // brought to the foreground. A scrape of an occluded GPU-composited window comes
-    // back all black, which is indistinguishable from a title that never drew, so
-    // the caller has to know the difference rather than trust the pixels.
-    public static bool LastGrabWasScrape = false;
-
-    // Sticky across the grabs taken for one title, so a verdict can say the pixels are
-    // not trustworthy rather than reporting an occluded window as an unlit screen.
-    public static bool AnyGrabWasScrape = false;
-
-    public static void ResetScrape() { LastGrabWasScrape = false; AnyGrabWasScrape = false; }
 
     // Every way of photographing a window is synchronous against the window's own message
     // queue, so an emulator whose UI thread stops pumping blocks the grab with no timeout and
@@ -156,8 +141,6 @@ public class XemuShot {
     // that is occluded or mid-resize grabs as a flat white rectangle, and that reads as a
     // presented frame, so a title that never drew anything passes as if it had.
     static Bitmap Grab(IntPtr hwnd) {
-        LastGrabWasScrape = false;
-
         if (ShotDir.Length > 0 && Directory.Exists(ShotDir)) {
             DateTime since = DateTime.Now.AddSeconds(-1);
 
@@ -186,21 +169,11 @@ public class XemuShot {
             }
         }
 
-        LastGrabWasScrape = true;
-        AnyGrabWasScrape = true;
-
-        RECT r;
-        if (!GetWindowRect(hwnd, out r)) return null;
-        int ww = r.R - r.L, wh = r.B - r.T;
-        if (ww <= 0 || wh <= 0) return null;
-
-        Bitmap bmp = new Bitmap(ww, wh);
-        using (Graphics g = Graphics.FromImage(bmp)) {
-            IntPtr hdc = g.GetHdc();
-            PrintWindow(hwnd, hdc, 2);      // PW_RENDERFULLCONTENT
-            g.ReleaseHdc(hdc);
-        }
-        return bmp;
+        // F12-only: never scrape the window. PrintWindow captures the title bar, menu and
+        // toast as "lit" content and grabs occluded/mid-resize windows as a flat white
+        // rectangle - both of which read as a presented frame when nothing was drawn. If the
+        // F12 grab did not produce a PNG this tick, report no frame and let the caller retry.
+        return null;
     }
 
     // Returns "<md5 of pixels>:<lit samples out of 576>:<md5 of the sampled grid>".
@@ -216,9 +189,9 @@ public class XemuShot {
             if (w <= 0 || h <= 0) return "";
             if (!string.IsNullOrEmpty(path)) bmp.Save(path, ImageFormat.Png);
 
-            // skip the top eighth: on a window scrape that is the title bar, menu and overlay
-            // toast, which are lit no matter what the guest drew
-            int top = h / 8;
+            // The F12 grab is the guest framebuffer with no window chrome, so sample the whole
+            // frame - there is no title bar/menu to skip now that the window is never scraped.
+            int top = 0;
             int lit = 0;
             byte[] grid = new byte[24 * 24 * 3];
             for (int x = 0; x < 24; x++)
@@ -233,10 +206,25 @@ public class XemuShot {
             byte[] buf = new byte[d.Stride * h];
             Marshal.Copy(d.Scan0, buf, 0, buf.Length);
             bmp.UnlockBits(d);
+
+            // Uninitialized-VRAM detector: a title caught before it has settled presents the raw
+            // frame buffer, which is near-random per pixel. Count distinct 5-bit-per-channel colors
+            // as a fraction of all pixels: real frames (even noisy ones like a shadow-map view) stay
+            // under ~0.015, uninitialized VRAM runs 0.08-0.10. Reported in ten-thousandths so the
+            // caller can compare against a plain integer threshold (300 = 0.03).
+            int npix = buf.Length / 4;
+            bool[] seenColor = new bool[32768];
+            int uniqColor = 0;
+            for (int i = 0; i + 2 < buf.Length; i += 4) {
+                int key = ((buf[i + 2] >> 3) << 10) | ((buf[i + 1] >> 3) << 5) | (buf[i] >> 3);
+                if (!seenColor[key]) { seenColor[key] = true; uniqColor++; }
+            }
+            int garbage = npix > 0 ? (int)((long)uniqColor * 10000 / npix) : 0;
+
             using (MD5 md5 = MD5.Create()) {
                 string full = BitConverter.ToString(md5.ComputeHash(buf)).Replace("-", "");
                 string sig  = BitConverter.ToString(md5.ComputeHash(grid)).Replace("-", "");
-                return full + ":" + lit + ":" + sig;
+                return full + ":" + lit + ":" + sig + ":" + garbage;
             }
         }
     }
@@ -379,29 +367,43 @@ foreach ($iso in $isos) {
         # Reaching the render loop happens a beat before the first present, so a title caught
         # right on its verdict grabs as a black window. Give a running title a few chances to
         # put something on screen; anything already failed gets one shot and no waiting.
-        $frozen = ''; $shot = ''; $presented = ''; $frameSig = ''; $lit = 0
+        $frozen = ''; $shot = ''; $presented = ''; $frameSig = ''; $lit = 0; $lastGarb = 0
         # A title with no framework marker may still be presenting, so it gets the same
         # patience as a known-good one; anything that already failed gets one shot.
         $tries = if ($status -in 'RUNS', 'STOPPED IN MAIN') { 6 } else { 1 }
-        [XemuShot]::ResetScrape()
         $proc.Refresh()
         if (-not $proc.HasExited -and $proc.MainWindowHandle -ne 0 -and
             -not [XemuShot]::WindowHung($proc.MainWindowHandle)) {
             $first = ''
-            foreach ($t in 1..$tries) {
+            # A lit, not-previously-seen frame normally ends the wait. But a title that has reached
+            # its render loop yet not settled presents uninitialized VRAM (garbage > 300) - noise, not
+            # its real first frame. Keep waiting for that case specifically, up to $garbageTries, so a
+            # slow-starting sample (large scene to load) is captured settled instead of as garbage.
+            # Splash/black frames keep the original short $tries budget, so a title that never presents
+            # is not slowed down.
+            $garbageTries = if ($status -in 'RUNS', 'STOPPED IN MAIN') { 30 } else { 0 }
+            $t = 0; $garbSeen = 0; $lastGarb = 0
+            while ($true) {
+                $t++
                 $first = [XemuShot]::Take($proc.MainWindowHandle, $png)
                 if (-not $first) { break }
-                # keep waiting while the screen is unlit or still showing a frame an earlier title
-                # left on it: the render loop is reached a beat before the first present, so a
-                # title caught on its verdict grabs black or grabs the splash
-                $sig = ($first -split ':')[2]
-                if ([int]($first -split ':')[1] -ge 20 -and -not (Test-Seen $sig $name)) { break }
+                $p = $first -split ':'
+                $sig = $p[2]; $litNow = [int]$p[1]; $lastGarb = [int]$p[3]
+                if ($litNow -ge 20 -and -not (Test-Seen $sig $name)) {
+                    if ($lastGarb -le 300) { break }             # settled, real frame
+                    $garbSeen++
+                    if ($garbSeen -ge $garbageTries) { break }   # never settled; give up on garbage
+                    Start-Sleep -Milliseconds 1000; continue
+                }
+                if ($t -ge $tries) { break }
                 Start-Sleep -Milliseconds 1000
             }
             if ($first) {
-                $frameSig = ($first -split ':')[2]
-                $lit = [int]($first -split ':')[1]
-                $presented = ($lit -ge 20) -and -not (Test-Seen $frameSig $name)
+                $p = $first -split ':'
+                $frameSig = $p[2]
+                $lit = [int]$p[1]
+                $lastGarb = [int]$p[3]
+                $presented = ($lit -ge 20) -and -not (Test-Seen $frameSig $name) -and ($lastGarb -le 300)
                 if (-not $script:SeenFrames.ContainsKey($frameSig)) { $script:SeenFrames[$frameSig] = $name }
             }
             # a second frame a beat later: an identical pair means nothing is animating, which
@@ -440,9 +442,8 @@ foreach ($iso in $isos) {
     }
     # A title still showing the BIOS splash never got a frame of its own to the screen, which
     # matters most for one the log calls RUNS: it reached its render loop and drew nothing.
-    $scraped = [XemuShot]::AnyGrabWasScrape
-    if (-not $detail -and $presented -eq $false -and $scraped) {
-        $detail = 'no picture, but the grab was a window scrape - pixels not trustworthy'
+    if (-not $detail -and $presented -eq $false -and $lastGarb -gt 300) {
+        $detail = 'reached render loop but only presented uninitialized VRAM (never settled)'
     }
     if (-not $detail -and $presented -eq $false) { $detail = 'never presented (still on BIOS splash)' }
     if (-not $detail -and $status -like 'RUNS*' -and $frozen -eq $true) { $detail = 'frame did not change' }

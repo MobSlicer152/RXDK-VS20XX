@@ -47,6 +47,31 @@ public class Frame {
         for (int i = 0; i < a.Length; i++) s += Math.Abs(a[i] - b[i]);
         return (double)s / a.Length;
     }
+
+    // Grey print of just the static "XDK LAUNCHER" logo + subtitle corner (guest px
+    // x[45..285] y[55..112] of the 640x480 F12 frame). The launcher screen is static,
+    // so this region is pixel-identical whenever a title has dropped to the launcher -
+    // regardless of the file list, free-space or IP that vary elsewhere. Two frames whose
+    // corner prints match to ~0 are both sitting on the launcher.
+    public static byte[] Corner(string path) {
+        using (Bitmap src = new Bitmap(path)) {
+            if (src.Width != 640 || src.Height != 480) return null;   // only the clean F12 grab
+            using (Bitmap small = new Bitmap(60, 16)) {
+                using (Graphics g = Graphics.FromImage(small)) {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.DrawImage(src, new Rectangle(0, 0, 60, 16),
+                                new Rectangle(45, 55, 240, 57), GraphicsUnit.Pixel);
+                }
+                byte[] o = new byte[60 * 16];
+                for (int y = 0; y < 16; y++)
+                    for (int x = 0; x < 60; x++) {
+                        Color c = small.GetPixel(x, y);
+                        o[y * 60 + x] = (byte)((c.R * 30 + c.G * 59 + c.B * 11) / 100);
+                    }
+                return o;
+            }
+        }
+    }
 }
 '@
 
@@ -81,6 +106,14 @@ $rows = @(foreach ($name in ($bySample.Keys | Sort-Object)) {
 
     $missing = ([regex]::Matches($t, 'Could not find file \[([^\]]+)\]') |
         ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique)
+
+    # Liveness from the FPS heartbeat (see xbapp.cpp): the shared loop logs "XBApp: fps N.NN"
+    # once per second, gated on the value changing. Two or more distinct values means the loop
+    # kept iterating - a static-but-alive scene - as opposed to a title that presented one frame
+    # and then wedged, which stops emitting these. Absent entirely on pre-heartbeat builds.
+    $fpsVals = @([regex]::Matches($t, 'XBApp: fps ([\d.]+)') |
+        ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique)
+    $fpsAlive = $fpsVals.Count -ge 2
 
     # the last thing the framework announced before it died tells us which phase failed
     $stage = ''
@@ -142,7 +175,14 @@ $rows = @(foreach ($name in ($bySample.Keys | Sort-Object)) {
     elseif ($t) { $verdict = 'NO BOOT'; $detail = 'BIOS ran, title never started' }
     else { $verdict = 'NO SERIAL OUTPUT' }
 
-    if ($verdict -eq 'RUNS' -and $frozen[$name]) { $verdict = 'RUNS (frozen)' }
+    # A screenshot-static RUNS is only a real freeze if the loop also stopped ticking. With the
+    # heartbeat present, a static scene whose fps still changes stays a plain RUNS; only a static
+    # frame with a dead heartbeat is a freeze. Pre-heartbeat logs have no fps lines, so they fall
+    # through to the old screenshot-only behaviour.
+    if ($verdict -eq 'RUNS' -and $frozen[$name]) {
+        if ($fpsAlive) { $detail = 'static scene (render loop still ticking)' }
+        else { $verdict = 'RUNS (frozen)' }
+    }
 
     [pscustomobject]@{
         Sample  = $name
@@ -151,6 +191,7 @@ $rows = @(foreach ($name in ($bySample.Keys | Sort-Object)) {
         Missing = ($missing -join ', ')
         Detail  = $detail
         Screen  = ''
+        Alive   = $fpsAlive
         Shot    = if ($shotBySample.ContainsKey($name)) { $shotBySample[$name].Path } else { '' }
     }
 })
@@ -192,9 +233,46 @@ if ($ref) {
     }
 }
 
+# XDK Launcher detection. A title that never presented its own frame - because it stopped in
+# main, or ran and exited - leaves the static XDK Launcher on screen. Its logo corner is
+# pixel-identical across every such title (the file list/free-space/IP vary, the logo does not),
+# so the corner print shared by the most titles IS the launcher. A variance guard keeps a flat
+# BIOS/black frame, which many failures also share, from being mistaken for the textured logo.
+$corners = @{}
+foreach ($row in $rows) {
+    if (-not $row.Shot) { continue }
+    try { $c = [Frame]::Corner($row.Shot); if ($c) { $corners[$row.Sample] = $c } } catch { }
+}
+function Corner-Variance([byte[]]$p) {
+    if (-not $p) { return 0 }
+    $mean = 0.0; foreach ($b in $p) { $mean += $b }; $mean /= $p.Length
+    $v = 0.0; foreach ($b in $p) { $v += ($b - $mean) * ($b - $mean) }
+    return [math]::Sqrt($v / $p.Length)
+}
+$launchRef = $null; $bestN = -1
+foreach ($a in $corners.Keys) {
+    if ((Corner-Variance $corners[$a]) -lt 20) { continue }   # skip flat/black frames
+    $n = 0
+    foreach ($b in $corners.Keys) { if ([Frame]::Diff($corners[$a], $corners[$b]) -lt 4) { $n++ } }
+    if ($n -gt $bestN) { $bestN = $n; $launchRef = $corners[$a] }
+}
+if ($bestN -ge 3 -and $launchRef) {
+    foreach ($row in $rows) {
+        if (-not $corners.ContainsKey($row.Sample)) { continue }
+        if ([Frame]::Diff($launchRef, $corners[$row.Sample]) -ge 4) { continue }
+        # This frame is the XDK Launcher, so the title's own output is not on screen.
+        $row.Screen = 'xdk launcher'
+        switch -Wildcard ($row.Verdict) {
+            'RUNS*'         { $row.Verdict = 'EXITED TO LAUNCHER'; $row.Detail = 'ran, then returned to the XDK launcher' }
+            'HUNG IN MAIN'  { $row.Detail = 'reached main, never rendered (still on the XDK launcher)' }
+            'COMPLETED'     { $row.Detail = 'ran to completion and exited to the XDK launcher' }
+        }
+    }
+}
+
 $rows | Export-Csv (Join-Path $OutDir 'report.csv') -NoTypeInformation
 
-$order = 'RUNS', 'RUNS (no framework)', 'RUNS (frozen)', 'COMPLETED', 'INIT FAILED', 'CRASHED', 'HUNG IN MAIN', 'WILL NOT LOAD', 'NO BOOT', 'NO SERIAL OUTPUT'
+$order = 'RUNS', 'RUNS (no framework)', 'RUNS (frozen)', 'COMPLETED', 'EXITED TO LAUNCHER', 'INIT FAILED', 'CRASHED', 'HUNG IN MAIN', 'WILL NOT LOAD', 'NO BOOT', 'NO SERIAL OUTPUT'
 '==== verdicts ===='
 foreach ($v in $order) {
     $c = ($rows | Where-Object Verdict -eq $v | Measure-Object).Count
