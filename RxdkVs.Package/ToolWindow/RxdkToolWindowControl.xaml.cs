@@ -77,6 +77,7 @@ namespace RxdkVs.Package.ToolWindow
         private void OnImportProject(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdImportProject);
         // Setup
         private void OnInstallDotNet(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallDotNet);
+        private void OnInstallBuildTools(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallBuildTools);
         private void OnCompleteSetup(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdSetupPrerequisites);
         private void OnSettings(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdOpenSettings);
         private void OnRefresh(object sender, RoutedEventArgs e) => _ = RefreshAsync();

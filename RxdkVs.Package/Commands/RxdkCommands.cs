@@ -99,6 +99,7 @@ namespace RxdkVs.Package.Commands
             Add(CommandIds.CmdOpenExtensionDocs, () => OpenDocsAsync("rxdk-vs"));
             Add(CommandIds.CmdFetchLatestSdk, () => RunCliAsync("install-sdk", requiresProject: false));
             Add(CommandIds.CmdInstallDotNet, InstallDotNetAsync);
+            Add(CommandIds.CmdInstallBuildTools, InstallBuildToolsAsync);
             Add(CommandIds.CmdLaunchXbwatson, () => LaunchHostToolAsync("xbwatson"));
             Add(CommandIds.CmdLaunchXbNeighborhood, () => LaunchHostToolAsync("xbNeighborhood"));
             Add(CommandIds.CmdOpenXboxNeighborhood, OpenXboxNeighborhoodAsync);
@@ -497,6 +498,97 @@ namespace RxdkVs.Package.Commands
         // ---- Runtime / prerequisites / settings ----
 
         private Task InstallDotNetAsync() => RunCliAsync("install-tools", requiresProject: false);
+
+        // MSVC v143 C++ build tools component (VS 2022/2026). The RXDK native .vcxproj project
+        // system needs a C++ toolset installed to load projects and drive IntelliSense, even
+        // though the actual compile is delegated to Zig/clang.
+        private const string Vc143Component = "Microsoft.VisualStudio.Component.VC.Tools.x86.x64";
+
+        // Launch the Visual Studio Installer to add the C++ v143 build tools to the running VS.
+        // We don't install silently — the Installer's own UI (and the UAC prompt) let the user
+        // review and approve the change.
+        private async Task InstallBuildToolsAsync()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            try
+            {
+                var pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                var installerDir = Path.Combine(pf86, "Microsoft Visual Studio", "Installer");
+                var vsInstaller = Path.Combine(installerDir, "vs_installer.exe");
+                var vswhere = Path.Combine(installerDir, "vswhere.exe");
+                if (!File.Exists(vsInstaller))
+                {
+                    await ShowInfoAsync(
+                        "Could not find the Visual Studio Installer. Open it from the Start menu, click " +
+                        "Modify on your Visual Studio, and add the \"Desktop development with C++\" workload " +
+                        "(MSVC v143 build tools).");
+                    return;
+                }
+
+                // Resolve the running VS install path so we modify the right instance.
+                string installPath = null;
+                if (File.Exists(vswhere))
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = vswhere,
+                        Arguments = "-latest -property installationPath",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true,
+                    };
+                    using (var p = Process.Start(psi))
+                    {
+                        installPath = (await p.StandardOutput.ReadToEndAsync()).Trim();
+                        p.WaitForExit(10000);
+                    }
+
+                    // Already installed? vswhere returns a path only when the component is present.
+                    var checkPsi = new ProcessStartInfo
+                    {
+                        FileName = vswhere,
+                        Arguments = $"-latest -requires {Vc143Component} -property installationPath",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true,
+                    };
+                    using (var p = Process.Start(checkPsi))
+                    {
+                        var has = (await p.StandardOutput.ReadToEndAsync()).Trim();
+                        p.WaitForExit(10000);
+                        if (!string.IsNullOrEmpty(has))
+                        {
+                            await ShowInfoAsync("The MSVC v143 C++ build tools are already installed.");
+                            return;
+                        }
+                    }
+                }
+
+                var go = VsShellUtilities.ShowMessageBox(_package,
+                    "This opens the Visual Studio Installer to add the C++ build tools (MSVC v143)" +
+                    (string.IsNullOrEmpty(installPath) ? "." : $" to:\n{installPath}") +
+                    "\n\nYou'll be asked to elevate, and Visual Studio may need to close during the " +
+                    "install. Continue?",
+                    "RXDK", OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                if (go != (int)VSConstants.MessageBoxResult.IDYES) return;
+
+                var args = "modify --add " + Vc143Component + " --norestart";
+                if (!string.IsNullOrEmpty(installPath))
+                    args = $"modify --installPath \"{installPath}\" --add {Vc143Component} --norestart";
+
+                // UseShellExecute so the Installer can elevate (UAC). Its UI shows the summary and
+                // the user clicks Modify to apply.
+                Process.Start(new ProcessStartInfo(vsInstaller, args) { UseShellExecute = true });
+                await ShowInfoAsync(
+                    "The Visual Studio Installer is opening to add the C++ v143 build tools. Follow its " +
+                    "prompts, then restart Visual Studio.");
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorAsync($"Could not launch the Visual Studio Installer: {ex.Message}");
+            }
+        }
 
         private async Task SetupPrerequisitesAsync()
         {
