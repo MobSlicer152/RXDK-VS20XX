@@ -55,9 +55,16 @@ public static class ZigRuntime
             if (File.Exists(candidate))
                 return candidate;
 
-        // Fallback: `zig` on PATH (only when the managed install is absent).
+        // Fallback: `zig` on PATH — but ONLY when it is exactly the pinned version. A different
+        // Zig bundles a different Clang, which diverges from the SDK: its libc++ headers require
+        // Clang 21+ (pinned Zig 0.16.0), so an older PATH zig fails to compile them with cryptic
+        // "#pragma clang attribute … __visibility__" errors. Rejecting a mismatch here makes
+        // zig-status report "not installed" so setup installs the managed pinned Zig, instead of
+        // silently building with the wrong Clang. Use RXDK_ZIG to force a specific zig.
         var probe = await ProcessRunner.RunAsync("zig", new[] { "version" }, ct: ct);
-        return probe.Success ? "zig" : null;
+        if (probe.Success && probe.StdOut.Trim().Split('\n')[0].Trim() == ZigVersion)
+            return "zig";
+        return null;
     }
 
     public static async Task<bool> IsInstalledAsync(CancellationToken ct = default) =>
