@@ -138,6 +138,14 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <!-- Custom 'Xbox' MSBuild platform (a thin alias to x64). The "Install Xbox Platform"
+         command copies this into each VS install's VCTargetsPath\Platforms so RXDK .vcxproj
+         projects (Platform=Xbox) load and build. Shipped under the extension's VcPlatform\. -->
+    <Content Include="VcPlatform\**\*">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>VcPlatform\%(RecursiveDir)</VSIXSubPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

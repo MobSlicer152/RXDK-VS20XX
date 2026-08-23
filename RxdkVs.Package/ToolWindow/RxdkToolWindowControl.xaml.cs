@@ -78,6 +78,7 @@ namespace RxdkVs.Package.ToolWindow
         // Setup
         private void OnInstallDotNet(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallDotNet);
         private void OnInstallBuildTools(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallBuildTools);
+        private void OnInstallXboxPlatform(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallXboxPlatform);
         private void OnCompleteSetup(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdSetupPrerequisites);
         private void OnSettings(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdOpenSettings);
         private void OnRefresh(object sender, RoutedEventArgs e) => _ = RefreshAsync();

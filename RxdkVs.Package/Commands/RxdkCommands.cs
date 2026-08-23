@@ -100,6 +100,7 @@ namespace RxdkVs.Package.Commands
             Add(CommandIds.CmdFetchLatestSdk, () => RunCliAsync("install-sdk", requiresProject: false));
             Add(CommandIds.CmdInstallDotNet, InstallDotNetAsync);
             Add(CommandIds.CmdInstallBuildTools, InstallBuildToolsAsync);
+            Add(CommandIds.CmdInstallXboxPlatform, InstallXboxPlatformAsync);
             Add(CommandIds.CmdLaunchXbwatson, () => LaunchHostToolAsync("xbwatson"));
             Add(CommandIds.CmdLaunchXbNeighborhood, () => LaunchHostToolAsync("xbNeighborhood"));
             Add(CommandIds.CmdOpenXboxNeighborhood, OpenXboxNeighborhoodAsync);
@@ -503,6 +504,119 @@ namespace RxdkVs.Package.Commands
         // system needs a C++ toolset installed to load projects and drive IntelliSense, even
         // though the actual compile is delegated to Zig/clang.
         private const string Vc143Component = "Microsoft.VisualStudio.Component.VC.Tools.x86.x64";
+
+        // Install the custom 'Xbox' MSBuild platform into every VS install's VCTargetsPath so RXDK
+        // .vcxproj projects (Platform=Xbox) load and build. The platform is a thin alias to x64
+        // (RXDK titles are Makefile projects built by Rxdk.Cli; x64's toolset only drives
+        // IntelliSense). Writing under Program Files needs elevation, so the copy runs via a
+        // one-shot elevated PowerShell (UAC) — nothing is changed silently.
+        private async Task InstallXboxPlatformAsync()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            try
+            {
+                var vsixDir = Path.GetDirectoryName(typeof(RxdkCommands).Assembly.Location);
+                var src = Path.Combine(vsixDir ?? "", "VcPlatform", "Platforms", "Xbox");
+                if (!Directory.Exists(src))
+                {
+                    await ShowErrorAsync($"Xbox platform files not found in the extension ({src}). Reinstall the RXDK extension.");
+                    return;
+                }
+
+                var dests = FindXboxPlatformDests();
+                if (dests.Count == 0)
+                {
+                    await ShowInfoAsync("No Visual Studio C++ targets were found. Install the \"Desktop development with C++\" workload (Install C++ Build Tools), then try again.");
+                    return;
+                }
+
+                var list = string.Join("\n", dests.Select(d => "  • " + d));
+                var go = VsShellUtilities.ShowMessageBox(_package,
+                    "This installs the RXDK 'Xbox' build platform into Visual Studio so Xbox projects " +
+                    "load and build:\n\n" + list + "\n\nYou'll be asked to elevate (UAC). Continue?",
+                    "RXDK", OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                if (go != (int)VSConstants.MessageBoxResult.IDYES) return;
+
+                // Build a one-shot elevated script that robocopies the alias into each dest.
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine("$ErrorActionPreference='Continue'");
+                foreach (var d in dests)
+                {
+                    sb.AppendLine($"New-Item -ItemType Directory -Force -Path \"{d}\" | Out-Null");
+                    sb.AppendLine($"robocopy \"{src}\" \"{d}\" /E /NFL /NDL /NJH /NJS /R:1 /W:1 | Out-Null");
+                }
+                var script = Path.Combine(Path.GetTempPath(), "rxdk-install-xbox-platform.ps1");
+                File.WriteAllText(script, sb.ToString());
+
+                try
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{script}\"",
+                        UseShellExecute = true,
+                        Verb = "runas", // triggers the UAC elevation prompt
+                    };
+                    using (var p = Process.Start(psi))
+                    {
+                        await System.Threading.Tasks.Task.Run(() => p.WaitForExit());
+                    }
+                }
+                catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
+                {
+                    await ShowInfoAsync("Elevation was cancelled — the Xbox platform was not installed.");
+                    return;
+                }
+
+                var ok = dests.Any(d => File.Exists(Path.Combine(d, "Platform.props")));
+                if (ok)
+                    await ShowInfoAsync("The RXDK 'Xbox' platform is installed. Reload your solution (or restart Visual Studio) and Xbox projects will build.");
+                else
+                    await ShowErrorAsync("The Xbox platform copy did not complete. See if elevation was declined, then try again.");
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorAsync($"Could not install the Xbox platform: {ex.Message}");
+            }
+        }
+
+        // Every VS install's VCTargetsPath\Platforms\Xbox destination (dirs that ship an x64
+        // platform, which the Xbox alias imports). Uses vswhere to find all instances.
+        private static List<string> FindXboxPlatformDests()
+        {
+            var dests = new List<string>();
+            var pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            var vswhere = Path.Combine(pf86, "Microsoft Visual Studio", "Installer", "vswhere.exe");
+            if (!File.Exists(vswhere)) return dests;
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = vswhere,
+                    Arguments = "-all -prerelease -property installationPath",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                };
+                string outp;
+                using (var p = Process.Start(psi)) { outp = p.StandardOutput.ReadToEnd(); p.WaitForExit(10000); }
+                foreach (var line in outp.Split('\n'))
+                {
+                    var install = line.Trim();
+                    if (install.Length == 0) continue;
+                    var vcRoot = Path.Combine(install, "MSBuild", "Microsoft", "VC");
+                    if (!Directory.Exists(vcRoot)) continue;
+                    foreach (var vc in Directory.GetDirectories(vcRoot, "v1*"))
+                    {
+                        if (Directory.Exists(Path.Combine(vc, "Platforms", "x64")))
+                            dests.Add(Path.Combine(vc, "Platforms", "Xbox"));
+                    }
+                }
+            }
+            catch { /* return whatever we found */ }
+            return dests;
+        }
 
         // Launch the Visual Studio Installer to add the C++ v143 build tools to the running VS.
         // We don't install silently — the Installer's own UI (and the UAC prompt) let the user

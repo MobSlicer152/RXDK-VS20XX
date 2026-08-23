@@ -128,6 +128,7 @@
             <TextBlock Text="SETUP" Style="{StaticResource Section}" />
             <Button Style="{StaticResource Act}" Content="Install Prerequisites"       Click="OnCompleteSetup" />
             <Button Style="{StaticResource Act}" Content="Install C++ Build Tools (v143)" Click="OnInstallBuildTools" />
+            <Button Style="{StaticResource Act}" Content="Install Xbox Platform (VS)"      Click="OnInstallXboxPlatform" />
             <Button Style="{StaticResource Act}" Content="Install .NET 8 Runtime"      Click="OnInstallDotNet" />
             <Button Style="{StaticResource Act}" Content="Settings"                Click="OnSettings" />
             <Button Style="{StaticResource Act}" Content="Refresh"                 Click="OnRefresh" />
