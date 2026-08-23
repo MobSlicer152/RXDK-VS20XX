@@ -105,7 +105,7 @@
             <Button Style="{StaticResource Act}" Content="Open SDK Folder (include/lib)" Click="OnOpenSdkFolder" />
             <Button Style="{StaticResource Act}" Content="Open Host Tools Folder"        Click="OnOpenToolsFolder" />
             <Button Style="{StaticResource Act}" Content="Open Documentation Folder"     Click="OnOpenDocsFolder" />
-            <Button Style="{StaticResource Act}" Content="Download RXDK Samples"          Click="OnDownloadSamples" />
+            <Button x:Name="DownloadSamplesButton" Style="{StaticResource Act}" Content="Download RXDK Samples" Click="OnDownloadSamples" />
             <Button Style="{StaticResource Act}" Content="Open Samples Folder"            Click="OnOpenSamplesFolder" />
 
             <!-- Documentation -->

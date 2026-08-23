@@ -179,6 +179,16 @@ namespace RxdkVs.Package.ToolWindow
             if (ComponentsPanel == null) return;
             ComponentsPanel.Children.Clear();
 
+            // "Download RXDK Samples" is only useful before Samples exists — once installed, the
+            // COMPONENTS row handles updates and "Open Samples Folder" is what's wanted. Hide the
+            // download button when Samples is present (leave it visible if state is unknown).
+            if (DownloadSamplesButton != null)
+            {
+                var samples = rows.FirstOrDefault(r => r.Name == "Samples");
+                DownloadSamplesButton.Visibility = (samples != null && samples.Installed)
+                    ? Visibility.Collapsed : Visibility.Visible;
+            }
+
             if (rows.Count == 0)
             {
                 ComponentsPanel.Children.Add(new TextBlock
