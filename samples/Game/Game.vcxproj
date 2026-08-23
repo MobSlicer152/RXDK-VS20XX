@@ -25,7 +25,6 @@
     <PlatformToolset Condition="'$(PlatformToolset)' == ''">v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <Import Project="..\Rxdk.Xbox.props" />
   <PropertyGroup>
     <!-- Build config: source list is @(ClCompile) below; the rest are RXDK properties. -->
     <RxdkLibraries>libd3d8;libd3dx8;libxapi;libc;libcpp;libkernel</RxdkLibraries>

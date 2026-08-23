@@ -1,4 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  RXDK "Xbox" platform props.
+
+  A thin alias to the installed x64 platform (so the VC project system loads and IntelliSense
+  works), PLUS the RXDK build integration that used to be copied into every project as
+  Rxdk.Xbox.props. Installed into <VCTargetsPath>\Platforms\Xbox by the "Install Xbox Platform"
+  command and imported automatically for any Platform=Xbox / ConfigurationType=Makefile project —
+  so projects no longer carry per-project props/targets/rule files.
+
+  Visual Studio owns the project system (Solution Explorer, IntelliSense, Build menu, Error List,
+  F5), but the compile is delegated to Rxdk.Cli.exe, which runs the clean-room Zig pipeline against
+  our own headers/libs. cl.exe does NOT compile the title (our libs are GNU-ABI and can't be linked
+  by MSVC); it only powers the IDE.
+-->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Base platform behaviour + toolset/IntelliSense: alias x64. -->
   <Import Project="$(VCTargetsPath)\Platforms\x64\Platform.props" />
+
+  <PropertyGroup>
+    <!-- Marker so the RXDK VS extension recognizes this as an Xbox project and routes F5 /
+         the green Run button to the Xbox debug adapter instead of the Local Windows Debugger. -->
+    <RxdkXbox>true</RxdkXbox>
+
+    <!-- Rxdk.Cli.exe: env override wins, else the published ProgramData engine dir. -->
+    <RxdkCli Condition="'$(RXDK_TOOLS_DIR)' != ''">$(RXDK_TOOLS_DIR)\Rxdk.Cli.exe</RxdkCli>
+    <RxdkCli Condition="'$(RxdkCli)' == ''">$(ProgramData)\RXDK\engine\Rxdk.Cli.exe</RxdkCli>
+
+    <!-- Clean-room Zig SDK headers, for IntelliSense (the same dir the build compiles against). -->
+    <RxdkSdkInclude>$(ProgramData)\RXDK\sdk\include</RxdkSdkInclude>
+
+    <!-- Build flavor drives BOTH the SDK library variant (debug/release) and the optimize base. -->
+    <RxdkBuildFlavor Condition="'$(RxdkBuildFlavor)' == '' and '$(Configuration)' == 'Debug'">Debug</RxdkBuildFlavor>
+    <RxdkBuildFlavor Condition="'$(RxdkBuildFlavor)' == ''">Release</RxdkBuildFlavor>
+    <RxdkReleaseOptimize Condition="'$(RxdkReleaseOptimize)' == ''">ReleaseFast</RxdkReleaseOptimize>
+    <RxdkOptimize Condition="'$(RxdkBuildFlavor)' == 'Debug'">Debug</RxdkOptimize>
+    <RxdkOptimize Condition="'$(RxdkOptimize)' == ''">$(RxdkReleaseOptimize)</RxdkOptimize>
+    <RxdkConfig Condition="'$(RxdkBuildFlavor)' == 'Debug'">debug</RxdkConfig>
+    <RxdkConfig Condition="'$(RxdkConfig)' == ''">release</RxdkConfig>
+
+    <!-- Build-manifest defaults (a project overrides RxdkType/RxdkLibraries/etc. as needed). -->
+    <RxdkType Condition="'$(RxdkType)' == ''">executable</RxdkType>
+    <RxdkStackSize Condition="'$(RxdkStackSize)' == ''">65536</RxdkStackSize>
+    <RxdkImageDebug Condition="'$(RxdkImageDebug)' == ''">true</RxdkImageDebug>
+    <RxdkNoLogo Condition="'$(RxdkNoLogo)' == ''">true</RxdkNoLogo>
+    <RxdkNoLibWarn Condition="'$(RxdkNoLibWarn)' == ''">true</RxdkNoLibWarn>
+    <RxdkLimitMemory Condition="'$(RxdkLimitMemory)' == ''">false</RxdkLimitMemory>
+    <RxdkDontModifyHardDisk Condition="'$(RxdkDontModifyHardDisk)' == ''">false</RxdkDontModifyHardDisk>
+    <RxdkDontMountUtilityDrive Condition="'$(RxdkDontMountUtilityDrive)' == ''">false</RxdkDontMountUtilityDrive>
+    <RxdkFormatUtilityDrive Condition="'$(RxdkFormatUtilityDrive)' == ''">false</RxdkFormatUtilityDrive>
+    <RxdkUtilityDriveClusterSize Condition="'$(RxdkUtilityDriveClusterSize)' == ''">0</RxdkUtilityDriveClusterSize>
+
+    <!-- Deployment: pack an .iso via xdvdfs after the .xbe (set false to stop at the .xbe). -->
+    <RxdkCreateIso Condition="'$(RxdkCreateIso)' == ''">true</RxdkCreateIso>
+
+    <!-- Per-configuration output directory. Artifacts land here; the build manifest stays at the
+         stable out\ path below so referenced library projects are always found. -->
+    <RxdkOutDir Condition="'$(RxdkOutDir)' == ''">out\$(Configuration)</RxdkOutDir>
+    <OutDir>$(MSBuildProjectDirectory)\$(RxdkOutDir)\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\$(RxdkOutDir)\</IntDir>
+
+    <!-- Generated build manifest (stable out\ location, gitignored). -->
+    <RxdkManifestFile>$(MSBuildProjectDirectory)\out\rxdk.manifest.json</RxdkManifestFile>
+  </PropertyGroup>
+
+  <!-- Makefile-project command lines + IntelliSense standard. The build reads the manifest that
+       Platform.targets writes into out\ before the build runs. -->
+  <PropertyGroup>
+    <NMakeBuildCommandLine>"$(RxdkCli)" build --project-root "$(MSBuildProjectDirectory)" --optimize $(RxdkOptimize) --manifest "$(RxdkManifestFile)"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"$(RxdkCli)" build --project-root "$(MSBuildProjectDirectory)" --optimize $(RxdkOptimize) --manifest "$(RxdkManifestFile)"</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>if exist "$(MSBuildProjectDirectory)\out" rmdir /S /Q "$(MSBuildProjectDirectory)\out"</NMakeCleanCommandLine>
+    <!-- IntelliSense parses with the MSVC front-end; give it the MSVC standard switch. The clang
+         '-std=c++23' the real build uses is not understood here. -->
+    <AdditionalOptions>/std:c++latest</AdditionalOptions>
+  </PropertyGroup>
+
+  <!-- The IntelliSense NMake* properties depend on the project's per-config Rxdk* settings and must
+       be applied AFTER Microsoft.Cpp.targets, so import them via ForceImportAfterCppTargets. The
+       sheet lives in this platform folder (no per-project copy). -->
+  <PropertyGroup>
+    <ForceImportAfterCppTargets Condition="'$(ForceImportAfterCppTargets)' == ''">$(MSBuildThisFileDirectory)Rxdk.Xbox.IntelliSense.props</ForceImportAfterCppTargets>
+  </PropertyGroup>
+
+  <!-- Relabel the green Run button / debug-target dropdown to "Xbox Debugger (RXDK)". -->
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)RxdkDebugger.xml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DebuggerFlavor>RxdkXboxDebugger</DebuggerFlavor>
+  </PropertyGroup>
+
+  <!-- Every project reference is BUILD-ORDER-ONLY (RXDK links it via the manifest instead). -->
+  <ItemDefinitionGroup>
+    <ProjectReference>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
+  <!-- RXDK project property pages (Xbox Image / Deployment / Certificate / Title Info). -->
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)RxdkXboxBuild.xml"><Context>Project</Context></PropertyPageSchema>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)RxdkXboxImage.xml"><Context>Project</Context></PropertyPageSchema>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)RxdkXboxCertificate.xml"><Context>Project</Context></PropertyPageSchema>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)RxdkXboxTitleInfo.xml"><Context>Project</Context></PropertyPageSchema>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)RxdkXboxDeployment.xml"><Context>Project</Context></PropertyPageSchema>
+  </ItemGroup>
 </Project>

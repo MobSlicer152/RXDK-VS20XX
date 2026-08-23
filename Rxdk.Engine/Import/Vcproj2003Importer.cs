@@ -36,13 +36,6 @@ public static class Vcproj2003Importer
     /// <summary>A native &lt;ProjectReference&gt; to emit into the generated .vcxproj.</summary>
     public sealed record ProjRef(string Name, string RelPath);
 
-    // Scaffold files an RXDK project needs alongside the .vcxproj (copied from scaffoldDir).
-    private static readonly string[] ScaffoldFiles =
-    {
-        "Rxdk.Xbox.props", "Rxdk.Xbox.IntelliSense.props", "Rxdk.Xbox.targets", "RxdkDebugger.xml",
-        "RxdkXboxBuild.xml", "RxdkXboxImage.xml", "RxdkXboxDeployment.xml",
-        "RxdkXboxCertificate.xml", "RxdkXboxTitleInfo.xml",
-    };
 
     // XDK link library (base name, variant suffix stripped) -> RXDK libraries, semicolon
     // separated. null = no equivalent. The list form is there for one-to-many mappings; XFONT
@@ -165,21 +158,11 @@ public static class Vcproj2003Importer
         File.WriteAllText(vcxprojPath + ".filters", BuildFilters(sources, filters), new UTF8Encoding(false));
         result.VcxprojPath = vcxprojPath;
 
-        // ---- copy scaffolding ----
-        if (!string.IsNullOrWhiteSpace(scaffoldDir) && Directory.Exists(scaffoldDir))
-        {
-            foreach (var f in ScaffoldFiles)
-            {
-                var src = Path.Combine(scaffoldDir, f);
-                if (File.Exists(src)) File.Copy(src, Path.Combine(outDir, f), overwrite: true);
-                else result.Warnings.Add($"scaffold file missing: {f}");
-            }
-        }
-        else
-        {
-            result.Warnings.Add("no scaffold directory supplied - copy Rxdk.Xbox.props/.targets + the " +
-                "RxdkXbox*.xml rule files next to the generated .vcxproj (from any RXDK template) before opening it.");
-        }
+        // No scaffold is copied per-project: the RXDK MSBuild integration (props/targets +
+        // property-page rules) lives in the installed "Xbox" platform (VCTargetsPath\Platforms\Xbox),
+        // which the imported project inherits from Platform=Xbox. The scaffoldDir parameter is kept
+        // for API compatibility but is no longer used.
+        _ = scaffoldDir;
 
         if (result.UnmappedLibraries.Count > 0)
             result.Warnings.Add("libraries with no RXDK equivalent (dropped): " +
@@ -423,7 +406,6 @@ public static class Vcproj2003Importer
         sb.AppendLine("    <PlatformToolset Condition=\"'$(PlatformToolset)' == ''\">v143</PlatformToolset>");
         sb.AppendLine("  </PropertyGroup>");
         sb.AppendLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />");
-        sb.AppendLine("  <Import Project=\"Rxdk.Xbox.props\" />");
         sb.AppendLine("  <PropertyGroup>");
         if (isLib) sb.AppendLine("    <RxdkType>library</RxdkType>");
         sb.AppendLine($"    <NMakeOutput>$(MSBuildProjectDirectory)\\$(RxdkOutDir)\\$(MSBuildProjectName).{ext}</NMakeOutput>");
@@ -456,16 +438,13 @@ public static class Vcproj2003Importer
         EmitItems(sb, sources, "None");
         // Native project references (build order); RXDK links each child .lib via the manifest
         // projectReferences the targets derive from @(ProjectReference). The ItemDefinitionGroup in
-        // Rxdk.Xbox.props already marks these build-order-only, so no per-item metadata is needed.
+        // the Xbox platform already marks these build-order-only, so no per-item metadata is needed.
         if (projectRefs is { Count: > 0 })
         {
             sb.AppendLine("  <ItemGroup>");
             foreach (var r in projectRefs) sb.AppendLine($"    <ProjectReference Include=\"{Esc(r.RelPath)}\" />");
             sb.AppendLine("  </ItemGroup>");
         }
-        sb.AppendLine("  <ItemGroup>");
-        foreach (var f in ScaffoldFiles) sb.AppendLine($"    <None Include=\"{f}\" />");
-        sb.AppendLine("  </ItemGroup>");
         sb.AppendLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />");
         sb.AppendLine("</Project>");
         return sb.ToString();

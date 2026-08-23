@@ -168,21 +168,11 @@ function Invoke-Templates {
         Ok "  $($dir.Name) -> $display.zip"
     }
 
-    # Stage the canonical scaffold files (props/targets + property-page rules) into a Scaffold
-    # folder that the VSIX ships next to the DLL. The VS2003 importer copies these into each
-    # imported project (Rxdk.Cli import-vcproj --scaffold <this folder>).
-    $scaffoldOut = Join-Path $Repo 'RxdkVs.Package\Scaffold'
-    if (-not (Test-Path $scaffoldOut)) { New-Item -ItemType Directory -Path $scaffoldOut | Out-Null }
-    $scaffoldSrc = Join-Path $Repo 'samples'
-    $scaffoldFiles = @(
-        'Rxdk.Xbox.props', 'Rxdk.Xbox.IntelliSense.props', 'Rxdk.Xbox.targets', 'RxdkDebugger.xml',
-        'RxdkXboxBuild.xml', 'RxdkXboxImage.xml', 'RxdkXboxDeployment.xml', 'RxdkXboxCertificate.xml',
-        'RxdkXboxTitleInfo.xml'
-    )
-    foreach ($f in $scaffoldFiles) {
-        Copy-Item -Path (Join-Path $scaffoldSrc $f) -Destination (Join-Path $scaffoldOut $f) -Force
-    }
-    Ok "  scaffold ($($scaffoldFiles.Count) files) -> Scaffold\"
+    # NOTE: the RXDK MSBuild integration (props/targets + property-page rule XMLs) is no longer
+    # copied per-project. It lives in the installed "Xbox" platform
+    # (RxdkVs.Package\VcPlatform\Platforms\Xbox), which the VSIX ships and the "Install Xbox
+    # Platform" command copies into VCTargetsPath. Projects inherit it from Platform=Xbox, so
+    # there is no Scaffold\ staging step here anymore.
 }
 
 function Invoke-Vsix {

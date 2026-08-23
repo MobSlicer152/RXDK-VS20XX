@@ -19,15 +19,6 @@
   <TemplateContent>
     <Project TargetFileName="$safeprojectname$.vcxproj" File="FontScroller.vcxproj" ReplaceParameters="true">
       <ProjectItem ReplaceParameters="false" TargetFileName="$safeprojectname$.vcxproj.filters">FontScroller.vcxproj.filters</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="Rxdk.Xbox.props">Rxdk.Xbox.props</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="Rxdk.Xbox.IntelliSense.props">Rxdk.Xbox.IntelliSense.props</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="Rxdk.Xbox.targets">Rxdk.Xbox.targets</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="RxdkDebugger.xml">RxdkDebugger.xml</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="RxdkXboxImage.xml">RxdkXboxImage.xml</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="RxdkXboxBuild.xml">RxdkXboxBuild.xml</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="RxdkXboxDeployment.xml">RxdkXboxDeployment.xml</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="RxdkXboxCertificate.xml">RxdkXboxCertificate.xml</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="RxdkXboxTitleInfo.xml">RxdkXboxTitleInfo.xml</ProjectItem>
       <Folder Name="src" TargetFolderName="src">
         <ProjectItem ReplaceParameters="false" TargetFileName="main.cpp">main.cpp</ProjectItem>
       </Folder>

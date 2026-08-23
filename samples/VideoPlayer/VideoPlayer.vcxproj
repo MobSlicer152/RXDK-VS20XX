@@ -25,7 +25,6 @@
     <PlatformToolset Condition="'$(PlatformToolset)' == ''">v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <Import Project="..\Rxdk.Xbox.props" />
   <PropertyGroup>
     <RxdkLibraries>libxapi;libd3d8;libdsound;libxmv;libc;libcpp;libkernel</RxdkLibraries>
     <!-- Copied next to default.xbe on deploy (streamed at runtime). -->

@@ -252,15 +252,9 @@ namespace RxdkVs.Package.Commands
                 return; // cancelled
             }
 
-            // The scaffold files (props/targets + property-page rules) ship next to this DLL under
-            // Scaffold\ (staged by scripts/dev.ps1 templates). The importer copies them into outDir.
-            var scaffoldDir = Path.Combine(
-                Path.GetDirectoryName(typeof(RxdkCommands).Assembly.Location), "Scaffold");
-            if (!Directory.Exists(scaffoldDir))
-            {
-                await ShowErrorAsync($"Scaffold files not found ({scaffoldDir}). Rebuild/reinstall the RXDK extension.");
-                return;
-            }
+            // No scaffold to copy: the RXDK MSBuild integration lives in the installed "Xbox"
+            // platform (imported via Platform=Xbox), so imported projects need no per-project
+            // props/targets/rule files. (Run "Install Xbox Platform" once if it isn't installed.)
 
             // Create the output folder up front: the CLI runs with outDir as its working directory,
             // so it must exist before the process can even start (else "directory name is invalid").
@@ -277,7 +271,7 @@ namespace RxdkVs.Package.Commands
             // A .sln imports the whole multi-project graph (import-sln); a .vcproj imports one project.
             var isSolution = vcproj.EndsWith(".sln", StringComparison.OrdinalIgnoreCase);
             var verb = isSolution ? "import-sln" : "import-vcproj";
-            var argList = new List<string> { verb, "--in", vcproj, "--out", outDir, "--scaffold", scaffoldDir };
+            var argList = new List<string> { verb, "--in", vcproj, "--out", outDir };
             if (copySources) argList.Add("--copy-sources");
             var args = argList.ToArray();
             int rc;
