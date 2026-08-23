@@ -102,7 +102,13 @@ public sealed partial class XboxDebugAdapter
                 return;
             var tid = (int)ev.GetNumber("threadId");
             if (tid > 0) _stoppedThreadId = tid;
-            NotifyStopped(ev.Event == "singlestep" ? "step" : "breakpoint", _stoppedThreadId);
+            // This runs on the bridge's stdout-reader thread (BridgeClient OutputDataReceived). Sending
+            // the StoppedEvent from here means VS's follow-up threads/stackTrace/variables requests are
+            // serviced while we're still inside the reader callback, which can stall their bridge
+            // responses so the stop never surfaces in the IDE (a Continue that "doesn't re-hit"). Marshal
+            // the notify off the reader thread, mirroring RXDK-VSCode's setTimeout(0) deferral.
+            var reason = ev.Event == "singlestep" ? "step" : "breakpoint";
+            _ = Task.Run(() => NotifyStopped(reason, _stoppedThreadId));
         }
         else if (ev.Event == "debugstr")
         {
