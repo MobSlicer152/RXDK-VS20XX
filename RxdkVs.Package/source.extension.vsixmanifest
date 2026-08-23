@@ -8,7 +8,7 @@
               Publisher="Team Resurgent" />
     <DisplayName>RXDK for Visual Studio</DisplayName>
     <Description xml:space="preserve">Original Xbox development: host tools, project templates, build, deploy, and debug (headers/libs from RXDK-SDK). A Visual Studio port of the RXDK VS Code extension.</Description>
-    <MoreInfo>https://github.com/Team-Resurgent/RXDK-VSCode</MoreInfo>
+    <MoreInfo>https://github.com/Team-Resurgent/RXDK-VS20XX</MoreInfo>
     <License>LICENSE.txt</License>
     <Icon>Resources\extension-icon.png</Icon>
     <PreviewImage>Resources\extension-icon.png</PreviewImage>

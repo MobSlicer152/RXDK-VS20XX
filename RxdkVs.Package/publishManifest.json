@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": [ "coding", "debugging", "tools" ],
+  "identity": {
+    "internalName": "rxdk-vs20xx"
+  },
+  "overview": "marketplace-overview.md",
+  "priceCategory": "free",
+  "publisher": "team-resurgent",
+  "private": false,
+  "qna": true,
+  "repo": "https://github.com/Team-Resurgent/RXDK-VS20XX"
+}
