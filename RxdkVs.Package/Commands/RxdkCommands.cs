@@ -98,7 +98,7 @@ namespace RxdkVs.Package.Commands
             Add(CommandIds.CmdOpenSdkDocs, () => OpenDocsAsync("sdk"));
             Add(CommandIds.CmdOpenExtensionDocs, () => OpenDocsAsync("rxdk-vs"));
             Add(CommandIds.CmdFetchLatestSdk, () => RunCliAsync("install-sdk", requiresProject: false));
-            Add(CommandIds.CmdInstallDotNet, InstallDotNetAsync);
+            Add(CommandIds.CmdInstallDotNet, EnsureDotNet8Async);
             Add(CommandIds.CmdInstallBuildTools, InstallBuildToolsAsync);
             Add(CommandIds.CmdInstallXboxPlatform, InstallXboxPlatformAsync);
             Add(CommandIds.CmdLaunchXbwatson, () => LaunchHostToolAsync("xbwatson"));
@@ -492,7 +492,44 @@ namespace RxdkVs.Package.Commands
 
         // ---- Runtime / prerequisites / settings ----
 
-        private Task InstallDotNetAsync() => RunCliAsync("install-tools", requiresProject: false);
+        // The RXDK engine is framework-dependent .NET 8, so it needs the .NET 8 runtime present. We
+        // don't bundle a .NET installer; VS 2022 17.8+ ships .NET 8, so this checks and, when it's
+        // genuinely missing, guides the user to the official download (rather than silently no-op).
+        private async Task EnsureDotNet8Async()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            if (HasDotNet8())
+            {
+                await ShowInfoAsync("The .NET 8 runtime is present.");
+                return;
+            }
+            await ShowInfoAsync(
+                "The .NET 8 runtime wasn't found. Update Visual Studio to 17.8+ (it includes .NET 8), " +
+                "or install the .NET 8 Desktop Runtime from https://dotnet.microsoft.com/download/dotnet/8.0.");
+        }
+
+        // True when a .NET 8 shared runtime is discoverable where the framework-dependent apphost
+        // probes: DOTNET_ROOT, the default Program Files\dotnet, or the per-user %USERPROFILE%\.dotnet.
+        private static bool HasDotNet8()
+        {
+            var roots = new List<string>();
+            var dnr = Environment.GetEnvironmentVariable("DOTNET_ROOT");
+            if (!string.IsNullOrEmpty(dnr)) roots.Add(dnr);
+            roots.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet"));
+            roots.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet"));
+            foreach (var r in roots)
+            {
+                var shared = Path.Combine(r, "shared", "Microsoft.NETCore.App");
+                try
+                {
+                    if (Directory.Exists(shared) &&
+                        Directory.GetDirectories(shared).Any(d => Path.GetFileName(d).StartsWith("8.", StringComparison.Ordinal)))
+                        return true;
+                }
+                catch { /* ignore and try the next root */ }
+            }
+            return false;
+        }
 
         // MSVC v143 C++ build tools component (VS 2022/2026). The RXDK native .vcxproj project
         // system needs a C++ toolset installed to load projects and drive IntelliSense, even
@@ -698,12 +735,54 @@ namespace RxdkVs.Package.Commands
             }
         }
 
+        // One-click setup: installs everything RXDK needs, skipping whatever is already present, so
+        // it's cheap to re-run. Covers the VS-side prerequisites (C++ build tools + the Xbox
+        // platform) and the CLI-managed components (Zig, host tools, SDK, docs) in one action.
         private async Task SetupPrerequisitesAsync()
         {
-            // Install only what's missing: check each *-status first and skip the download when the
-            // component is already present, so this is cheap to re-run (won't re-fetch Zig etc.).
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             var cwd = Environment.CurrentDirectory;
+
+            // 0) .NET 8 runtime — the RXDK engine (Rxdk.Cli/Rxdk.Dap) is framework-dependent, so
+            //    everything below (which runs the CLI) needs it. VS 2022 17.8+ ships it, so it's
+            //    normally already present; we don't bundle an installer, so guide rather than fake it.
+            if (!HasDotNet8())
+            {
+                await ShowInfoAsync(
+                    "The .NET 8 runtime is required (the RXDK engine runs on it) and wasn't found. " +
+                    "Update Visual Studio to 17.8+ (it includes .NET 8), or install the .NET 8 Desktop " +
+                    "Runtime from https://dotnet.microsoft.com/download/dotnet/8.0, then re-run setup.");
+                return;
+            }
+
+            // 1) MSVC v143 C++ build tools — the VC project system needs them to load/build .vcxproj
+            //    and to host IntelliSense (the compile itself is Zig/clang). Opens the VS Installer
+            //    when missing; that's an external, interactive step, so if we kick it off the Xbox
+            //    platform install below is skipped this run (re-run setup after VS restarts).
+            var buildToolsPending = false;
+            if (!HasVc143())
+            {
+                await InstallBuildToolsAsync();
+                buildToolsPending = true;
+            }
+
+            // 2) The custom 'Xbox' MSBuild platform (copied into VCTargetsPath\Platforms\Xbox). Needs
+            //    the x64 platform (from the C++ tools) present, so only attempt it once those exist.
+            var platformInstalled = false;
+            if (!IsXboxPlatformInstalled())
+            {
+                if (buildToolsPending)
+                {
+                    // can't install into VCTargetsPath until the C++ tools finish installing
+                }
+                else
+                {
+                    await InstallXboxPlatformAsync();
+                    platformInstalled = IsXboxPlatformInstalled();
+                }
+            }
+
+            // 3) CLI-managed components: install only what's missing (won't re-fetch Zig etc.).
             var installed = 0;
             async Task EnsureAsync(string statusVerb, string installVerb)
             {
@@ -717,9 +796,60 @@ namespace RxdkVs.Package.Commands
             await EnsureAsync("tools-status", "install-tools");
             await EnsureAsync("sdk-status", "install-sdk");
             await EnsureAsync("docs-status", "install-docs");
-            await ShowInfoAsync(installed == 0
-                ? "RXDK is already set up — SDK, host tools, Zig and docs are all present."
-                : $"RXDK setup finished — installed {installed} missing component(s). Use the COMPONENTS section (Update / Update All) to update them later.");
+
+            // Single summary rather than a dialog per step.
+            if (buildToolsPending)
+            {
+                await ShowInfoAsync(
+                    "Finish the C++ build tools install in the Visual Studio Installer, restart Visual " +
+                    "Studio, then click Install Prerequisites again to install the Xbox platform and " +
+                    "any remaining components.");
+            }
+            else if (installed == 0 && !platformInstalled)
+            {
+                await ShowInfoAsync("RXDK is fully set up — C++ tools, Xbox platform, SDK, host tools, Zig and docs are all present.");
+            }
+            else
+            {
+                var parts = new List<string>();
+                if (platformInstalled) parts.Add("the Xbox platform");
+                if (installed > 0) parts.Add($"{installed} CLI component(s)");
+                await ShowInfoAsync("RXDK setup finished — installed " + string.Join(" and ", parts) +
+                    ". Use the COMPONENTS section (Update / Update All) to update them later.");
+            }
+        }
+
+        // True when the MSVC v143 C++ build tools component is present in any VS instance.
+        private static bool HasVc143()
+        {
+            var pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            var vswhere = Path.Combine(pf86, "Microsoft Visual Studio", "Installer", "vswhere.exe");
+            if (!File.Exists(vswhere)) return false;
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = vswhere,
+                    Arguments = $"-latest -requires {Vc143Component} -property installationPath",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                };
+                using (var p = Process.Start(psi))
+                {
+                    var outp = p.StandardOutput.ReadToEnd().Trim();
+                    p.WaitForExit(10000);
+                    return !string.IsNullOrEmpty(outp);
+                }
+            }
+            catch { return false; }
+        }
+
+        // True when the 'Xbox' platform is installed into at least one VS instance's VCTargetsPath.
+        private static bool IsXboxPlatformInstalled()
+        {
+            try { return FindXboxPlatformDests().Any(d => File.Exists(Path.Combine(d, "Platform.props"))); }
+            catch { return false; }
         }
 
         private async Task SetBuildTypeAsync()

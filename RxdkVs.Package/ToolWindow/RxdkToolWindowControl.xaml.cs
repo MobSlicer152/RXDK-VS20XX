@@ -75,10 +75,8 @@ namespace RxdkVs.Package.ToolWindow
         private void OnCycleGlobals(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdCycleGlobalsScope);
         // Project
         private void OnImportProject(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdImportProject);
-        // Setup
-        private void OnInstallDotNet(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallDotNet);
-        private void OnInstallBuildTools(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallBuildTools);
-        private void OnInstallXboxPlatform(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallXboxPlatform);
+        // Setup — one button orchestrates all installers; the individual commands
+        // (CmdInstallBuildTools/CmdInstallXboxPlatform/CmdInstallDotNet) remain on the RXDK menu.
         private void OnCompleteSetup(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdSetupPrerequisites);
         private void OnSettings(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdOpenSettings);
         private void OnRefresh(object sender, RoutedEventArgs e) => _ = RefreshAsync();
