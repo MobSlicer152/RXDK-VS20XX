@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using RxdkVs.Package.Commands;
 using RxdkVs.Package.Services;
@@ -276,15 +277,39 @@ namespace RxdkVs.Package.ToolWindow
             if (_package == null) return;
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             var cli = new CliRunner(_package);
+            var failed = false;
             foreach (var verb in verbs)
             {
                 SetStatus($"Running {verb}…");
-                try { await cli.RunAsync(new[] { verb }, Environment.CurrentDirectory); }
-                catch (Exception ex) { SetStatus($"{verb} failed: {ex.Message}"); }
+                try
+                {
+                    // CliRunner returns the CLI's exit code (non-zero = failure); it doesn't throw.
+                    if (await cli.RunAsync(new[] { verb }, Environment.CurrentDirectory) != 0)
+                    {
+                        failed = true;
+                        SetStatus($"{verb} failed — see the RXDK output window.");
+                        break;
+                    }
+                }
+                catch (Exception ex) { failed = true; SetStatus($"{verb} failed: {ex.Message}"); break; }
             }
             SetStatus("Refreshing versions…");
             await LoadComponentVersionsAsync();
-            SetStatus("Ready.");
+            if (failed)
+            {
+                SetStatus("Update failed — a tool may be in use. Restart Visual Studio and try again.");
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                VsShellUtilities.ShowMessageBox(_package,
+                    "An RXDK component update failed. If a host tool is in use (Visual Studio may " +
+                    "have launched xbox-launch during a run/deploy), close and reopen Visual Studio, " +
+                    "then run the update again. See the RXDK output window for details.",
+                    "RXDK", OLEMSGICON.OLEMSGICON_INFO, OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            }
+            else
+            {
+                SetStatus("Ready.");
+            }
         }
 
         /// <summary>Run the CLI and capture stdout (for quick, non-streaming verbs like `versions`).</summary>

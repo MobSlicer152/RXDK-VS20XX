@@ -66,6 +66,9 @@ public static partial class HostToolsInstaller
         var root = RxdkPaths.GetStagedToolsRoot();
         Directory.CreateDirectory(root);
 
+        // Clear any ".old-*" leftovers from a previous update that ran while a tool was in use.
+        SweepStaleUpdates(root);
+
         // 1. RXDK-Tools managed bundle.
         log?.Invoke("Resolving RXDK-Tools release…");
         var toolsRelease = await GitHubReleases.FetchReleaseAsync(RxdkToolsRepo, hostToolsTag, ct);
@@ -145,7 +148,7 @@ public static partial class HostToolsInstaller
                     if (!pick(normalized)) continue;
 
                     var target = Path.Combine(destRoot, PosixBasename(normalized));
-                    entry.ExtractToFile(target, overwrite: true);
+                    ExtractOverwriteResilient(entry, target);
                     wrote++;
                 }
             }
@@ -156,6 +159,62 @@ public static partial class HostToolsInstaller
         finally
         {
             try { File.Delete(tmp); } catch { /* ignore */ }
+        }
+    }
+
+    /// <summary>
+    /// Extract <paramref name="entry"/> to <paramref name="target"/>, overwriting even when the
+    /// existing file is locked by a running process. Updating tools while a host tool
+    /// (xbox-launch, xbWatson, the debug bridge, Neighborhood) is still running would otherwise
+    /// fail with a sharing violation. On NTFS a running executable can still be *renamed*, so we
+    /// move the in-use file aside and write the new one in its place; the orphaned .old file is
+    /// deleted once its process exits (swept on the next install).
+    /// </summary>
+    private static void ExtractOverwriteResilient(ZipArchiveEntry entry, string target)
+    {
+        try
+        {
+            entry.ExtractToFile(target, overwrite: true);
+            return;
+        }
+        catch (IOException) when (File.Exists(target))
+        {
+            // Fall through to the rename-aside path below.
+        }
+
+        var aside = $"{target}.old-{Guid.NewGuid():N}";
+        try
+        {
+            File.Move(target, aside);
+        }
+        catch (IOException ex)
+        {
+            throw new IOException(
+                $"Could not update {Path.GetFileName(target)} — it is in use (Visual Studio may " +
+                "have launched it). Close and reopen Visual Studio, then run the update again.", ex);
+        }
+
+        try
+        {
+            entry.ExtractToFile(target, overwrite: false);
+        }
+        catch
+        {
+            try { File.Move(aside, target); } catch { /* leave aside file; original is gone */ }
+            throw;
+        }
+
+        // Best-effort: gone now if the old process already exited, else swept next install.
+        try { File.Delete(aside); } catch { /* still locked by the running tool */ }
+    }
+
+    /// <summary>Delete stale ".old-*" files left by a previous in-use update (best-effort).</summary>
+    private static void SweepStaleUpdates(string root)
+    {
+        if (!Directory.Exists(root)) return;
+        foreach (var stale in Directory.EnumerateFiles(root, "*.old-*"))
+        {
+            try { File.Delete(stale); } catch { /* still locked */ }
         }
     }
 
