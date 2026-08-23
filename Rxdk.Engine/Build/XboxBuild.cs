@@ -15,6 +15,11 @@ public sealed class BuildOptions
     public RxdkOptimizeMode Optimize { get; init; } = RxdkOptimizeMode.Debug;
     /// <summary>Explicit manifest path (native .vcxproj flow). Null = ProjectRoot/rxdk.project.json.</summary>
     public string? ManifestPath { get; init; }
+    /// <summary>
+    /// Configuration name to select from a multi-config manifest (e.g. "Debug"/"Release"). Ignored
+    /// for a flat single-config manifest. Null = the manifest's defaultConfiguration (or first).
+    /// </summary>
+    public string? Configuration { get; init; }
     public Action<string>? Log { get; init; }
 }
 
@@ -56,13 +61,15 @@ public static class XboxBuild
     // Resolve a project's manifest: hand-authored rxdk.project.json if present, else the
     // build-generated out\rxdk.manifest.json (native .vcxproj flow — a referenced child
     // library project has no rxdk.project.json, only the manifest its own build emitted).
-    private static RxdkProjectManifest ReadManifest(string dir)
+    private static RxdkProjectManifest ReadManifest(string dir, string? configName = null)
     {
+        // A committed rxdk.project.json may be multi-config; resolve to a single effective view.
+        // (The generated out\rxdk.manifest.json is always single-config, so resolve is a no-op there.)
         if (File.Exists(Path.Combine(dir, RxdkManifestLoader.ManifestFileName)))
-            return RxdkManifestLoader.Load(dir);
+            return RxdkManifestLoader.Load(dir).ResolveConfiguration(configName);
         var generated = Path.Combine(dir, "out", "rxdk.manifest.json");
         if (File.Exists(generated))
-            return RxdkManifestLoader.LoadFile(generated);
+            return RxdkManifestLoader.LoadFile(generated).ResolveConfiguration(configName);
         throw new FileNotFoundException(
             $"No manifest for {dir} (expected rxdk.project.json or out\\rxdk.manifest.json). " +
             "Build the referenced library project first.");
@@ -595,7 +602,8 @@ public static class XboxBuild
         try
         {
             var projectRoot = Path.GetFullPath(opts.ProjectRoot);
-            var manifest = RxdkManifestLoader.Resolve(projectRoot, opts.ManifestPath);
+            var manifest = RxdkManifestLoader.Resolve(projectRoot, opts.ManifestPath)
+                .ResolveConfiguration(opts.Configuration);
             var projectName = manifest.Name;
             var outDir = SdkLayout.GetProjectOutDir(projectRoot, manifest);
             Directory.CreateDirectory(outDir);

@@ -27,7 +27,7 @@ if (args.Length == 0)
     Console.Error.WriteLine("  samples-status              Report staged samples presence");
     Console.Error.WriteLine("  update-sdk|update-docs|update-tools|update-samples   Update a staged component in place");
     Console.Error.WriteLine("  versions                    Print current/available version per component (SDK/Docs/Tools/Samples)");
-    Console.Error.WriteLine("  build --project-root <dir> [--optimize <mode>] [--compile-only]   Compile+link to .xbe");
+    Console.Error.WriteLine("  build --project-root <dir> [--optimize <mode>] [--configuration <name>] [--compile-only]   Compile+link to .xbe");
     Console.Error.WriteLine("  deploy --project-root <dir> [--console <ip>]     Copy build output to the devkit");
     Console.Error.WriteLine("  run --project-root <dir> [--console <ip>] [--reboot] [--go]   Launch the deployed title (--go = run without halting for a debugger)");
     Console.Error.WriteLine("  launch-xemu --project-root <dir> [--xemu-path <exe>] [--xemu-params <args>]   Build + boot the ISO in xemu");
@@ -294,12 +294,14 @@ static async Task<int> CmdBuild(Dictionary<string, string> opts)
     }
 
     opts.TryGetValue("manifest", out var manifestPath);
+    opts.TryGetValue("configuration", out var configName);
     var result = await XboxBuild.BuildAsync(new BuildOptions
     {
         ProjectRoot = root,
         Optimize = optimize,
         CompileOnly = opts.ContainsKey("compile-only"),
         ManifestPath = string.IsNullOrEmpty(manifestPath) ? null : manifestPath,
+        Configuration = string.IsNullOrEmpty(configName) ? null : configName,
         Log = msg => Console.WriteLine(msg),
     });
     if (!result.Ok)

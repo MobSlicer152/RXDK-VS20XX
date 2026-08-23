@@ -192,6 +192,76 @@ public sealed class RxdkProjectManifest
     /// </summary>
     public bool? Exceptions { get; set; }
 
+    /// <summary>
+    /// Per-configuration overrides keyed by config name (e.g. "Debug", "Release"). When present the
+    /// build resolves one configuration via <see cref="ResolveConfiguration"/>: the chosen config's
+    /// fields win, falling back to this (top-level) manifest for anything the config omits. A flat
+    /// manifest with no <c>configurations</c> is treated as a single implicit configuration, so
+    /// existing single-config manifests keep working unchanged.
+    /// </summary>
+    public Dictionary<string, RxdkProjectManifest>? Configurations { get; set; }
+
+    /// <summary>Configuration to build when the caller doesn't name one (else the first key).</summary>
+    public string? DefaultConfiguration { get; set; }
+
+    // ---- Multi-configuration resolution ----
+
+    /// <summary>
+    /// Collapse a (possibly multi-config) manifest to a single effective manifest for
+    /// <paramref name="configName"/>. Flat manifests return themselves. Otherwise the named config
+    /// (or <see cref="DefaultConfiguration"/>, or the first key) is merged over the shared
+    /// top-level fields. Config-name match is case-insensitive.
+    /// </summary>
+    public RxdkProjectManifest ResolveConfiguration(string? configName = null)
+    {
+        if (Configurations is null || Configurations.Count == 0)
+            return this;
+
+        string Pick()
+        {
+            foreach (var want in new[] { configName, DefaultConfiguration })
+                if (!string.IsNullOrEmpty(want))
+                    foreach (var k in Configurations.Keys)
+                        if (string.Equals(k, want, StringComparison.OrdinalIgnoreCase))
+                            return k;
+            return Configurations.Keys.First();
+        }
+
+        var over = Configurations[Pick()];
+        // Field-wise override: the config value wins, the shared top-level fills the gaps.
+        return new RxdkProjectManifest
+        {
+            Name = string.IsNullOrEmpty(over.Name) ? Name : over.Name,
+            Type = over.Type ?? Type,
+            Configuration = over.Configuration ?? Configuration,
+            Sources = over.Sources ?? Sources,
+            Libraries = over.Libraries ?? Libraries,
+            Resources = over.Resources ?? Resources,
+            LibraryPaths = over.LibraryPaths ?? LibraryPaths,
+            AdditionalLibraries = over.AdditionalLibraries ?? AdditionalLibraries,
+            ProjectReferences = over.ProjectReferences ?? ProjectReferences,
+            Prebuilt = over.Prebuilt ?? Prebuilt,
+            OutputDir = over.OutputDir ?? OutputDir,
+            DeployPaths = over.DeployPaths ?? DeployPaths,
+            Embed = over.Embed ?? Embed,
+            CreateIso = over.CreateIso ?? CreateIso,
+            ImageBuild = over.ImageBuild ?? ImageBuild,
+            IncludePaths = over.IncludePaths ?? IncludePaths,
+            PublicIncludePaths = over.PublicIncludePaths ?? PublicIncludePaths,
+            Defines = over.Defines ?? Defines,
+            CppStandard = over.CppStandard ?? CppStandard,
+            Exceptions = over.Exceptions ?? Exceptions,
+            // Resolved: no nested configurations remain.
+            Configurations = null,
+            DefaultConfiguration = null,
+        };
+    }
+
+    /// <summary>Configuration names this manifest offers (empty for a flat single-config manifest).</summary>
+    [JsonIgnore]
+    public IReadOnlyList<string> ConfigurationNames =>
+        Configurations is null ? System.Array.Empty<string>() : Configurations.Keys.ToList();
+
     // ---- Derived helpers (port of the free functions in projectTypes.ts) ----
 
     [JsonIgnore]
