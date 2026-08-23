@@ -492,9 +492,13 @@ namespace RxdkVs.Package.Commands
 
         // ---- Runtime / prerequisites / settings ----
 
-        // The RXDK engine is framework-dependent .NET 8, so it needs the .NET 8 runtime present. We
-        // don't bundle a .NET installer; VS 2022 17.8+ ships .NET 8, so this checks and, when it's
-        // genuinely missing, guides the user to the official download (rather than silently no-op).
+        // Per-user managed .NET root (mirrors RXDK-VSCode's ~/.dotnet). CliRunner.InjectDotnetRoot
+        // hands this to the spawned engine as DOTNET_ROOT when it carries a net8 runtime.
+        private static string ManagedDotnetRoot() =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet");
+
+        // The RXDK engine is framework-dependent .NET 8. Command-menu entry: ensure it's present,
+        // auto-installing to ~/.dotnet when missing, and report the outcome.
         private async Task EnsureDotNet8Async()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -503,9 +507,44 @@ namespace RxdkVs.Package.Commands
                 await ShowInfoAsync("The .NET 8 runtime is present.");
                 return;
             }
-            await ShowInfoAsync(
-                "The .NET 8 runtime wasn't found. Update Visual Studio to 17.8+ (it includes .NET 8), " +
-                "or install the .NET 8 Desktop Runtime from https://dotnet.microsoft.com/download/dotnet/8.0.");
+            var ok = await InstallDotNet8Async();
+            if (ok)
+                await ShowInfoAsync($"The .NET 8 runtime was installed to {ManagedDotnetRoot()}.");
+            else
+                await ShowErrorAsync(
+                    "Automatic .NET 8 install failed (see the RXDK output pane). Install the .NET 8 " +
+                    "Desktop Runtime manually from https://dotnet.microsoft.com/download/dotnet/8.0.");
+        }
+
+        // Download + run Microsoft's official dotnet-install script to drop a .NET 8 runtime under
+        // ~/.dotnet (per-user, no elevation). Must NOT go through the CLI (that's what needs .NET);
+        // runs powershell in-process and streams to the RXDK pane. Returns true if net8 is present after.
+        private async Task<bool> InstallDotNet8Async()
+        {
+            if (HasDotNet8()) return true;
+            var dir = ManagedDotnetRoot();
+            await _cli.LogAsync($"[RXDK] .NET 8 runtime not found — installing to {dir} (this can take a minute)...");
+            // Canonical one-liner: fetch dot.net/v1/dotnet-install.ps1 and run it for the net8 runtime.
+            var psScript =
+                "$ErrorActionPreference='Stop';" +
+                "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12;" +
+                "& ([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1').Content)) " +
+                $"-Runtime dotnet -Channel 8.0 -InstallDir '{dir}'";
+            var args = $"-NoProfile -ExecutionPolicy Bypass -Command \"{psScript}\"";
+            try
+            {
+                await _cli.RunProcessAsync("powershell.exe", args, Environment.CurrentDirectory);
+            }
+            catch (Exception ex)
+            {
+                await _cli.LogAsync($"[RXDK] .NET install error: {ex.Message}");
+                return false;
+            }
+            var ok = HasDotNet8();
+            await _cli.LogAsync(ok
+                ? "[RXDK] .NET 8 runtime ready."
+                : "[RXDK] .NET 8 runtime still not detected after install.");
+            return ok;
         }
 
         // True when a .NET 8 shared runtime is discoverable where the framework-dependent apphost
@@ -744,14 +783,16 @@ namespace RxdkVs.Package.Commands
             var cwd = Environment.CurrentDirectory;
 
             // 0) .NET 8 runtime — the RXDK engine (Rxdk.Cli/Rxdk.Dap) is framework-dependent, so
-            //    everything below (which runs the CLI) needs it. VS 2022 17.8+ ships it, so it's
-            //    normally already present; we don't bundle an installer, so guide rather than fake it.
-            if (!HasDotNet8())
+            //    everything below (which runs the CLI) needs it. VS 2022 17.8+ ships it; when it's
+            //    genuinely missing, auto-install a per-user copy to ~/.dotnet (CliRunner then points
+            //    the engine's DOTNET_ROOT there). If that fails, guide and stop.
+            if (!await InstallDotNet8Async())
             {
-                await ShowInfoAsync(
-                    "The .NET 8 runtime is required (the RXDK engine runs on it) and wasn't found. " +
-                    "Update Visual Studio to 17.8+ (it includes .NET 8), or install the .NET 8 Desktop " +
-                    "Runtime from https://dotnet.microsoft.com/download/dotnet/8.0, then re-run setup.");
+                await ShowErrorAsync(
+                    "The .NET 8 runtime is required (the RXDK engine runs on it) and the automatic " +
+                    "install failed — see the RXDK output pane. Update Visual Studio to 17.8+ (it " +
+                    "includes .NET 8), or install the .NET 8 Desktop Runtime from " +
+                    "https://dotnet.microsoft.com/download/dotnet/8.0, then re-run setup.");
                 return;
             }
 
