@@ -50,6 +50,23 @@ namespace RxdkVs.Package.Commands
         {
             if (IsStart(ref pguidCmdGroup, nCmdID) && !System.Diagnostics.Debugger.IsAttached)
             {
+                // Debug.Start is the SAME command as "Continue": when a session is already
+                // running/paused, the green button says Continue and F5 resumes. Only intercept
+                // to launch a fresh Xbox session from design mode; otherwise pass through so VS
+                // continues execution (intercepting here would prompt "stop debugging?" and try
+                // to rebuild).
+                try
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    var dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(EnvDTE._DTE)) as EnvDTE.DTE;
+                    if (dte?.Debugger != null &&
+                        dte.Debugger.CurrentMode != EnvDTE.dbgDebugMode.dbgDesignMode)
+                    {
+                        return (int)Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_NOTSUPPORTED;
+                    }
+                }
+                catch { /* if we can't tell, fall through to the normal design-mode path */ }
+
                 bool isXbox;
                 try
                 {
