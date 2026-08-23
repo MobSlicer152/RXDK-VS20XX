@@ -62,6 +62,8 @@ public static class SdkStaging
             await Git(new[] { "fetch", "--progress", "--depth", "1", "origin", branch },
                 cwd: staged, log: log, ct: ct);
             await Git(new[] { "-C", staged, "reset", "--hard", $"origin/{branch}" }, log: log, ct: ct);
+            // Drop untracked cruft left by a repo layout change so the staged mirror matches the repo.
+            await Git(new[] { "-C", staged, "clean", "-xdf" }, log: log, ct: ct);
             log?.Invoke($"RXDK: SDK updated at {staged}");
             return staged;
         }

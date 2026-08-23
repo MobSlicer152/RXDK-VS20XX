@@ -51,6 +51,11 @@ public static class SamplesStaging
             await Git(new[] { "fetch", "--progress", "--depth", "1", "origin", branch },
                 cwd: staged, log: log, ct: ct);
             await Git(new[] { "-C", staged, "reset", "--hard", $"origin/{branch}" }, log: log, ct: ct);
+            // reset --hard only touches tracked files; a repo layout change (e.g. flattening a
+            // project or removing per-project scaffold) leaves the old files behind as untracked
+            // cruft. Clean so the staged mirror matches the repo exactly (-x also clears stale
+            // build output/.vs so a re-clone and an update converge on the same tree).
+            await Git(new[] { "-C", staged, "clean", "-xdf" }, log: log, ct: ct);
             log?.Invoke($"RXDK: samples updated at {staged}");
             return staged;
         }
