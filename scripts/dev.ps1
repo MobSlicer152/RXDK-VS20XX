@@ -175,8 +175,9 @@ function Invoke-Templates {
     if (-not (Test-Path $scaffoldOut)) { New-Item -ItemType Directory -Path $scaffoldOut | Out-Null }
     $scaffoldSrc = Join-Path $Repo 'samples'
     $scaffoldFiles = @(
-        'Rxdk.Xbox.props', 'Rxdk.Xbox.targets', 'RxdkDebugger.xml', 'RxdkXboxBuild.xml',
-        'RxdkXboxImage.xml', 'RxdkXboxDeployment.xml', 'RxdkXboxCertificate.xml', 'RxdkXboxTitleInfo.xml'
+        'Rxdk.Xbox.props', 'Rxdk.Xbox.IntelliSense.props', 'Rxdk.Xbox.targets', 'RxdkDebugger.xml',
+        'RxdkXboxBuild.xml', 'RxdkXboxImage.xml', 'RxdkXboxDeployment.xml', 'RxdkXboxCertificate.xml',
+        'RxdkXboxTitleInfo.xml'
     )
     foreach ($f in $scaffoldFiles) {
         Copy-Item -Path (Join-Path $scaffoldSrc $f) -Destination (Join-Path $scaffoldOut $f) -Force

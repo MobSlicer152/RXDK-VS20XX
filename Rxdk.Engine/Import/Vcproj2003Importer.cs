@@ -39,7 +39,7 @@ public static class Vcproj2003Importer
     // Scaffold files an RXDK project needs alongside the .vcxproj (copied from scaffoldDir).
     private static readonly string[] ScaffoldFiles =
     {
-        "Rxdk.Xbox.props", "Rxdk.Xbox.targets", "RxdkDebugger.xml",
+        "Rxdk.Xbox.props", "Rxdk.Xbox.IntelliSense.props", "Rxdk.Xbox.targets", "RxdkDebugger.xml",
         "RxdkXboxBuild.xml", "RxdkXboxImage.xml", "RxdkXboxDeployment.xml",
         "RxdkXboxCertificate.xml", "RxdkXboxTitleInfo.xml",
     };

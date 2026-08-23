@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RXDK IntelliSense settings for native Xbox (.vcxproj Makefile) projects.
+
+  Imported via ForceImportAfterCppTargets (set in Rxdk.Xbox.props) so it evaluates AFTER the
+  .vcxproj's per-configuration Rxdk* settings. That ordering is the whole point: the NMake*
+  IntelliSense properties reference RxdkIncludePaths / RxdkPublicIncludePaths / RxdkDefines,
+  which the project sets after importing Rxdk.Xbox.props — building them there would capture
+  empty values and IntelliSense would not find the project's own headers.
+
+  The build itself does NOT use these; it reads the generated manifest. These only shape the
+  VS IntelliSense (MSVC front-end) view: squiggles, go-to-definition, completion.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <NMakePreprocessorDefinitions>_XBOX;XBOX;$(RxdkDefines);$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <!-- RxdkIncludePaths/RxdkPublicIncludePaths may be project-relative (e.g. the samples'
+         ..\..\..\Common\include); IntelliSense resolves relative entries against the project
+         directory. They are now populated because this sheet is imported after the per-config
+         settings (see the note in Rxdk.Xbox.props). -->
+    <NMakeIncludeSearchPath>$(RxdkSdkInclude);$(RxdkIncludePaths);$(RxdkPublicIncludePaths);$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <!-- Match the build's `-include picolibc.h` so IntelliSense has the libc baseline (NULL,
+         size_t, …) instead of cascading "unresolved" errors. -->
+    <NMakeForcedIncludes>picolibc.h;$(NMakeForcedIncludes)</NMakeForcedIncludes>
+  </PropertyGroup>
+</Project>

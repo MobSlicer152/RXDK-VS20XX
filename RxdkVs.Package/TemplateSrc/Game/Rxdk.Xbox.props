@@ -78,14 +78,21 @@
     <NMakeBuildCommandLine>"$(RxdkCli)" build --project-root "$(MSBuildProjectDirectory)" --optimize $(RxdkOptimize) --manifest "$(RxdkManifestFile)"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>"$(RxdkCli)" build --project-root "$(MSBuildProjectDirectory)" --optimize $(RxdkOptimize) --manifest "$(RxdkManifestFile)"</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>if exist "$(MSBuildProjectDirectory)\out" rmdir /S /Q "$(MSBuildProjectDirectory)\out"</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>_XBOX;XBOX;$(RxdkDefines);$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>$(RxdkSdkInclude);$(RxdkIncludePaths);$(RxdkPublicIncludePaths);$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
-    <!-- Match the build's `-include picolibc.h` so IntelliSense sees the libc baseline (NULL,
-         size_t, …); without it those cascade into "unresolved" squiggles even though the Zig
-         build (the source of truth) compiles fine. -->
     <!-- IntelliSense parses with the MSVC front-end, so give it the MSVC standard switch
          (/std:c++latest). The clang '-std=c++23' the real build uses is not understood here. -->
     <AdditionalOptions>/std:c++latest</AdditionalOptions>
+  </PropertyGroup>
+
+  <!-- The IntelliSense NMake* properties (include search path, defines, forced includes) depend
+       on the project's per-configuration Rxdk* settings (RxdkIncludePaths/RxdkDefines/…), which
+       the .vcxproj sets AFTER importing this sheet. If we built them here they'd capture the
+       (still-empty) values and IntelliSense would miss the project's own headers (e.g. the
+       sample framework in Common\include), producing a flood of false "cannot open source file"
+       and undefined-symbol squiggles even though the build is clean. So defer them to
+       Rxdk.Xbox.IntelliSense.props, imported via ForceImportAfterCppTargets — i.e. after the
+       per-config settings exist. -->
+  <PropertyGroup>
+    <ForceImportAfterCppTargets Condition="'$(ForceImportAfterCppTargets)' == ''">$(MSBuildThisFileDirectory)Rxdk.Xbox.IntelliSense.props</ForceImportAfterCppTargets>
   </PropertyGroup>
 
   <!-- Relabel the green Run button / debug-target dropdown to "Xbox Debugger (RXDK)".
