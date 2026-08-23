@@ -2,7 +2,7 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <!-- Id is stable across versions; the trailing GUID keeps it globally unique. -->
-    <Identity Id="RxdkVs.Package.75c31fb7-d310-4341-87ad-ead879d495ae"
+    <Identity Id="RxdkVs.Package.a069146d-e49e-4913-92cc-339495d0cd21"
               Version="1.0.1"
               Language="en-US"
               Publisher="Team Resurgent" />
