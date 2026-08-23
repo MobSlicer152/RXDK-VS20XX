@@ -54,6 +54,15 @@ public static class RxdkPaths
     public static string GetStagedDocsRoot() =>
         EnvOverride("RXDK_STAGED_DOCS") ?? GetDefaultStagedDocsRoot();
 
+    // ---- Staged samples (RXDK-Samples, …/RXDK/samples) ----
+
+    public static string GetDefaultStagedSamplesRoot() =>
+        Path.Combine(ProgramData(), "RXDK", "samples");
+
+    /// <summary>Effective staged samples root, honoring the RXDK_STAGED_SAMPLES override.</summary>
+    public static string GetStagedSamplesRoot() =>
+        EnvOverride("RXDK_STAGED_SAMPLES") ?? GetDefaultStagedSamplesRoot();
+
     // ---- Managed Zig install (…/RXDK/zig under LocalAppData) ----
 
     /// <summary>Persistent Zig install root.</summary>

@@ -24,12 +24,27 @@ public static partial class HostToolsInstaller
         "imagebld", "bundler", "xactbld", "xsasm", "xbcp", "xbox-launch", "xboxdbg-bridge", "xbwatson", "xdvdfs",
     };
 
+    /// <summary>Marker file recording which RXDK-Tools release version is installed.</summary>
+    private const string VersionMarkerFile = "VERSION";
+
     /// <summary>True when every required tool exists in the staged tools root.</summary>
     public static bool IsInstalled()
     {
         var root = RxdkPaths.GetStagedToolsRoot();
         return RequiredHostTools.All(t =>
             File.Exists(Path.Combine(root, RxdkPaths.HostToolExecutableName(t))));
+    }
+
+    /// <summary>
+    /// The installed host-tools version, from the VERSION marker written at install time.
+    /// Null when tools aren't installed or predate the marker.
+    /// </summary>
+    public static string? GetInstalledVersion()
+    {
+        var path = Path.Combine(RxdkPaths.GetStagedToolsRoot(), VersionMarkerFile);
+        if (!File.Exists(path)) return null;
+        var text = File.ReadAllText(path).Trim();
+        return string.IsNullOrWhiteSpace(text) ? null : text;
     }
 
     [GeneratedRegex(@"(^|/)tools/[^/]+$")]
@@ -89,6 +104,20 @@ public static partial class HostToolsInstaller
         if (missing.Count > 0)
             throw new InvalidOperationException(
                 $"Host tools install incomplete — missing: {string.Join(", ", missing)}");
+
+        // Record which version we installed so the tool window can compare current vs available.
+        // Prefer a published VERSION asset (a clean semver like v1.0.0); fall back to the tag.
+        try
+        {
+            var versionAsset = toolsRelease.Assets.FirstOrDefault(
+                a => string.Equals(a.Name, "VERSION", StringComparison.OrdinalIgnoreCase));
+            var version = versionAsset is not null
+                ? await GitHubReleases.GetAssetTextAsync(versionAsset, ct)
+                : toolsRelease.TagName;
+            if (!string.IsNullOrWhiteSpace(version))
+                File.WriteAllText(Path.Combine(root, VersionMarkerFile), version.Trim());
+        }
+        catch { /* marker is best-effort; never fail the install over it */ }
 
         log?.Invoke($"RXDK: host tools ready at {root}");
         return root;

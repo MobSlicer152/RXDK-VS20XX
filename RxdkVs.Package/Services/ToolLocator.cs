@@ -119,5 +119,6 @@ namespace RxdkVs.Package.Services
         public static string StagedSdkIncludeDir => Path.Combine(StagedSdkRoot, "include");
         public static string StagedToolsRoot => Path.Combine(StagedRoot, "tools");
         public static string StagedDocsRoot => Path.Combine(StagedRoot, "docs");
+        public static string StagedSamplesRoot => Path.Combine(StagedRoot, "samples");
     }
 }

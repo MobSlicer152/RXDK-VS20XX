@@ -72,4 +72,63 @@ public static class GitHubReleases
         return asset ?? throw new InvalidOperationException(
             $"{repo} {release.TagName} has no asset \"{assetName}\"");
     }
+
+    /// <summary>GET an asset's contents as text (used for small marker files like VERSION).</summary>
+    public static async Task<string> GetAssetTextAsync(GitHubAsset asset, CancellationToken ct = default)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, asset.BrowserDownloadUrl);
+        var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN")
+                    ?? Environment.GetEnvironmentVariable("GH_TOKEN");
+        if (!string.IsNullOrEmpty(token))
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        using var response = await Http.SendAsync(request, ct);
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadAsStringAsync(ct)).Trim();
+    }
+
+    /// <summary>GET a URL as trimmed text, returning null on any failure (used for raw VERSION reads).</summary>
+    public static async Task<string?> TryGetTextAsync(string url, CancellationToken ct = default)
+    {
+        try
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN")
+                        ?? Environment.GetEnvironmentVariable("GH_TOKEN");
+            if (!string.IsNullOrEmpty(token))
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            using var response = await Http.SendAsync(request, ct);
+            if (!response.IsSuccessStatusCode) return null;
+            var text = (await response.Content.ReadAsStringAsync(ct)).Trim();
+            return string.IsNullOrWhiteSpace(text) ? null : text;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Resolve the "available" version string for a release-distributed component (e.g. the host
+    /// tools). Prefers the text of a published <c>VERSION</c> asset on the latest release; falls
+    /// back to the release tag name. Returns null if the release can't be reached.
+    /// </summary>
+    public static async Task<string?> TryGetLatestVersionAsync(string repo, CancellationToken ct = default)
+    {
+        try
+        {
+            var release = await FetchReleaseAsync(repo, null, ct);
+            var versionAsset = release.Assets.FirstOrDefault(
+                a => string.Equals(a.Name, "VERSION", StringComparison.OrdinalIgnoreCase));
+            if (versionAsset is not null)
+            {
+                var text = await GetAssetTextAsync(versionAsset, ct);
+                if (!string.IsNullOrWhiteSpace(text)) return text.Trim();
+            }
+            return string.IsNullOrWhiteSpace(release.TagName) ? null : release.TagName.Trim();
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }

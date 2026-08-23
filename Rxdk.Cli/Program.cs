@@ -23,6 +23,10 @@ if (args.Length == 0)
     Console.Error.WriteLine("  zig-status                  Report the resolved Zig toolchain");
     Console.Error.WriteLine("  install-docs                Clone/update RXDK-Docs (SDK + extension help)");
     Console.Error.WriteLine("  docs-status                 Report staged docs presence");
+    Console.Error.WriteLine("  install-samples             Clone/update RXDK-Samples (ported XDK sample suite)");
+    Console.Error.WriteLine("  samples-status              Report staged samples presence");
+    Console.Error.WriteLine("  update-sdk|update-docs|update-tools|update-samples   Update a staged component in place");
+    Console.Error.WriteLine("  versions                    Print current/available version per component (SDK/Docs/Tools/Samples)");
     Console.Error.WriteLine("  build --project-root <dir> [--optimize <mode>] [--compile-only]   Compile+link to .xbe");
     Console.Error.WriteLine("  deploy --project-root <dir> [--console <ip>]     Copy build output to the devkit");
     Console.Error.WriteLine("  run --project-root <dir> [--console <ip>] [--reboot] [--go]   Launch the deployed title (--go = run without halting for a debugger)");
@@ -59,6 +63,19 @@ switch (command)
         return await CmdInstallDocs();
     case "docs-status":
         return CmdDocsStatus();
+    case "install-samples":
+    case "update-samples":
+        return await CmdInstallSamples();
+    case "samples-status":
+        return CmdSamplesStatus();
+    case "update-sdk":
+        return await CmdInstallSdk();
+    case "update-docs":
+        return await CmdInstallDocs();
+    case "update-tools":
+        return await CmdInstallTools(opts);
+    case "versions":
+        return await CmdVersions();
     case "build":
         return await CmdBuild(opts);
     case "deploy":
@@ -212,6 +229,38 @@ static int CmdDocsStatus()
     var present = DocsStaging.IsStagedDocsPresent();
     Console.WriteLine($"  docs (rxdk/toc.json): {present}");
     return present ? 0 : 1;
+}
+
+static async Task<int> CmdInstallSamples()
+{
+    try
+    {
+        var root = await SamplesStaging.EnsureAsync(log: msg => Console.WriteLine(msg));
+        Console.WriteLine($"Samples staged at: {root}");
+        return 0;
+    }
+    catch (Exception ex)
+    {
+        Console.Error.WriteLine($"install-samples failed: {ex.Message}");
+        return 1;
+    }
+}
+
+static int CmdSamplesStatus()
+{
+    Console.WriteLine($"staged samples root: {RxdkPaths.GetStagedSamplesRoot()}");
+    var present = SamplesStaging.IsStagedSamplesPresent();
+    Console.WriteLine($"  samples (RxdkSamples/): {present}");
+    return present ? 0 : 1;
+}
+
+static async Task<int> CmdVersions()
+{
+    // Machine-parseable: one "name<TAB>current<TAB>available" line per component. Missing = "-".
+    var components = await ComponentVersions.GetAllAsync();
+    foreach (var c in components)
+        Console.WriteLine($"{c.Name}\t{c.Current ?? "-"}\t{c.Available ?? "-"}");
+    return 0;
 }
 
 static async Task<int> CmdInstallZig()

@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using RxdkVs.Package.Commands;
+using RxdkVs.Package.Services;
 
 namespace RxdkVs.Package.ToolWindow
 {
@@ -70,7 +75,6 @@ namespace RxdkVs.Package.ToolWindow
         // Project
         private void OnImportProject(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdImportProject);
         // Setup
-        private void OnFetchSdk(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdFetchLatestSdk);
         private void OnInstallDotNet(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallDotNet);
         private void OnCompleteSetup(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdSetupPrerequisites);
         private void OnSettings(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdOpenSettings);
@@ -119,6 +123,189 @@ namespace RxdkVs.Package.ToolWindow
             SetStatus(string.IsNullOrEmpty(ip)
                 ? "No Xbox console configured. Click Set… to enter an IP."
                 : "Ready.");
+
+            await LoadComponentVersionsAsync();
+        }
+
+        // ---- Components: installed vs available versions + per-component update ----
+
+        // Display name -> the CLI verb that installs *or* updates it (both clone-or-fetch/reset).
+        private static readonly (string Name, string Verb)[] ComponentVerbs =
+        {
+            ("SDK", "install-sdk"),
+            ("Docs", "install-docs"),
+            ("Tools", "install-tools"),
+            ("Samples", "install-samples"),
+        };
+
+        private sealed class ComponentRow
+        {
+            public string Name;
+            public string Current;   // "-" when not installed
+            public string Available; // "-" when unknown/unreachable
+            public bool Installed => !string.IsNullOrEmpty(Current) && Current != "-";
+            public bool AvailableKnown => !string.IsNullOrEmpty(Available) && Available != "-";
+            public bool UpdateAvailable =>
+                Installed && AvailableKnown &&
+                !string.Equals(Norm(Current), Norm(Available), StringComparison.OrdinalIgnoreCase);
+            private static string Norm(string v) => (v ?? string.Empty).Trim().TrimStart('v', 'V');
+        }
+
+        /// <summary>Run `Rxdk.Cli versions`, parse the tab-separated rows, and render them.</summary>
+        private async System.Threading.Tasks.Task LoadComponentVersionsAsync()
+        {
+            var rows = new List<ComponentRow>();
+            string output = null;
+            try { output = await RunCliCaptureAsync("versions", timeoutMs: 30000); }
+            catch { /* rendered as unavailable below */ }
+
+            if (!string.IsNullOrEmpty(output))
+            {
+                foreach (var raw in output.Split('\n'))
+                {
+                    var parts = raw.TrimEnd('\r').Split('\t');
+                    if (parts.Length >= 3)
+                        rows.Add(new ComponentRow { Name = parts[0].Trim(), Current = parts[1].Trim(), Available = parts[2].Trim() });
+                }
+            }
+
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            RenderComponentRows(rows);
+        }
+
+        private void RenderComponentRows(List<ComponentRow> rows)
+        {
+            if (ComponentsPanel == null) return;
+            ComponentsPanel.Children.Clear();
+
+            if (rows.Count == 0)
+            {
+                ComponentsPanel.Children.Add(new TextBlock
+                {
+                    Style = (Style)FindResource("Muted"),
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = "Version info unavailable (is the RXDK engine installed?).",
+                });
+                if (UpdateAllButton != null) UpdateAllButton.IsEnabled = false;
+                return;
+            }
+
+            var anyActionable = false;
+            var muted = new SolidColorBrush(Color.FromArgb(0x99, 0x88, 0x88, 0x88));
+            foreach (var r in rows)
+            {
+                var row = new DockPanel { Margin = new Thickness(0, 3, 0, 3) };
+
+                var actionable = !r.Installed || r.UpdateAvailable;
+                anyActionable |= actionable;
+                if (actionable)
+                {
+                    var verb = ComponentVerbs.FirstOrDefault(c => c.Name == r.Name).Verb;
+                    var btn = new Button
+                    {
+                        Style = (Style)FindResource("Act"),
+                        Content = r.Installed ? "Update" : "Get",
+                        Width = 72,
+                        HorizontalContentAlignment = HorizontalAlignment.Center,
+                        Margin = new Thickness(8, 0, 0, 0),
+                        Tag = verb ?? "install-sdk",
+                    };
+                    btn.Click += OnUpdateComponent;
+                    DockPanel.SetDock(btn, Dock.Right);
+                    row.Children.Add(btn);
+                }
+
+                string status;
+                if (!r.Installed)
+                    status = r.AvailableKnown ? $"not installed · latest {r.Available}" : "not installed";
+                else if (r.UpdateAvailable)
+                    status = $"{r.Current} → {r.Available}";
+                else
+                    status = $"{r.Current} · up to date";
+
+                var tb = new TextBlock { VerticalAlignment = VerticalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis };
+                tb.Inlines.Add(new Run(r.Name + "  ") { FontWeight = FontWeights.SemiBold });
+                tb.Inlines.Add(new Run(status) { Foreground = muted });
+                row.Children.Add(tb);
+
+                ComponentsPanel.Children.Add(row);
+            }
+
+            if (UpdateAllButton != null) UpdateAllButton.IsEnabled = anyActionable;
+        }
+
+        private void OnUpdateComponent(object sender, RoutedEventArgs e)
+        {
+            var verb = (sender as Button)?.Tag as string;
+            if (string.IsNullOrEmpty(verb)) return;
+            _ = RunComponentVerbsAsync(new[] { verb });
+        }
+
+        private void OnUpdateAll(object sender, RoutedEventArgs e)
+        {
+            // Only act on components that are not up to date (missing or with a newer version).
+            var verbs = ComponentsPanel.Children.OfType<DockPanel>()
+                .SelectMany(d => d.Children.OfType<Button>())
+                .Select(b => b.Tag as string)
+                .Where(v => !string.IsNullOrEmpty(v))
+                .Distinct()
+                .ToArray();
+            if (verbs.Length == 0) return;
+            _ = RunComponentVerbsAsync(verbs);
+        }
+
+        private void OnDownloadSamples(object sender, RoutedEventArgs e) =>
+            _ = RunComponentVerbsAsync(new[] { "install-samples" });
+
+        private void OnOpenSamplesFolder(object sender, RoutedEventArgs e)
+        {
+            var path = ToolLocator.StagedSamplesRoot;
+            if (System.IO.Directory.Exists(path))
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("explorer.exe", $"\"{path}\"") { UseShellExecute = true });
+            }
+            else
+            {
+                SetStatus("Samples not downloaded yet. Click \"Download RXDK Samples\" first.");
+            }
+        }
+
+        /// <summary>Run one or more component install/update verbs (streamed to the RXDK output pane), then refresh.</summary>
+        private async System.Threading.Tasks.Task RunComponentVerbsAsync(string[] verbs)
+        {
+            if (_package == null) return;
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            var cli = new CliRunner(_package);
+            foreach (var verb in verbs)
+            {
+                SetStatus($"Running {verb}…");
+                try { await cli.RunAsync(new[] { verb }, Environment.CurrentDirectory); }
+                catch (Exception ex) { SetStatus($"{verb} failed: {ex.Message}"); }
+            }
+            SetStatus("Refreshing versions…");
+            await LoadComponentVersionsAsync();
+            SetStatus("Ready.");
+        }
+
+        /// <summary>Run the CLI and capture stdout (for quick, non-streaming verbs like `versions`).</summary>
+        private static async System.Threading.Tasks.Task<string> RunCliCaptureAsync(string verb, int timeoutMs)
+        {
+            var cliPath = ToolLocator.ResolveCli();
+            if (cliPath == null) return null;
+            var psi = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = cliPath,
+                Arguments = verb,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+            };
+            using (var p = System.Diagnostics.Process.Start(psi))
+            {
+                var output = await p.StandardOutput.ReadToEndAsync();
+                p.WaitForExit(timeoutMs);
+                return output;
+            }
         }
 
         private void SetStatus(string text)

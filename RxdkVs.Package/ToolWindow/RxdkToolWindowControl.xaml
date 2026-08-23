@@ -90,11 +90,23 @@
                 </StackPanel>
             </Border>
 
+            <!-- Components (installed vs available) -->
+            <DockPanel Margin="0,16,0,0">
+                <Button x:Name="UpdateAllButton" Style="{StaticResource Act}" Content="Update All"
+                        DockPanel.Dock="Right" Width="86" HorizontalContentAlignment="Center"
+                        Margin="8,0,0,0" Click="OnUpdateAll" />
+                <TextBlock Text="COMPONENTS" Style="{StaticResource Section}" Margin="2,0,0,0"
+                           VerticalAlignment="Center" />
+            </DockPanel>
+            <StackPanel x:Name="ComponentsPanel" Margin="0,4,0,0" />
+
             <!-- Folders -->
             <TextBlock Text="FOLDERS" Style="{StaticResource Section}" />
             <Button Style="{StaticResource Act}" Content="Open SDK Folder (include/lib)" Click="OnOpenSdkFolder" />
             <Button Style="{StaticResource Act}" Content="Open Host Tools Folder"        Click="OnOpenToolsFolder" />
             <Button Style="{StaticResource Act}" Content="Open Documentation Folder"     Click="OnOpenDocsFolder" />
+            <Button Style="{StaticResource Act}" Content="Download RXDK Samples"          Click="OnDownloadSamples" />
+            <Button Style="{StaticResource Act}" Content="Open Samples Folder"            Click="OnOpenSamplesFolder" />
 
             <!-- Documentation -->
             <TextBlock Text="DOCUMENTATION" Style="{StaticResource Section}" />
@@ -115,7 +127,6 @@
             <!-- Setup -->
             <TextBlock Text="SETUP" Style="{StaticResource Section}" />
             <Button Style="{StaticResource Act}" Content="Install Prerequisites"   Click="OnCompleteSetup" />
-            <Button Style="{StaticResource Act}" Content="Fetch Latest RXDK-SDK"   Click="OnFetchSdk" />
             <Button Style="{StaticResource Act}" Content="Install .NET 8 Runtime"  Click="OnInstallDotNet" />
             <Button Style="{StaticResource Act}" Content="Settings"                Click="OnSettings" />
             <Button Style="{StaticResource Act}" Content="Refresh"                 Click="OnRefresh" />
