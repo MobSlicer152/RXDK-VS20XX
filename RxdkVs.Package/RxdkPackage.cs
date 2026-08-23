@@ -58,6 +58,11 @@ namespace RxdkVs.Package
         {
             await base.InitializeAsync(cancellationToken, progress);
 
+            // Stage the bundled net8 engine into %ProgramData%\RXDK\engine so the build props
+            // (RxdkCli) and the debug launcher find it — otherwise a fresh install can't compile
+            // or debug a sample. Runs here on the background thread; best-effort (never throws).
+            Services.EngineStager.StageBundledEngine();
+
             // Command wiring must happen on the UI thread (OleMenuCommandService is a UI service).
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await RxdkCommands.InitializeAsync(this);

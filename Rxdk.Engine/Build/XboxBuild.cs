@@ -601,6 +601,30 @@ public static class XboxBuild
             Directory.CreateDirectory(outDir);
             var optimize = opts.Optimize;
 
+            // Prerequisite preflight: on a machine where nothing has been set up yet (a user who
+            // just opened a sample and hit Build), fail with one clear, actionable message instead
+            // of a cryptic header/tool-not-found error partway through. Only the tools actually
+            // needed for THIS build are required — a library / compile-only build never links, so
+            // it doesn't need imagebld.
+            {
+                var missing = new List<string>();
+                if (!File.Exists(Path.Combine(SdkLayout.GetSdkIncludeDir(), "d3d8.h")))
+                    missing.Add("SDK headers/libraries");
+                if (await ZigRuntime.ResolveZigExecutableAsync(opts.ZigExecutable, ct) is null)
+                    missing.Add("Zig toolchain");
+                var needsHostTools = !opts.CompileOnly && !manifest.IsLibrary;
+                if (needsHostTools && !File.Exists(RxdkPaths.ResolveHostTool("imagebld")))
+                    missing.Add("host tools (imagebld, xdvdfs, …)");
+                if (missing.Count > 0)
+                {
+                    var msg = $"RXDK isn't set up yet — missing: {string.Join("; ", missing)}. " +
+                              "Open the RXDK tool window (View > Other Windows > RXDK) and click " +
+                              "\"Install Prerequisites\", then build again.";
+                    log?.Invoke(msg);
+                    return new BuildResult(false, outDir, msg);
+                }
+            }
+
             // Resource pipeline: compile any .rdf files with the bundler BEFORE the C/C++
             // sources, so the generated Resource.h exists at compile time and the packed .xpr
             // is written (to the out_packedresource path named in the .rdf) for deploy.
