@@ -187,4 +187,31 @@
   -->
   <Import Project="$(PkgMicrosoft_VSSDK_BuildTools)\tools\vssdk\Microsoft.VsSDK.targets"
           Condition="Exists('$(PkgMicrosoft_VSSDK_BuildTools)\tools\vssdk\Microsoft.VsSDK.targets')" />
+
+  <!--
+    Bundle the matching net8 engine (Rxdk.Cli + Rxdk.Dap, framework-dependent) into the VSIX
+    under tools\. ToolLocator resolves <extensionDir>\tools FIRST, so the installed extension
+    always runs the CLI/adapter that shipped with it — a VSIX upgrade can never leave a stale
+    %ProgramData%\RXDK\engine copy in charge (the bug this fixes). Set BundleEngine=false to skip
+    the publish for a faster inner loop (dev.ps1 keeps %ProgramData%\RXDK\engine current as the
+    fallback). Hooks GetVsixSourceItems, the VSSDK's extension point for computed VSIX content.
+  -->
+  <PropertyGroup>
+    <BundleEngine Condition="'$(BundleEngine)' == ''">true</BundleEngine>
+    <EngineStageDir>$(IntermediateOutputPath)engine\</EngineStageDir>
+  </PropertyGroup>
+  <Target Name="PublishRxdkEngine" BeforeTargets="GetVsixSourceItems" Condition="'$(BundleEngine)' == 'true'">
+    <Message Importance="high" Text="RXDK: publishing net8 engine (Rxdk.Cli + Rxdk.Dap) into the VSIX under tools\ ..." />
+    <RemoveDir Directories="$(EngineStageDir)" />
+    <Exec Command="dotnet publish &quot;$(MSBuildProjectDirectory)\..\Rxdk.Cli\Rxdk.Cli.csproj&quot; -c $(Configuration) --no-self-contained -o &quot;$(EngineStageDir.TrimEnd('\'))&quot; -v quiet -nologo" />
+    <Exec Command="dotnet publish &quot;$(MSBuildProjectDirectory)\..\Rxdk.Dap\Rxdk.Dap.csproj&quot; -c $(Configuration) --no-self-contained -o &quot;$(EngineStageDir.TrimEnd('\'))&quot; -v quiet -nologo" />
+    <ItemGroup>
+      <!-- Ship the runnable closure, not debug/build cruft. -->
+      <_RxdkEngineFile Include="$(EngineStageDir)**\*"
+                       Exclude="$(EngineStageDir)**\*.pdb;$(EngineStageDir)**\*.xml" />
+      <VSIXSourceItem Include="@(_RxdkEngineFile)">
+        <VSIXSubPath>tools\%(RecursiveDir)</VSIXSubPath>
+      </VSIXSourceItem>
+    </ItemGroup>
+  </Target>
 </Project>

@@ -44,6 +44,13 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      # The VSIX build publishes the net8 engine (Rxdk.Cli + Rxdk.Dap) into tools\ via
+      # `dotnet publish` (PublishRxdkEngine target), so the .NET 8 SDK must be present.
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
       # Packs RxdkVs.Package\TemplateSrc\* into ProjectTemplates\*.zip and stages the
       # scaffold props/targets from samples\ into Scaffold\ -- both are IncludeInVSIX
       # content the package build expects to exist.
@@ -76,8 +83,8 @@ jobs:
             "| ``$($vsix.Name)`` | ${mb} MB |",
             '',
             'Install: download the `.vsix` and double-click it (VS 2022/2026), or `VSIXInstaller.exe <file>`.',
-            'The extension drives the pure-.NET RXDK engine (Rxdk.Cli/Rxdk.Engine/Rxdk.Dap) deployed to',
-            '`%ProgramData%\RXDK\engine`; Xbox headers/libs come from RXDK-SDK.'
+            'The extension bundles the matching pure-.NET RXDK engine (Rxdk.Cli/Rxdk.Engine/Rxdk.Dap)',
+            'under `tools\` and runs it in-place; Xbox headers/libs come from RXDK-SDK.'
           ) | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
 
       - name: Upload VSIX artifact

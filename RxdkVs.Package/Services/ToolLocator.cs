@@ -39,17 +39,13 @@ namespace RxdkVs.Package.Services
                 }
             }
 
-            // 2) Alongside the VSIX install (the intended shipping layout: the net8 exes are
-            //    packaged into a `tools\` subfolder of the extension install dir).
-            //
-            // TODO(packaging): decide the final layout. Options:
-            //   (a) Bundle self-contained `Rxdk.Cli.exe`/`Rxdk.Dap.exe` into the VSIX under
-            //       tools\ and ship them (simplest for the user; larger VSIX). Add them as
-            //       <Content IncludeInVSIX="true"> in the csproj under that folder.
-            //   (b) Download them at first run into %ProgramData%\RXDK\engine (mirrors how the
-            //       host tools are already fetched into %ProgramData%\RXDK\tools) and resolve
-            //       from there. See RXDK-VSCode hostTools.ts for the download pattern.
-            // Until then we probe both a bundled tools\ dir and the ProgramData engine dir.
+            // 2) Alongside the VSIX install: the net8 engine (Rxdk.Cli/Rxdk.Dap, framework-
+            //    dependent) is published into a `tools\` subfolder of the extension by the
+            //    PublishRxdkEngine target in RxdkVs.Package.csproj. This is checked BEFORE the
+            //    %ProgramData%\RXDK\engine copy below, and on purpose: the bundled engine always
+            //    matches the installed VSIX, so a VSIX upgrade can never be shadowed by a stale
+            //    engine left in ProgramData. The ProgramData path (3) remains only as a dev
+            //    fallback (scripts/dev.ps1 publish) and for F5 builds with BundleEngine=false.
             var vsixDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (!string.IsNullOrEmpty(vsixDir))
             {
