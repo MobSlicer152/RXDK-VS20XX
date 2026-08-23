@@ -37,6 +37,22 @@ public static class GitHubReleases
         return client;
     }
 
+    // The raw.githubusercontent CDN (and release-asset CDN) cache a URL for minutes, so a version
+    // check right after a bump can read a stale VERSION -- which makes the tool window's Refresh look
+    // broken. Force a fresh fetch on the version-read paths: a unique query key (distinct CDN cache
+    // key) plus no-cache request headers.
+    private static string WithCacheBuster(string url)
+    {
+        var sep = url.Contains('?') ? '&' : '?';
+        return $"{url}{sep}rxdknocache={Guid.NewGuid():N}";
+    }
+
+    private static void AddNoCache(HttpRequestMessage request)
+    {
+        request.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
+        request.Headers.Pragma.ParseAdd("no-cache");
+    }
+
     public static async Task<GitHubRelease> FetchReleaseAsync(
         string repo, string? tag, CancellationToken ct = default)
     {
@@ -44,7 +60,8 @@ public static class GitHubReleases
             ? $"https://api.github.com/repos/{repo}/releases/tags/{Uri.EscapeDataString(tag)}"
             : $"https://api.github.com/repos/{repo}/releases/latest";
 
-        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        using var request = new HttpRequestMessage(HttpMethod.Get, WithCacheBuster(url));
+        AddNoCache(request);
         var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN")
                     ?? Environment.GetEnvironmentVariable("GH_TOKEN");
         if (!string.IsNullOrEmpty(token))
@@ -76,7 +93,8 @@ public static class GitHubReleases
     /// <summary>GET an asset's contents as text (used for small marker files like VERSION).</summary>
     public static async Task<string> GetAssetTextAsync(GitHubAsset asset, CancellationToken ct = default)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, asset.BrowserDownloadUrl);
+        using var request = new HttpRequestMessage(HttpMethod.Get, WithCacheBuster(asset.BrowserDownloadUrl));
+        AddNoCache(request);
         var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN")
                     ?? Environment.GetEnvironmentVariable("GH_TOKEN");
         if (!string.IsNullOrEmpty(token))
@@ -91,7 +109,8 @@ public static class GitHubReleases
     {
         try
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            using var request = new HttpRequestMessage(HttpMethod.Get, WithCacheBuster(url));
+            AddNoCache(request);
             var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN")
                         ?? Environment.GetEnvironmentVariable("GH_TOKEN");
             if (!string.IsNullOrEmpty(token))
