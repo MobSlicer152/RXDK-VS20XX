@@ -203,18 +203,22 @@ public static partial class HostToolsInstaller
             try { File.Move(aside, target); } catch { /* leave aside file; original is gone */ }
             throw;
         }
-
-        // Best-effort: gone now if the old process already exited, else swept next install.
-        try { File.Delete(aside); } catch { /* still locked by the running tool */ }
+        // The aside file is the still-running tool, so we don't try to delete it here — it's
+        // cleaned by SweepStaleUpdates at the start of the next install, once that process exits.
     }
 
-    /// <summary>Delete stale ".old-*" files left by a previous in-use update (best-effort).</summary>
+    /// <summary>
+    /// Delete stale ".old-*" files left by a previous in-use update (best-effort). Called once at
+    /// the start of an install: by then any tool that held a lock last time has almost certainly
+    /// exited, so the leftover deletes cleanly. Only touches the ".old-&lt;guid&gt;" copies we create
+    /// when overwriting a locked tool; anything still locked is simply skipped and swept next time.
+    /// </summary>
     private static void SweepStaleUpdates(string root)
     {
         if (!Directory.Exists(root)) return;
         foreach (var stale in Directory.EnumerateFiles(root, "*.old-*"))
         {
-            try { File.Delete(stale); } catch { /* still locked */ }
+            try { File.Delete(stale); } catch { /* still locked; swept next install */ }
         }
     }
 
