@@ -57,6 +57,11 @@ public static class XboxLaunch
         public bool Reboot { get; init; }
         public int TimeoutMs { get; init; } = 120000;
         public Action<string>? Log { get; init; }
+
+        /// <summary>Launch-and-run (no debugger): pass xbox-launch -go so the title is not
+        /// halted at the initial thread-create waiting for a debugger. Use for plain test
+        /// runs on hardware; leave false when a debugger will attach.</summary>
+        public bool Go { get; init; }
     }
 
     /// <summary>Launch a deployed Xbox title via xbox-launch.</summary>
@@ -73,6 +78,7 @@ public static class XboxLaunch
             var consoleSwitch = await ConsoleResolver.ResolveConsoleSwitchAsync(opts.ConsoleName, ct);
             if (consoleSwitch is not null) { args.Add("-x"); args.Add(consoleSwitch); }
             if (opts.Reboot) args.Add("-reboot");
+            if (opts.Go) args.Add("-go");
 
             var r = await ProcessRunner.RunStreamedAsync(launcher, args, opts.Log, ct: ct);
             if (r.ExitCode == 2)

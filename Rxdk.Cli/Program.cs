@@ -25,7 +25,7 @@ if (args.Length == 0)
     Console.Error.WriteLine("  docs-status                 Report staged docs presence");
     Console.Error.WriteLine("  build --project-root <dir> [--optimize <mode>] [--compile-only]   Compile+link to .xbe");
     Console.Error.WriteLine("  deploy --project-root <dir> [--console <ip>]     Copy build output to the devkit");
-    Console.Error.WriteLine("  run --project-root <dir> [--console <ip>] [--reboot]   Launch the deployed title");
+    Console.Error.WriteLine("  run --project-root <dir> [--console <ip>] [--reboot] [--go]   Launch the deployed title (--go = run without halting for a debugger)");
     Console.Error.WriteLine("  launch-xemu --project-root <dir> [--xemu-path <exe>] [--xemu-params <args>]   Build + boot the ISO in xemu");
     Console.Error.WriteLine("  reboot [--console <ip>]     Warm-reboot the devkit");
     Console.Error.WriteLine("  remove-dxt --project-root <dir> [--manifest <p>] [--console <ip>]   Delete the DXT from xe:\\dxt");
@@ -332,6 +332,9 @@ static async Task<int> CmdRun(Dictionary<string, string> opts)
         ProjectName = manifest.Name,
         ConsoleName = string.IsNullOrEmpty(console) ? null : console,
         Reboot = opts.ContainsKey("reboot"),
+        // --go / --no-debug: launch-and-run without halting at the initial break for a
+        // debugger. For a plain test run (no debugger attaching), this is what you want.
+        Go = opts.ContainsKey("go") || opts.ContainsKey("no-debug"),
         Log = msg => Console.WriteLine(msg),
     });
     if (result.NoConsoleConfigured)
