@@ -227,7 +227,7 @@ static int CmdDocsStatus()
 {
     Console.WriteLine($"staged docs root: {RxdkPaths.GetStagedDocsRoot()}");
     var present = DocsStaging.IsStagedDocsPresent();
-    Console.WriteLine($"  docs (rxdk/toc.json): {present}");
+    Console.WriteLine($"  docs (xboxsdk/rxdk-vs toc.json): {present}");
     return present ? 0 : 1;
 }
 

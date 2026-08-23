@@ -1,3 +1,4 @@
+using System.Linq;
 using Rxdk.Engine.Platform;
 
 namespace Rxdk.Engine.Bootstrap;
@@ -26,9 +27,18 @@ public static class DocsStaging
         return string.IsNullOrWhiteSpace(env) ? null : env.Trim();
     }
 
-    /// <summary>Docs present (rxdk/toc.json exists under the staged docs root).</summary>
-    public static bool IsStagedDocsPresent() =>
-        File.Exists(Path.Combine(RxdkPaths.GetStagedDocsRoot(), "rxdk", "toc.json"));
+    /// <summary>
+    /// Docs present: at least one known doc set's toc.json exists under the staged docs root.
+    /// The RXDK-Docs layout is xboxsdk/ (Xbox SDK reference), rxdk-vs/ (this extension's docs),
+    /// and rxdk-vscode/ — there is no rxdk/ folder, so checking rxdk/toc.json always failed and
+    /// made setup re-fetch docs on every run.
+    /// </summary>
+    public static bool IsStagedDocsPresent()
+    {
+        var root = RxdkPaths.GetStagedDocsRoot();
+        string[] sets = { "xboxsdk", "rxdk-vs", "rxdk-vscode", "rxdk" };
+        return sets.Any(s => File.Exists(Path.Combine(root, s, "toc.json")));
+    }
 
     private static bool IsGitRepo(string dir) => Directory.Exists(Path.Combine(dir, ".git"));
 
@@ -69,7 +79,7 @@ public static class DocsStaging
 
         if (!IsStagedDocsPresent())
             throw new InvalidOperationException(
-                $"Docs clone completed but rxdk/toc.json is missing under {staged}.");
+                $"Docs clone completed but no doc set (xboxsdk/rxdk-vs/…) toc.json was found under {staged}.");
         log?.Invoke($"RXDK: docs cloned to {staged}");
         return staged;
     }
