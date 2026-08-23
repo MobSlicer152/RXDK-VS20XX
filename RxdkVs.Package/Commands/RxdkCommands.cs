@@ -519,7 +519,7 @@ namespace RxdkVs.Package.Commands
             await EnsureAsync("docs-status", "install-docs");
             await ShowInfoAsync(installed == 0
                 ? "RXDK is already set up — SDK, host tools, Zig and docs are all present."
-                : $"RXDK setup finished — installed {installed} missing component(s). Use 'Fetch Latest RXDK-SDK' to update an existing SDK.");
+                : $"RXDK setup finished — installed {installed} missing component(s). Use the COMPONENTS section (Update / Update All) to update them later.");
         }
 
         private async Task SetBuildTypeAsync()
