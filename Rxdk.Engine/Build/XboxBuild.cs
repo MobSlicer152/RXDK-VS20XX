@@ -116,17 +116,23 @@ public static class XboxBuild
             // address and bugchecks. Matches how libcpp is built (xbox_target.zig
             // cppFlags).
             "-femulated-tls",
-            // -femulated-tls makes clang still emit a CodeView S_*THREAD32 debug record
-            // per thread_local, pointing at the native per-var symbol that emutls never
-            // defines -> undefined-symbol at link (xbox_target.zig cppFlags drops ALL
-            // debug with -g0 for the same reason). We keep file/line tables (needed for
-            // the PDB: F5 stepping + crash symbolization) but omit the per-variable
-            // symbol records -- which is exactly -gline-tables-only. It overrides the
-            // -g that the Debug/ReleaseSafe optimize modes add, at the cost of local-
-            // variable inspection in those modes (acceptable: title thread_locals link
-            // cleanly and line-level debugging still works).
-            "-gline-tables-only",
         });
+        // TLS debug-info handling. -femulated-tls makes clang emit a CodeView S_*THREAD32
+        // record per thread_local pointing at the native per-var symbol that emutls never
+        // defines -> undefined-symbol at link. Historically we blanket-added
+        // -gline-tables-only to dodge that, which also stripped ALL local-variable and
+        // `this` records -> the debugger's Locals/Autos were empty in Debug builds. Only
+        // TUs that actually use TLS hit the link problem, so we now:
+        //   * Debug/ReleaseSafe (KeepsDebugInfo): compile with full -g (from CompileFlags)
+        //     so locals + `this` are inspectable, then, if the object turns out to use
+        //     emulated TLS (ObjUsesEmulatedTls), recompile just that TU with
+        //     -gline-tables-only to keep its link clean (locals unavailable in that one
+        //     file only).
+        //   * ReleaseFast/ReleaseSmall (no -g): add -gline-tables-only for line tables
+        //     (F5 stepping + crash symbolization) with no locals expected anyway.
+        var keepsDebug = OptimizeMode.KeepsDebugInfo(optimize);
+        if (!keepsDebug)
+            common.Add("-gline-tables-only");
         common.AddRange(includeArgs);
         common.AddRange(defineArgs);
         common.AddRange(XdkClangWarnings);
@@ -178,6 +184,19 @@ public static class XboxBuild
 
         var result = await ProcessRunner.RunStreamedAsync(zig, toolArgs, log, ct: ct);
 
+        // If a full-debug TU turns out to use emulated TLS, its object carries emutls symbols
+        // and a full-`-g` link would fail on the undefined native TLS symbol. Recompile that
+        // one TU with -gline-tables-only (line tables only) to keep the link clean; its locals
+        // become unavailable but every other TU keeps full local/`this` inspection.
+        if (keepsDebug && result.Success && ObjUsesEmulatedTls(obj))
+        {
+            log?.Invoke(
+                $"{Path.GetFileName(source)}: uses thread_local; rebuilding with line-tables-only " +
+                "debug info (locals unavailable in this file) to keep the emulated-TLS link clean.");
+            var retryArgs = new List<string>(toolArgs) { "-gline-tables-only" };
+            result = await ProcessRunner.RunStreamedAsync(zig, retryArgs, log, ct: ct);
+        }
+
         // Surface (but don't fail on) warnings in the title's own source. Clean RXDK template
         // code produces none, but imported/legacy code warns heavily — most notably -Wformat on
         // DWORD-vs-%u, which is benign on this ILP32 target — while still compiling correctly.
@@ -189,6 +208,38 @@ public static class XboxBuild
             log?.Invoke($"Note: {warnCount} warning(s) in {Path.GetFileName(source)} (not fatal)");
         if (!result.Success)
             throw new InvalidOperationException($"Zig compile failed on {source} (exit {result.ExitCode})");
+    }
+
+    // True if a compiled object references emulated-TLS runtime symbols (___emutls_v.*,
+    // __emutls_get_address). -femulated-tls only emits these for TUs that actually use
+    // thread_local, and the names appear as plain ASCII in the COFF symbol/string table,
+    // so a substring scan detects TLS usage without parsing the object -- and it catches
+    // TLS pulled in through headers (e.g. stb_image), which a source-text scan would miss.
+    private static bool ObjUsesEmulatedTls(string objPath)
+    {
+        try
+        {
+            if (!File.Exists(objPath)) return false;
+            return ContainsAscii(File.ReadAllBytes(objPath), "emutls");
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool ContainsAscii(byte[] haystack, string needle)
+    {
+        if (haystack.Length < needle.Length) return false;
+        var last = haystack.Length - needle.Length;
+        for (var i = 0; i <= last; i++)
+        {
+            var j = 0;
+            for (; j < needle.Length; j++)
+                if (haystack[i + j] != (byte)needle[j]) break;
+            if (j == needle.Length) return true;
+        }
+        return false;
     }
 
     /// <summary>

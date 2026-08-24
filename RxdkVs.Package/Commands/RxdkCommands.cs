@@ -602,19 +602,22 @@ namespace RxdkVs.Package.Commands
 
                 var list = string.Join("\n", dests.Select(d => "  • " + d));
                 var go = VsShellUtilities.ShowMessageBox(_package,
-                    "This installs the RXDK 'Xbox' build platform into Visual Studio so Xbox projects " +
-                    "load and build:\n\n" + list + "\n\nYou'll be asked to elevate (UAC). Continue?",
+                    "This installs (or updates) the RXDK 'Xbox' build platform in Visual Studio so Xbox " +
+                    "projects load and build:\n\n" + list + "\n\nYou'll be asked to elevate (UAC). Continue?",
                     "RXDK", OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
                     OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
                 if (go != (int)VSConstants.MessageBoxResult.IDYES) return;
 
-                // Build a one-shot elevated script that robocopies the alias into each dest.
+                // Build a one-shot elevated script that robocopies the alias into each dest, then
+                // writes a version stamp so a later run can tell a current platform from a stale one.
+                var version = GetExtensionVersion();
                 var sb = new System.Text.StringBuilder();
                 sb.AppendLine("$ErrorActionPreference='Continue'");
                 foreach (var d in dests)
                 {
                     sb.AppendLine($"New-Item -ItemType Directory -Force -Path \"{d}\" | Out-Null");
                     sb.AppendLine($"robocopy \"{src}\" \"{d}\" /E /NFL /NDL /NJH /NJS /R:1 /W:1 | Out-Null");
+                    sb.AppendLine($"Set-Content -Path \"{Path.Combine(d, "RxdkPlatform.version")}\" -Value \"{version}\" -NoNewline -Encoding ascii");
                 }
                 var script = Path.Combine(Path.GetTempPath(), "rxdk-install-xbox-platform.ps1");
                 File.WriteAllText(script, sb.ToString());
@@ -810,7 +813,7 @@ namespace RxdkVs.Package.Commands
             // 2) The custom 'Xbox' MSBuild platform (copied into VCTargetsPath\Platforms\Xbox). Needs
             //    the x64 platform (from the C++ tools) present, so only attempt it once those exist.
             var platformInstalled = false;
-            if (!IsXboxPlatformInstalled())
+            if (!IsXboxPlatformCurrent())
             {
                 if (buildToolsPending)
                 {
@@ -819,7 +822,7 @@ namespace RxdkVs.Package.Commands
                 else
                 {
                     await InstallXboxPlatformAsync();
-                    platformInstalled = IsXboxPlatformInstalled();
+                    platformInstalled = IsXboxPlatformCurrent();
                 }
             }
 
@@ -887,10 +890,53 @@ namespace RxdkVs.Package.Commands
         }
 
         // True when the 'Xbox' platform is installed into at least one VS instance's VCTargetsPath.
-        private static bool IsXboxPlatformInstalled()
+        // The platform payload is considered current only when EVERY C++ toolset dest has both
+        // Platform.props and a version stamp matching this extension's version. Existence alone is
+        // not enough: an older RXDK VSIX may have left a stale platform (e.g. missing the folded-in
+        // IntelliSense props) — that must be refreshed, not mistaken for "already installed".
+        private static bool IsXboxPlatformCurrent()
         {
-            try { return FindXboxPlatformDests().Any(d => File.Exists(Path.Combine(d, "Platform.props"))); }
+            try
+            {
+                var dests = FindXboxPlatformDests();
+                if (dests.Count == 0) return false;
+                var version = GetExtensionVersion();
+                return dests.All(d =>
+                    File.Exists(Path.Combine(d, "Platform.props")) &&
+                    string.Equals(ReadPlatformStamp(d), version, StringComparison.OrdinalIgnoreCase));
+            }
             catch { return false; }
+        }
+
+        // Version this extension ships, read from its own manifest (installed as extension.vsixmanifest
+        // beside the assembly). Falls back to the assembly version. Used to stamp/verify the platform.
+        private static string GetExtensionVersion()
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(typeof(RxdkCommands).Assembly.Location) ?? "";
+                var manifest = Path.Combine(dir, "extension.vsixmanifest");
+                if (File.Exists(manifest))
+                {
+                    var text = File.ReadAllText(manifest);
+                    var m = System.Text.RegularExpressions.Regex.Match(
+                        text, "<Identity\\b[^>]*\\bVersion\\s*=\\s*\"([^\"]+)\"");
+                    if (m.Success) return m.Groups[1].Value.Trim();
+                }
+            }
+            catch { /* fall through to assembly version */ }
+            try { return typeof(RxdkCommands).Assembly.GetName().Version?.ToString() ?? "0"; }
+            catch { return "0"; }
+        }
+
+        private static string ReadPlatformStamp(string dest)
+        {
+            try
+            {
+                var f = Path.Combine(dest, "RxdkPlatform.version");
+                return File.Exists(f) ? File.ReadAllText(f).Trim() : null;
+            }
+            catch { return null; }
         }
 
         private async Task SetBuildTypeAsync()
