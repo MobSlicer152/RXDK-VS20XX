@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType Condition="'$(Configuration)' == 'Debug'">Exe</OutputType>
+        <OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>
+        <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\loud.png" />
+      <None Remove="Resources\Orbitron.ttf" />
+      <None Remove="Resources\team-resurgent.png" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Resource Include="Resources\loud.png" />
+      <Resource Include="Resources\Orbitron.ttf" />
+      <Resource Include="Resources\pause.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Resources\play.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Resources\quiet.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Effect Include="Resources\BackgroundShader.fx" />
+        <ProjectReference Include="..\Rxdk.Engine\Rxdk.Engine.csproj" />
+        <Resource Include="$(IntermediateOutputPath)Resources\BackgroundShader.ps" Condition="Exists('$(IntermediateOutputPath)Resources\BackgroundShader.ps')">
+            <Link>Resources\BackgroundShader.ps</Link>
+        </Resource>
+        <Resource Include="Resources\team-resurgent.png" />
+    </ItemGroup>
+
+    <Target Name="EffectCompile" BeforeTargets="PrepareResources" Condition="'@(Effect)' != ''">
+        <MakeDir Directories="$(IntermediateOutputPath)%(Effect.RelativeDir)" />
+        <Exec Command="&quot;C:\Program Files (x86)\Windows Kits\10\bin\$(TargetPlatformVersion)\x64\fxc.exe&quot; /nologo /T ps_3_0 /E main /Fo &quot;$(IntermediateOutputPath)%(Effect.RelativeDir)%(Effect.FileName).ps&quot; &quot;%(Effect.Identity)&quot;" />
+    </Target>
+
+</Project>
