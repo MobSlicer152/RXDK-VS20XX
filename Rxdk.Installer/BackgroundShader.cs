@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Numerics;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
@@ -16,6 +17,7 @@ namespace Rxdk.Installer
             PixelShader = pixelShader;
             UpdateShaderValue(InputProperty);
             UpdateShaderValue(TimeProperty);
+            UpdateShaderValue(AspectProperty);
         }
 
         public Brush Input
@@ -44,5 +46,25 @@ namespace Rxdk.Installer
                 new UIPropertyMetadata(
                     0.0,
                     PixelShaderConstantCallback(0)));
+
+        public double Aspect
+        {
+            get => (double)GetValue(AspectProperty);
+            set => SetValue(AspectProperty, value);
+        }
+
+        private static double GetAspect()
+        {
+            var window = Application.Current.MainWindow;
+            return window.Width / window.Height;
+        }
+
+        public static readonly DependencyProperty AspectProperty =
+            DependencyProperty.Register(
+                "Aspect",
+                typeof(double),
+                typeof(BackgroundShader),
+                new UIPropertyMetadata(GetAspect(),
+                    PixelShaderConstantCallback(1)));
     }
 }

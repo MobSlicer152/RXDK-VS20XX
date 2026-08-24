@@ -32,7 +32,7 @@
     <!-- Button states -->
     <SolidColorBrush x:Key="btnFocus" Color="#66FF4FA3"/>
     <SolidColorBrush x:Key="btnPressStroke1" Color="#FF8A2A8A"/>
-    <SolidColorBrush x:Key="btnPressStroke2" Color="#FF644464"/>
+    <SolidColorBrush x:Key="btnPressStroke2" Color="#FF6F1F6F"/>
 
     <LinearGradientBrush x:Key="btnPressBorder" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#FFFF4FA3" Offset="0"/>
@@ -44,7 +44,7 @@
     <!-- Textboxes -->
     <SolidColorBrush x:Key="TextBackgroundSelection" Color="#66FF4FA3"/>
     <SolidColorBrush x:Key="TextBoxOverBrush" Color="#FF8A2A8A"/>
-    <SolidColorBrush x:Key="TextBoxPressBrush" Color="#FF5F0F5F"/>
+    <SolidColorBrush x:Key="TextBoxPressBrush" Color="#FF6F0F6F"/>
 
     <LinearGradientBrush x:Key="TextBoxOver" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#FF8A2A8A" Offset="0"/>
@@ -57,14 +57,14 @@
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="TextBoxNorm" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#FF8E1E8E" Offset="0"/>
-        <GradientStop Color="#FF651565" Offset="1"/>
+        <GradientStop Color="#FF8E2E8E" Offset="0"/>
+        <GradientStop Color="#FF6F1F6F" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- General surfaces -->
     <LinearGradientBrush x:Key="grayGradient" StartPoint="0.5,1" EndPoint="0.5,1">
-        <GradientStop Color="#FF8A2A8A" Offset="0"/>
-        <GradientStop Color="#FF6E1E6E" Offset="1"/>
+        <GradientStop Color="#FFAA2AAA" Offset="0"/>
+        <GradientStop Color="#FF7E1E7E" Offset="1"/>
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="hoverStroke" Color="#FFFF4FA3"/>
@@ -165,8 +165,8 @@
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#00202020" Offset="0"/>
-                        <GradientStop Color="#72202020" Offset="0.157"/>
-                        <GradientStop Color="#72202020" Offset="0.5"/>
+                        <GradientStop Color="#32202020" Offset="0.157"/>
+                        <GradientStop Color="#32202020" Offset="0.5"/>
                         <GradientStop Color="#00202020" Offset="0.51"/>
                     </LinearGradientBrush>
                 </Border.Background>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Numerics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,43 @@ namespace Rxdk.Installer
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private bool dragging = false;
+        private Point dragStart = new Point(0, 0);
+
+        private void Window_StartDrag(object sender, MouseButtonEventArgs e)
+        {
+            dragging = true;
+            dragStart = Mouse.GetPosition(null);
+        }
+
+        private void Window_Drag(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                CaptureMouse();
+                var pos = Mouse.GetPosition(null);
+                var delta = pos - dragStart;
+                Left += delta.X;
+                Top += delta.Y;
+            }
+        }
+
+        private void Window_ReleaseDrag(object sender, MouseButtonEventArgs e)
+        {
+            dragging = false;
+            ReleaseMouseCapture();
         }
     }
 }

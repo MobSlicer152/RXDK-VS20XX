@@ -7,23 +7,27 @@
         xmlns:local="clr-namespace:Rxdk.Installer"
         mc:Ignorable="d"
         Title="RXDK Installer"
+        AllowsTransparency="True"
+        Background="#01FFFFFF"
         Width="500" Height="735"
         ResizeMode="CanMinimize"
+        MouseLeftButtonDown="Window_StartDrag"
+        MouseMove="Window_Drag"
+        MouseLeftButtonUp="Window_ReleaseDrag"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         TextElement.FontFamily="./Resources/#Orbitron"
         TextOptions.TextRenderingMode="Aliased"
-        TextElement.FontSize="12"
-        d:Background="Black">
+        TextElement.FontSize="12">
     <Window.Resources>
         <ResourceDictionary Source="/WindowsStyle.xaml" />
     </Window.Resources>
-    <Grid Name="MainGrid">
+    <Grid Name="MainGrid" Background="Transparent">
         <Grid.Resources>
             <ResourceDictionary>
-                <DropShadowEffect x:Key="Shadow" Color="HotPink" ShadowDepth="1" BlurRadius="10" />
+                <DropShadowEffect x:Key="Shadow" Color="HotPink" ShadowDepth="0" BlurRadius="10" />
                 <Storyboard x:Key="Anim">
-                    <DoubleAnimation By="864000" Duration="10.0:0:0" Storyboard.TargetName="BackgroundShader" Storyboard.TargetProperty="Time"/>
+                    <DoubleAnimation By="86400" Duration="10.0:0:0" Storyboard.TargetName="BackgroundShader" Storyboard.TargetProperty="Time"/>
                 </Storyboard>
                 <LinearGradientBrush x:Key="LinkBrush" StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Color="Magenta" Offset="0" />
@@ -39,13 +43,13 @@
                 <BeginStoryboard Storyboard="{StaticResource Anim}"/>
             </EventTrigger>
         </Grid.Triggers>
-        <Rectangle Name="Background" Width="500" Height="735" Fill="Black">
+        <Rectangle Name="Background" Width="500" Height="735" Fill="Transparent">
             <Rectangle.Effect>
                 <local:BackgroundShader x:Name="BackgroundShader" />
             </Rectangle.Effect>
         </Rectangle>
         <StackPanel Background="Transparent" Margin="0,0,0,10">
-            <StackPanel Orientation="Horizontal" Name="Caption" Width="500">
+            <StackPanel Background="Transparent" Orientation="Horizontal" Name="Caption" Width="500">
                 <StackPanel Width="440">
                     <Label Name="Title" Content="RXDK Installer" Effect="{StaticResource Shadow}" FontSize="17" MinHeight="17" Margin="10,10,0,5" IsEnabled="True">
                         <Label.RenderTransform>
@@ -55,18 +59,16 @@
                     <Label Name="Publisher" FontSize="14" MinHeight="12" Margin="10,5,0,5" IsEnabled="False" />
                     <Label Name="Version" FontSize="14" MinHeight="12" Margin="10,5,0,5" IsEnabled="False" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5">
-                    <Button Name="Minimize" Width="20" Height="20" Margin="5,0,5,0" Padding="0" HorizontalAlignment="Right" Content="-" FontSize="15" Background="Goldenrod"/>
-                    <Button Name="Close" Width="20" Height="20" HorizontalAlignment="Right" Padding="0" Content="X" Background="Crimson"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="5,5,0,0">
+                    <Button Name="Minimize" Click="Minimize_Click" Width="20" Height="20" Margin="5,0,5,0" Padding="0" HorizontalAlignment="Right" Content="-" FontSize="15" Foreground="Goldenrod" Effect="{StaticResource Shadow}"/>
+                    <Button Name="Close" Click="Close_Click" Width="20" Height="20" HorizontalAlignment="Right" Padding="0" Content="X" Foreground="Crimson" Effect="{StaticResource Shadow}"/>
                 </StackPanel>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Center">
                 <Label Content="FiNE RELEASE BY" HorizontalAlignment="Center" Effect="{StaticResource Shadow}" />
                 <Image Name="Logo" Source="{StaticResource LogoVector}" HorizontalAlignment="Center" Height="72" Margin="0,5,0,15">
-                    <Image.RenderTransformOrigin>
-                        <Point>0.5 0.5</Point>
-                    </Image.RenderTransformOrigin>
+                    <Image.RenderTransformOrigin>0.5 0.5</Image.RenderTransformOrigin>
                     <Image.RenderTransform>
                         <TransformGroup>
                             <RotateTransform Angle="40" />
@@ -90,7 +92,7 @@
                     <TextBox Name="InstallPath" Width="380" VerticalContentAlignment="Center" CaretBrush="White" Effect="{StaticResource Shadow}" />
                     <Button Name="InstallBrowse" Width="80" Content="Browse" Margin="5,0,0,0" HorizontalAlignment="Right" Effect="{StaticResource Shadow}" />
                 </StackPanel>
-                <CheckBox Margin="5,0" Name="CreateDesktopShortcut" Content="Create desktop shortcut" IsChecked="True" Effect="{StaticResource Shadow}" />
+                <!--"<CheckBox Margin="5,0" Name="CreateDesktopShortcut" Content="Create desktop shortcut" IsChecked="True" Effect="{StaticResource Shadow}" />-->
             </StackPanel>
 
             <StackPanel Margin="10">
@@ -105,7 +107,7 @@
                 <CheckBox Name="InstallSamples" Content="Install samples" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
             </StackPanel>
 
-            <StackPanel Margin="10">
+            <StackPanel Margin="10" Effect="{StaticResource Shadow}">
                 <Label Content="Other" />
                 <CheckBox Name="RegisterUninstall" Content="Register uninstall info" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
                 <CheckBox Name="KeepIncomplete" Content="Keep files after a failed installation" Margin="5,5,0,0" IsChecked="False" Effect="{StaticResource Shadow}" />
