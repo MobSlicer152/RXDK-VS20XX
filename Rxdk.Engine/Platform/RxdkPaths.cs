@@ -14,10 +14,10 @@ public static class RxdkPaths
     /// <summary>Append the Windows executable extension.</summary>
     public static string HostToolExecutableName(string baseName) => $"{baseName}.exe";
 
-    private static string ProgramData()
+    private static string InstallRoot()
     {
-        var programData = Environment.GetEnvironmentVariable("ProgramData");
-        return string.IsNullOrEmpty(programData) ? @"C:\ProgramData" : programData;
+        var defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RXDK");
+        return EnvOverride("RXDK_INSTALL_ROOT") ?? defaultPath;
     }
 
     private static string LocalAppData() =>
@@ -26,7 +26,7 @@ public static class RxdkPaths
     // ---- Staged host tools (…/RXDK/tools) ----
 
     public static string GetDefaultStagedToolsRoot() =>
-        Path.Combine(ProgramData(), "RXDK", "tools");
+        Path.Combine(InstallRoot(), "tools");
 
     /// <summary>Effective staged tools root, honoring the RXDK_STAGED_TOOLS override.</summary>
     public static string GetStagedToolsRoot() =>
@@ -39,7 +39,7 @@ public static class RxdkPaths
     // ---- Staged SDK (headers + libs, …/RXDK/sdk) ----
 
     public static string GetDefaultStagedSdkRoot() =>
-        Path.Combine(ProgramData(), "RXDK", "sdk");
+        Path.Combine(InstallRoot(), "sdk");
 
     /// <summary>Effective staged SDK root, honoring the RXDK_STAGED_SDK override.</summary>
     public static string GetStagedSdkRoot() =>
@@ -48,7 +48,7 @@ public static class RxdkPaths
     // ---- Staged docs (RXDK-Docs, …/RXDK/docs) ----
 
     public static string GetDefaultStagedDocsRoot() =>
-        Path.Combine(ProgramData(), "RXDK", "docs");
+        Path.Combine(InstallRoot(), "docs");
 
     /// <summary>Effective staged docs root, honoring the RXDK_STAGED_DOCS override.</summary>
     public static string GetStagedDocsRoot() =>
@@ -57,7 +57,7 @@ public static class RxdkPaths
     // ---- Staged samples (RXDK-Samples, …/RXDK/samples) ----
 
     public static string GetDefaultStagedSamplesRoot() =>
-        Path.Combine(ProgramData(), "RXDK", "samples");
+        Path.Combine(InstallRoot(), "samples");
 
     /// <summary>Effective staged samples root, honoring the RXDK_STAGED_SAMPLES override.</summary>
     public static string GetStagedSamplesRoot() =>

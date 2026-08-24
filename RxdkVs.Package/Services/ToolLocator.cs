@@ -19,6 +19,7 @@ namespace RxdkVs.Package.Services
 
         // Env override, handy for dev/CI: point at a `dotnet publish` output.
         private const string ToolsDirEnvVar = "RXDK_TOOLS_DIR";
+        private const string InstallRoot = "RXDK_INSTALL_ROOT";
 
         /// <summary>Full path to Rxdk.Cli.exe, or null if it can't be found.</summary>
         public static string ResolveCli() => Resolve(CliExeName);
@@ -61,9 +62,8 @@ namespace RxdkVs.Package.Services
                 }
             }
 
-            // 3) %ProgramData%\RXDK\engine (download-at-runtime target).
-            var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            var engineDir = Path.Combine(programData, "RXDK", "engine");
+            // 3) <StagedRoot>\RXDK\engine (download-at-runtime target).
+            var engineDir = Path.Combine(StagedRoot, "engine");
             var engineExe = Path.Combine(engineDir, exeName);
             if (File.Exists(engineExe))
             {
@@ -103,13 +103,19 @@ namespace RxdkVs.Package.Services
             }
             return null;
         }
+        private static string? EnvOverride(string name)
+        {
+            var value = Environment.GetEnvironmentVariable(name);
+            return string.IsNullOrWhiteSpace(value) ? null : Path.GetFullPath(value.Trim());
+        }
 
         /// <summary>
         /// The staged RXDK roots, mirroring RxdkPaths in the engine so the tool window and
         /// "Open … Folder" commands point at the same locations the CLI uses.
         /// </summary>
         public static string StagedRoot =>
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RXDK");
+            EnvOverride("RXDK_INSTALL_ROOT") ??
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RXDK");
 
         public static string StagedSdkRoot => Path.Combine(StagedRoot, "sdk");
         public static string StagedSdkIncludeDir => Path.Combine(StagedSdkRoot, "include");
