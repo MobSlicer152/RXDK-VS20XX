@@ -42,6 +42,16 @@ $Cli        = Join-Path $EngineDir 'Rxdk.Cli.exe'
 $Dap        = Join-Path $EngineDir 'Rxdk.Dap.exe'
 $SamplesSln = Join-Path $Repo 'samples\RXDK-Samples.sln'
 $VsixProj   = Join-Path $Repo 'RxdkVs.Package\RxdkVs.Package.csproj'
+# The net8 build engine (Rxdk.Cli/Rxdk.Dap/Rxdk.Engine) is the RXDK-Tools submodule.
+$EngineSrc  = Join-Path $Repo 'external\RXDK-Tools\src'
+
+# Ensure the engine submodule is present and, so a locally-built VSIX bundles the newest engine,
+# fast-forwarded to the tip of RXDK-Tools' default branch (mirrors the CI "latest tools" step).
+function Update-EngineSubmodule {
+    Info "Updating engine submodule (external/RXDK-Tools) to latest tools"
+    & git -C $Repo submodule update --init --remote --recursive external/RXDK-Tools
+    if ($LASTEXITCODE -ne 0) { throw "git submodule update failed for external/RXDK-Tools" }
+}
 
 function Info($m)  { Write-Host "==> $m" -ForegroundColor Cyan }
 function Ok($m)    { Write-Host "OK  $m" -ForegroundColor Green }
@@ -65,6 +75,7 @@ function Get-SampleName {
 # ---- commands ----
 
 function Invoke-Publish {
+    Update-EngineSubmodule
     Info "Publishing Rxdk.Cli + Rxdk.Dap (net8, framework-dependent) -> $EngineDir"
     # A running VS / debug session can lock the exes; warn rather than fail cryptically.
     foreach ($p in 'Rxdk.Cli', 'Rxdk.Dap') {
@@ -73,7 +84,7 @@ function Invoke-Publish {
         }
     }
     foreach ($proj in 'Rxdk.Cli', 'Rxdk.Dap') {
-        $csproj = Join-Path $Repo "$proj\$proj.csproj"
+        $csproj = Join-Path $EngineSrc "$proj\$proj.csproj"
         dotnet publish $csproj -c Release -o $EngineDir --no-self-contained -v q
         if ($LASTEXITCODE -ne 0) { throw "publish failed for $proj" }
     }
@@ -176,6 +187,7 @@ function Invoke-Templates {
 }
 
 function Invoke-Vsix {
+    Update-EngineSubmodule
     Invoke-Templates
     Info "Building RxdkVs.Package VSIX"
     $msb = Get-MSBuild

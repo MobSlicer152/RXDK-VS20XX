@@ -35,6 +35,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # The net8 build engine (Rxdk.Cli + Rxdk.Dap) lives in the RXDK-Tools submodule
+          # under external/RXDK-Tools; the VSIX bundles it via the PublishRxdkEngine target.
+          submodules: recursive
+
+      # Bundle the LATEST tools, not just the committed pin: fast-forward the engine submodule
+      # to the tip of RXDK-Tools' default branch before building, so a freshly-published VSIX
+      # always ships the newest build engine.
+      - name: Update engine submodule to latest tools
+        run: git submodule update --remote --recursive external/RXDK-Tools
 
       # Puts VS 2022's MSBuild on PATH. The extension is a classic (non-SDK) VSSDK
       # csproj built with MSBuild -- NOT `dotnet build`. The VSSDK build targets and

@@ -36,6 +36,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # Engine (Rxdk.Cli + Rxdk.Dap) lives in the RXDK-Tools submodule; the VSIX bundles it.
+          submodules: recursive
+
+      # Ship the latest build engine in the published VSIX, not just the committed pin.
+      - name: Update engine submodule to latest tools
+        run: git submodule update --remote --recursive external/RXDK-Tools
 
       - name: Fail early if the Marketplace PAT is not configured
         env:
