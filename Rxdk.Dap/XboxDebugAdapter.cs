@@ -348,7 +348,23 @@ public sealed partial class XboxDebugAdapter : DebugAdapterBase
                 var result = await _bridge.RequestAsync("getMembers", Args(("name", childBase), ("threadId", _stoppedThreadId)));
                 var raw = ToObjects(result, "variables");
                 for (var i = 0; i < raw.Count; i++)
-                    variables.Add(new Variable(raw[i].Value<string>("name") ?? $"field{i}", raw[i].Value<string>("value") ?? "???", 0));
+                {
+                    var name = raw[i].Value<string>("name") ?? $"field{i}";
+                    var value = raw[i].Value<string>("value") ?? "???";
+                    // An aggregate member (struct/array) is itself expandable: give it a child ref
+                    // keyed by its full path so it can be drilled into further, mirroring top-level
+                    // variables. Without this, nested members (e.g. g_AntiAliasModes[0]) were leaves.
+                    if (raw[i].Value<bool?>("expandable") == true)
+                    {
+                        var childRef = _nextChildRef++;
+                        _varChildren[childRef] = raw[i].Value<string>("base") ?? name;
+                        variables.Add(new Variable(name, value, childRef));
+                    }
+                    else
+                    {
+                        variables.Add(new Variable(name, value, 0));
+                    }
+                }
             }
             else if (scope is not null)
             {

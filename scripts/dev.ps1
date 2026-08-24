@@ -193,6 +193,17 @@ function Get-VsixInstaller {
     return $exe
 }
 
+function Get-VsInstanceIds {
+    # The VSIX targets [17.0,19.0), so install/uninstall across EVERY instance in that range
+    # (VS 2022 + VS 2026), not just -latest -- otherwise the older IDE keeps a stale extension.
+    $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+    if (-not (Test-Path $vswhere)) { throw "vswhere.exe not found ($vswhere)." }
+    $ids = & $vswhere -all -prerelease -version '[17.0,19.0)' -property instanceId
+    $ids = @($ids | Where-Object { $_ })
+    if ($ids.Count -eq 0) { throw "No Visual Studio 2022/2026 instance found via vswhere." }
+    return $ids
+}
+
 function Get-ExtensionId {
     $manifest = Join-Path $Repo 'RxdkVs.Package\source.extension.vsixmanifest'
     $m = Select-String -Path $manifest -Pattern '<Identity[^>]*Id="([^"]+)"' | Select-Object -First 1
@@ -211,10 +222,15 @@ function Invoke-Uninstall {
     Assert-VsClosed
     $installer = Get-VsixInstaller
     $id = Get-ExtensionId
-    Info "Uninstalling extension $id"
-    & $installer "/uninstall:$id" /quiet | Out-Null
-    # 0 = ok; ~2003 = not installed. Either is fine for a reinstall flow.
-    if ($LASTEXITCODE -eq 0) { Ok "Uninstalled." } else { Warn "Nothing to uninstall (or code $LASTEXITCODE) - continuing." }
+    # Per-instance (not one batched /instanceIds call): a batch aborts if the extension is absent
+    # from any listed instance (code 2003), which would skip the instances that DO have it.
+    foreach ($iid in Get-VsInstanceIds) {
+        Info "Uninstalling extension $id from $iid"
+        & $installer "/uninstall:$id" "/instanceIds:$iid" /quiet | Out-Null
+        # 0 = ok; ~2003 = not installed on this instance. Either is fine for a reinstall flow.
+        if ($LASTEXITCODE -eq 0) { Ok "  uninstalled from $iid" }
+        else { Warn "  nothing to uninstall from $iid (code $LASTEXITCODE) - continuing" }
+    }
 }
 
 function Invoke-Install {
@@ -222,10 +238,15 @@ function Invoke-Install {
     $installer = Get-VsixInstaller
     $vsix = Join-Path $Repo 'RxdkVs.Package\bin\Debug\RxdkVs.Package.vsix'
     if (-not (Test-Path $vsix)) { throw "VSIX not built yet - run: ./scripts/dev.ps1 vsix" }
-    Info "Installing $vsix"
-    & $installer $vsix /quiet | Out-Null
-    if ($LASTEXITCODE -eq 0) { Ok "Installed. Start Visual Studio to use it." }
-    else { throw "VSIXInstaller failed (code $LASTEXITCODE)." }
+    $failed = @()
+    foreach ($iid in Get-VsInstanceIds) {
+        Info "Installing $vsix -> $iid"
+        & $installer "/instanceIds:$iid" $vsix /quiet | Out-Null
+        if ($LASTEXITCODE -eq 0) { Ok "  installed to $iid" }
+        else { $failed += "$iid (code $LASTEXITCODE)" }
+    }
+    if ($failed.Count -gt 0) { throw "VSIXInstaller failed for: $($failed -join '; ')" }
+    Ok "Installed. Start Visual Studio to use it."
 }
 
 function Invoke-Reinstall {

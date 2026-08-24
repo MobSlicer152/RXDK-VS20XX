@@ -22,6 +22,9 @@ namespace RxdkVs.Package.Services
     /// </summary>
     internal static class XboxDebugLauncher
     {
+        // Holds the current session's "Xbox Title" tailer alive (a bare Timer would be collected).
+        private static TitleOutputPane _titlePane;
+
         internal sealed class StartupInfo
         {
             public string ProjectDir;     // dir of the .vcxproj (Rxdk.Cli --project-root)
@@ -215,6 +218,11 @@ namespace RxdkVs.Package.Services
             // Derive the launch config from the .xbe output path.
             var outDir = Path.GetDirectoryName(info.XbeOutput);
             var name = Path.GetFileNameWithoutExtension(info.XbeOutput);
+            // The shared adapter (Rxdk.Dap) appends the title's debug spew (DM_DEBUGSTR) to this file
+            // when __titleOutputFile is set; TitleOutputPane tails it into a clean "Xbox Title" pane,
+            // the formatted counterpart to the raw adapter stream in the Debug pane (parity with the
+            // VS Code "Xbox Title" channel).
+            var titleOutputFile = Path.Combine(Path.GetTempPath(), $"rxdk-title-{name}.log");
             var launch = new Dictionary<string, object>
             {
                 ["$adapter"] = dap,
@@ -225,10 +233,17 @@ namespace RxdkVs.Package.Services
                 ["pdb"] = Path.Combine(outDir, name + ".pdb"),
                 ["xbePath"] = $@"xe:\{name}\{name}.xbe",
                 ["__workspaceFolder"] = info.ProjectDir,
+                ["__titleOutputFile"] = titleOutputFile,
                 ["reboot"] = false,
             };
             var launchFile = Path.Combine(Path.GetTempPath(), $"rxdk-launch-{name}.json");
             File.WriteAllText(launchFile, SimpleJson(launch));
+
+            // Start (replacing any prior) the "Xbox Title" pane tailer before launching so no early
+            // title output is missed. It stops itself when the session returns to design mode.
+            _titlePane?.Stop();
+            _titlePane = new TitleOutputPane(package);
+            await _titlePane.StartAsync(titleOutputFile);
 
             var dte = (EnvDTE.DTE)await package.GetServiceAsync(typeof(EnvDTE.DTE));
             try
