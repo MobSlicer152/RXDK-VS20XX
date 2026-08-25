@@ -9,6 +9,7 @@ namespace Rxdk.Installer
     {
         private static readonly PixelShader pixelShader = new PixelShader
         {
+            ShaderRenderMode = ShaderRenderMode.HardwareOnly,
             UriSource = new Uri("/Resources/BackgroundShader.ps", UriKind.Relative)
         };
 
