@@ -96,7 +96,7 @@ namespace RxdkVs.Package.Commands
             Add(CommandIds.CmdOpenDocsFolder, () => OpenFolderAsync(ToolLocator.StagedDocsRoot));
             Add(CommandIds.CmdOpenSdkDocs, () => OpenDocsAsync("sdk"));
             Add(CommandIds.CmdOpenExtensionDocs, () => OpenDocsAsync("rxdk-vs"));
-            Add(CommandIds.CmdFetchLatestSdk, () => RunCliAsync("install-sdk", requiresProject: false));
+            Add(CommandIds.CmdFetchLatestSdk, () => RunCliAsync("install-sdk", requiresProject: false, "--max-version", Services.ExtensionInfo.GetVersion()));
             Add(CommandIds.CmdInstallDotNet, EnsureDotNet8Async);
             Add(CommandIds.CmdInstallBuildTools, InstallBuildToolsAsync);
             Add(CommandIds.CmdInstallXboxPlatform, InstallXboxPlatformAsync);
@@ -952,13 +952,18 @@ namespace RxdkVs.Package.Commands
             }
 
             // 3) CLI-managed components: install only what's missing (won't re-fetch Zig etc.).
+            //    Pass the extension version so a component whose live version is newer than this
+            //    extension can use is withheld (CLI exit code 3) rather than pulled ahead.
             var installed = 0;
+            var gatedAny = false;
+            var maxVersion = ExtensionInfo.GetVersion();
             async Task EnsureAsync(string statusVerb, string installVerb)
             {
                 if (await _cli.RunAsync(new[] { statusVerb }, cwd) != 0)
                 {
-                    await _cli.RunAsync(new[] { installVerb }, cwd);
-                    installed++;
+                    var rc = await _cli.RunAsync(new[] { installVerb, "--max-version", maxVersion }, cwd);
+                    if (rc == 3) gatedAny = true;
+                    else if (rc == 0) installed++;
                 }
             }
             await EnsureAsync("zig-status", "install-zig");
@@ -974,6 +979,12 @@ namespace RxdkVs.Package.Commands
                     "Studio, then click Install Prerequisites again to install the Xbox platform and " +
                     "any remaining components.");
             }
+            else if (gatedAny && installed == 0 && !platformInstalled)
+            {
+                await ShowInfoAsync(
+                    "A newer RXDK component is published than this extension can use, so it was not " +
+                    "installed. Update the RXDK for Visual Studio extension first, then run setup again.");
+            }
             else if (installed == 0 && !platformInstalled)
             {
                 await ShowInfoAsync("RXDK is fully set up — C++ tools, Xbox platform, SDK, host tools, Zig and docs are all present.");
@@ -983,8 +994,10 @@ namespace RxdkVs.Package.Commands
                 var parts = new List<string>();
                 if (platformInstalled) parts.Add("the Xbox platform");
                 if (installed > 0) parts.Add($"{installed} CLI component(s)");
-                await ShowInfoAsync("RXDK setup finished — installed " + string.Join(" and ", parts) +
-                    ". Use the COMPONENTS section (Update / Update All) to update them later.");
+                var msg = "RXDK setup finished — installed " + string.Join(" and ", parts) +
+                    ". Use the COMPONENTS section (Update / Update All) to update them later.";
+                if (gatedAny) msg += " Note: a newer component was withheld — update the RXDK extension first to get it.";
+                await ShowInfoAsync(msg);
             }
         }
 
@@ -1033,26 +1046,8 @@ namespace RxdkVs.Package.Commands
             catch { return false; }
         }
 
-        // Version this extension ships, read from its own manifest (installed as extension.vsixmanifest
-        // beside the assembly). Falls back to the assembly version. Used to stamp/verify the platform.
-        private static string GetExtensionVersion()
-        {
-            try
-            {
-                var dir = Path.GetDirectoryName(typeof(RxdkCommands).Assembly.Location) ?? "";
-                var manifest = Path.Combine(dir, "extension.vsixmanifest");
-                if (File.Exists(manifest))
-                {
-                    var text = File.ReadAllText(manifest);
-                    var m = System.Text.RegularExpressions.Regex.Match(
-                        text, "<Identity\\b[^>]*\\bVersion\\s*=\\s*\"([^\"]+)\"");
-                    if (m.Success) return m.Groups[1].Value.Trim();
-                }
-            }
-            catch { /* fall through to assembly version */ }
-            try { return typeof(RxdkCommands).Assembly.GetName().Version?.ToString() ?? "0"; }
-            catch { return "0"; }
-        }
+        // Version this extension ships (from its manifest). Shared with the components gate.
+        private static string GetExtensionVersion() => Services.ExtensionInfo.GetVersion();
 
         private static string ReadPlatformStamp(string dest)
         {

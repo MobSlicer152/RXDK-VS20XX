@@ -145,10 +145,13 @@ namespace RxdkVs.Package.ToolWindow
             public string Name;
             public string Current;   // "-" when not installed
             public string Available; // "-" when unknown/unreachable
+            // The live version is newer than this extension can use: its update is withheld until the
+            // extension itself is updated (the CLI reports this as a 4th "blocked" column).
+            public bool Blocked;
             public bool Installed => !string.IsNullOrEmpty(Current) && Current != "-";
             public bool AvailableKnown => !string.IsNullOrEmpty(Available) && Available != "-";
             public bool UpdateAvailable =>
-                Installed && AvailableKnown &&
+                !Blocked && Installed && AvailableKnown &&
                 !string.Equals(Norm(Current), Norm(Available), StringComparison.OrdinalIgnoreCase);
             private static string Norm(string v) => (v ?? string.Empty).Trim().TrimStart('v', 'V');
         }
@@ -158,7 +161,9 @@ namespace RxdkVs.Package.ToolWindow
         {
             var rows = new List<ComponentRow>();
             string output = null;
-            try { output = await RunCliCaptureAsync("versions", timeoutMs: 30000); }
+            // Pass the extension version as the ceiling so the CLI marks any component whose live
+            // version is newer as "blocked" (update withheld until the extension is updated).
+            try { output = await RunCliCaptureAsync($"versions --max-version {ExtensionInfo.GetVersion()}", timeoutMs: 30000); }
             catch { /* rendered as unavailable below */ }
 
             if (!string.IsNullOrEmpty(output))
@@ -167,7 +172,13 @@ namespace RxdkVs.Package.ToolWindow
                 {
                     var parts = raw.TrimEnd('\r').Split('\t');
                     if (parts.Length >= 3)
-                        rows.Add(new ComponentRow { Name = parts[0].Trim(), Current = parts[1].Trim(), Available = parts[2].Trim() });
+                        rows.Add(new ComponentRow
+                        {
+                            Name = parts[0].Trim(),
+                            Current = parts[1].Trim(),
+                            Available = parts[2].Trim(),
+                            Blocked = parts.Length >= 4 && parts[3].Trim() == "1",
+                        });
                 }
             }
 
@@ -208,7 +219,9 @@ namespace RxdkVs.Package.ToolWindow
             {
                 var row = new DockPanel { Margin = new Thickness(0, 3, 0, 3) };
 
-                var actionable = !r.Installed || r.UpdateAvailable;
+                // Blocked = the live version is newer than this extension can use, so no install/update
+                // button is offered (the ceiling is the extension version).
+                var actionable = !r.Blocked && (!r.Installed || r.UpdateAvailable);
                 anyActionable |= actionable;
                 if (actionable)
                 {
@@ -228,7 +241,9 @@ namespace RxdkVs.Package.ToolWindow
                 }
 
                 string status;
-                if (!r.Installed)
+                if (r.Blocked)
+                    status = $"{r.Available} available · update the RXDK extension first";
+                else if (!r.Installed)
                     status = r.AvailableKnown ? $"not installed · latest {r.Available}" : "not installed";
                 else if (r.UpdateAvailable)
                     status = $"{r.Current} → {r.Available}";
@@ -289,13 +304,18 @@ namespace RxdkVs.Package.ToolWindow
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             var cli = new CliRunner(_package);
             var failed = false;
+            var gated = false;
+            var maxVersion = ExtensionInfo.GetVersion();
             foreach (var verb in verbs)
             {
                 SetStatus($"Running {verb}…");
                 try
                 {
-                    // CliRunner returns the CLI's exit code (non-zero = failure); it doesn't throw.
-                    if (await cli.RunAsync(new[] { verb }, Environment.CurrentDirectory) != 0)
+                    // Pass the extension version so the engine refuses to pull a component newer than the
+                    // extension can use. CliRunner returns the CLI's exit code; 3 = gated, other != 0 = failure.
+                    var rc = await cli.RunAsync(new[] { verb, "--max-version", maxVersion }, Environment.CurrentDirectory);
+                    if (rc == 3) { gated = true; SetStatus("Update the RXDK extension first."); break; }
+                    if (rc != 0)
                     {
                         failed = true;
                         SetStatus($"{verb} failed — see the RXDK output window.");
@@ -306,7 +326,18 @@ namespace RxdkVs.Package.ToolWindow
             }
             SetStatus("Refreshing versions…");
             await LoadComponentVersionsAsync();
-            if (failed)
+            if (gated)
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                VsShellUtilities.ShowMessageBox(_package,
+                    "A newer RXDK component is available but needs a newer RXDK extension than the one " +
+                    "loaded. Update the RXDK for Visual Studio extension first, then update the component. " +
+                    "This keeps the extension, host tools, SDK, and docs on a compatible version.",
+                    "RXDK", OLEMSGICON.OLEMSGICON_INFO, OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                SetStatus("Ready.");
+            }
+            else if (failed)
             {
                 SetStatus("Update failed — a tool may be in use. Restart Visual Studio and try again.");
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();

@@ -95,6 +95,7 @@
     <Compile Include="Services\XboxDebugLauncher.cs" />
     <Compile Include="Services\TitleOutputPane.cs" />
     <Compile Include="Services\CliRunner.cs" />
+    <Compile Include="Services\ExtensionInfo.cs" />
     <Compile Include="Services\EngineStager.cs" />
     <Compile Include="Services\ToolLocator.cs" />
     <Compile Include="Services\ProjectConfigGenerator.cs" />
