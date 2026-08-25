@@ -480,13 +480,19 @@ namespace RxdkVs.Package.Commands
             }
         }
 
+        // The Xbox Neighborhood shell namespace extension ({DB15FEDD-...}) registers as a child of
+        // This PC ({20D04FE0-...}), so it must be opened by that nested shell path — a bare
+        // "shell:::{XboxNeighborhood}" placeholder is not a real CLSID and Explorer can't resolve it.
+        private const string XboxNeighborhoodShellPath =
+            @"shell:::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{DB15FEDD-96B8-4DA9-97E0-7E5CCA05CC44}";
+
         private async Task OpenXboxNeighborhoodAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             // Windows-only Xbox Neighborhood shell folder (matches rxdk.openXboxNeighborhood).
             try
             {
-                Process.Start(new ProcessStartInfo("explorer.exe", "shell:::{XboxNeighborhood}") { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo("explorer.exe", XboxNeighborhoodShellPath) { UseShellExecute = true });
             }
             catch (Exception ex)
             {
