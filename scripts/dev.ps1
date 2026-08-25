@@ -193,7 +193,18 @@ function Invoke-Vsix {
     $msb = Get-MSBuild
     & $msb -nologo -v:m -restore "-p:Configuration=Debug" $VsixProj
     if ($LASTEXITCODE -ne 0) { throw "VSIX build failed" }
-    Ok "VSIX built -> RxdkVs.Package\bin\Debug\RxdkVs.Package.vsix"
+    $built = Get-ChildItem (Join-Path $Repo 'RxdkVs.Package\bin\Debug') -Filter 'rxdk-vs-*.vsix' -EA SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    Ok ("VSIX built -> {0}" -f ($(if ($built) { $built.FullName } else { 'RxdkVs.Package\bin\Debug\RxdkVs.Package.vsix' })))
+}
+
+# The install-capable VSIX: prefer the product-branded rxdk-vs-<version>.vsix, else the raw one.
+function Get-BuiltVsix {
+    $dir = Join-Path $Repo 'RxdkVs.Package\bin\Debug'
+    $branded = Get-ChildItem $dir -Filter 'rxdk-vs-*.vsix' -EA SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($branded) { return $branded.FullName }
+    return (Join-Path $dir 'RxdkVs.Package.vsix')
 }
 
 function Get-VsixInstaller {
@@ -248,7 +259,7 @@ function Invoke-Uninstall {
 function Invoke-Install {
     Assert-VsClosed
     $installer = Get-VsixInstaller
-    $vsix = Join-Path $Repo 'RxdkVs.Package\bin\Debug\RxdkVs.Package.vsix'
+    $vsix = Get-BuiltVsix
     if (-not (Test-Path $vsix)) { throw "VSIX not built yet - run: ./scripts/dev.ps1 vsix" }
     $failed = @()
     foreach ($iid in Get-VsInstanceIds) {

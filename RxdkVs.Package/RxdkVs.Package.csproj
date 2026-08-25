@@ -216,4 +216,22 @@
       </VSIXSourceItem>
     </ItemGroup>
   </Target>
+
+  <!--
+    Publish the VSIX under a versioned, product-branded name (rxdk-vs-<version>.vsix) beside the raw
+    RxdkVs.Package.vsix the VSSDK produces, mirroring RXDK-VSCode's rxdk-vscode-<version>.vsix. The
+    version is read from the vsixmanifest Identity so it can't drift from the extension's real version.
+  -->
+  <Target Name="RenameVsixToProductName" AfterTargets="CreateVsixContainer">
+    <XmlPeek XmlInputPath="$(MSBuildProjectDirectory)\source.extension.vsixmanifest"
+             Namespaces="&lt;Namespace Prefix='vsx' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011' /&gt;"
+             Query="/vsx:PackageManifest/vsx:Metadata/vsx:Identity/@Version">
+      <Output TaskParameter="Result" ItemName="_RxdkVsixVersion" />
+    </XmlPeek>
+    <PropertyGroup>
+      <_RxdkVsixName>rxdk-vs-@(_RxdkVsixVersion).vsix</_RxdkVsixName>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetVsixContainer)" DestinationFiles="$(OutDir)$(_RxdkVsixName)" OverwriteReadOnlyFiles="true" />
+    <Message Importance="high" Text="RXDK: published $(OutDir)$(_RxdkVsixName)" />
+  </Target>
 </Project>
