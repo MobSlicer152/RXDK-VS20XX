@@ -83,22 +83,24 @@ float Envelope(float x)
     return pow(exp(cos(x - 3.14)), 1.1);
 }
 
-float SDF(float3 p)
+float SDF(float3 eye, float3 p)
 {
     float mountain = TriHeight(p.xz);
-    float height = mountain * Envelope(p.x);
+    float zDist = p.z - eye.z;
+    float e = Envelope(p.x);
+    float height = mountain * e;
 
     return p.y - height;
 }
 
 [fastopt]
-float3 CalcNormal(float3 pos)
+float3 CalcNormal(float3 eye, float3 pos)
 {
     float e = 0.002;
 
-    float dx = SDF(pos + float3(e, 0, 0)) - SDF(pos - float3(e, 0, 0));
-    float dy = SDF(pos + float3(0, e, 0)) - SDF(pos - float3(0, e, 0));
-    float dz = SDF(pos + float3(0, 0, e)) - SDF(pos - float3(0, 0, e));
+    float dx = SDF(eye, pos + float3(e, 0, 0)) - SDF(eye, pos - float3(e, 0, 0));
+    float dy = SDF(eye, pos + float3(0, e, 0)) - SDF(eye, pos - float3(0, e, 0));
+    float dz = SDF(eye, pos + float3(0, 0, e)) - SDF(eye, pos - float3(0, 0, e));
 
     return normalize(float3(dx, dy, dz));
 }
@@ -123,13 +125,13 @@ bool CastRay(float3 eye, float3 dir, out Hit h)
     for (int i = 0; i < RAY_STEPS; i++)
     {
         float3 p = eye + dir * total;
-        float s = SDF(p);
+        float s = SDF(eye, p);
 
         if (s < HIT_EPS)
         {
             h.s = total;
             h.p = p;
-            h.n = CalcNormal(p);
+            h.n = CalcNormal(eye, p);
             return true;
         }
 
