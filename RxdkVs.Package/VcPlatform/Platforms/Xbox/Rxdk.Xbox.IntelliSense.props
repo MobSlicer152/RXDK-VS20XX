@@ -13,7 +13,12 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <NMakePreprocessorDefinitions>_XBOX;XBOX;$(RxdkDefines);$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>$(RxdkSdkInclude);$(RxdkIncludePaths);$(RxdkPublicIncludePaths);$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
-    <NMakeForcedIncludes>picolibc.h;$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <!-- The IntelliSense shim dir supplies the freestanding/Windows-compat headers the SDK expects
+         (stddef, stdarg, float, pshpack, …) which the clang build gets from the Zig toolchain but the
+         MSVC IntelliSense front-end otherwise can't find — a missing one aborts the parse and every
+         symbol reads as "not found". -->
+    <NMakeIncludeSearchPath>$(RxdkSdkInclude);$(RxdkIntelliSenseInclude);$(RxdkIncludePaths);$(RxdkPublicIncludePaths);$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <!-- rxdk_intellisense.h (the clang-builtin/attribute prelude) must be first, before the SDK headers. -->
+    <NMakeForcedIncludes>rxdk_intellisense.h;picolibc.h;$(NMakeForcedIncludes)</NMakeForcedIncludes>
   </PropertyGroup>
 </Project>

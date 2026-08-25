@@ -29,6 +29,11 @@
     <!-- Clean-room Zig SDK headers, for IntelliSense (the same dir the build compiles against). -->
     <RxdkSdkInclude>$(ProgramData)\RXDK\sdk\include</RxdkSdkInclude>
 
+    <!-- IntelliSense-only shim headers (freestanding stddef/stdarg/float, pshpack, and the
+         rxdk_intellisense.h prelude) that let the MSVC IntelliSense front-end parse the clang-built
+         SDK headers. Never used by the real build. -->
+    <RxdkIntelliSenseInclude>$(ProgramData)\RXDK\sdk\intellisense</RxdkIntelliSenseInclude>
+
     <!-- Build flavor drives BOTH the SDK library variant (debug/release) and the optimize base. -->
     <RxdkBuildFlavor Condition="'$(RxdkBuildFlavor)' == '' and '$(Configuration)' == 'Debug'">Debug</RxdkBuildFlavor>
     <RxdkBuildFlavor Condition="'$(RxdkBuildFlavor)' == ''">Release</RxdkBuildFlavor>
