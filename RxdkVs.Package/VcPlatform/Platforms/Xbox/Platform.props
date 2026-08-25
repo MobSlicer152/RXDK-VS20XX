@@ -53,6 +53,9 @@
     <!-- Deployment: pack an .iso via xdvdfs after the .xbe (set false to stop at the .xbe). -->
     <RxdkCreateIso Condition="'$(RxdkCreateIso)' == ''">true</RxdkCreateIso>
 
+    <!-- Force Copy: false (default) = incremental deploy (xbcp -d, only new/newer files); true = always overwrite. -->
+    <RxdkForceCopy Condition="'$(RxdkForceCopy)' == ''">false</RxdkForceCopy>
+
     <!-- Per-configuration output directory. Artifacts land here; the build manifest stays at the
          stable out\ path below so referenced library projects are always found. -->
     <RxdkOutDir Condition="'$(RxdkOutDir)' == ''">out\$(Configuration)</RxdkOutDir>
@@ -134,6 +137,7 @@
       <DeployPaths ParameterType="System.String" />
       <Embed ParameterType="System.String" />
       <CreateIso ParameterType="System.String" />
+      <ForceCopy ParameterType="System.String" />
       <StackSize ParameterType="System.String" />
       <ImageDebug ParameterType="System.String" />
       <NoLogo ParameterType="System.String" />
@@ -212,6 +216,7 @@
             sb.Append("  \"embed\": [" + string.Join(", ", parts) + "],\n");
         }
         if (!string.IsNullOrEmpty(CreateIso)) sb.Append("  \"createIso\": " + CreateIso.ToLowerInvariant() + ",\n");
+        if (!string.IsNullOrEmpty(ForceCopy)) sb.Append("  \"forceCopy\": " + ForceCopy.ToLowerInvariant() + ",\n");
         var ib = new List<string>();
         if (!string.IsNullOrEmpty(StackSize)) ib.Add("\"stackSize\": " + StackSize);
         if (!string.IsNullOrEmpty(ImageDebug)) ib.Add("\"debug\": " + ImageDebug.ToLowerInvariant());
@@ -274,6 +279,7 @@
       DeployPaths="$(RxdkDeployPaths)"
       Embed="$(RxdkEmbed)"
       CreateIso="$(RxdkCreateIso)"
+      ForceCopy="$(RxdkForceCopy)"
       StackSize="$(RxdkStackSize)"
       ImageDebug="$(RxdkImageDebug)"
       NoLogo="$(RxdkNoLogo)"
