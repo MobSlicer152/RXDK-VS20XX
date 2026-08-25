@@ -240,11 +240,20 @@ namespace RxdkVs.Package.Commands
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var (vcproj, outDir, copySources) = RxdkToolWindowControl.PromptForImport();
-            if (string.IsNullOrEmpty(vcproj) || string.IsNullOrEmpty(outDir))
+            var (vcproj, projectRoot, copySources) = RxdkToolWindowControl.PromptForImport();
+            if (string.IsNullOrEmpty(vcproj) || string.IsNullOrEmpty(projectRoot))
             {
                 return; // cancelled
             }
+
+            // The import lands in <project root>\<project name> -- a child of the chosen root. Copy the
+            // sources in unless that child folder is the project's own folder (then it's an in-place
+            // import and paths reference the originals). Keeps manifest source paths relative either way.
+            var projectName = Path.GetFileNameWithoutExtension(vcproj);
+            var outDir = Path.Combine(projectRoot, projectName);
+            var sourceDir = Path.GetDirectoryName(Path.GetFullPath(vcproj)) ?? projectRoot;
+            if (!string.Equals(Path.GetFullPath(outDir).TrimEnd('\\'), sourceDir.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+                copySources = true;
 
             // No scaffold to copy: the RXDK MSBuild integration lives in the installed "Xbox"
             // platform (imported via Platform=Xbox), so imported projects need no per-project

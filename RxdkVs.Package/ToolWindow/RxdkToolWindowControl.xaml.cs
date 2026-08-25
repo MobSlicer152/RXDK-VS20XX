@@ -423,7 +423,7 @@ namespace RxdkVs.Package.ToolWindow
             row1.Children.Add(vcprojBox);
             root.Children.Add(row1);
 
-            root.Children.Add(new TextBlock { Text = "Output folder:", Margin = new Thickness(0, 0, 0, 4) });
+            root.Children.Add(new TextBlock { Text = "Project root (the project is created in a child folder named after it):", Margin = new Thickness(0, 0, 0, 4) });
             var outBox = new TextBox();
             var outBrowse = new Button { Content = "Browse…", Width = 78, Margin = new Thickness(6, 0, 0, 0) };
             var row2 = new DockPanel();
@@ -441,8 +441,8 @@ namespace RxdkVs.Package.ToolWindow
 
             root.Children.Add(new TextBlock
             {
-                Text = "The RXDK project (.vcxproj + property pages) is written to the output folder. " +
-                       "By default sources are referenced in place; check the box above to copy them in.",
+                Text = "The RXDK project is created in <project root>\\<project name>. Sources are copied in " +
+                       "unless that folder is the project's own folder (then it's an in-place import).",
                 TextWrapping = TextWrapping.Wrap, Opacity = 0.7, FontSize = 11, Margin = new Thickness(0, 8, 0, 0),
             });
 
@@ -487,7 +487,7 @@ namespace RxdkVs.Package.ToolWindow
             {
                 if (string.IsNullOrWhiteSpace(vcprojBox.Text) || string.IsNullOrWhiteSpace(outBox.Text))
                 {
-                    System.Windows.MessageBox.Show(dialog, "Pick both a .vcproj and an output folder.", "RXDK");
+                    System.Windows.MessageBox.Show(dialog, "Pick both a .vcproj/.sln and a project root.", "RXDK");
                     return;
                 }
                 okd = true;
