@@ -88,7 +88,6 @@ namespace RxdkVs.Package.Commands
             Add(CommandIds.CmdDeployProject, DeployProjectAsync, OnQueryDeploy);
             Add(CommandIds.CmdSetXboxIp, SetXboxIpAsync);
             Add(CommandIds.CmdDebug, DebugAsync);
-            Add(CommandIds.CmdDebugPrebuiltXbe, NewPrebuiltXbeAsync);
             Add(CommandIds.CmdNewProject, NewProjectAsync);
             Add(CommandIds.CmdImportProject, ImportProjectAsync);
             Add(CommandIds.CmdShowToolWindow, ShowToolWindowAsync);
@@ -233,11 +232,6 @@ namespace RxdkVs.Package.Commands
             {
                 await ShowErrorAsync($"Could not open New Project: {ex.Message}");
             }
-        }
-
-        private async Task NewPrebuiltXbeAsync()
-        {
-            await ShowInfoAsync("New Prebuilt XBE project wizard is not yet implemented (Phase 3).");
         }
 
         // ---- VS2003 project import ----

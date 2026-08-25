@@ -11,7 +11,7 @@ namespace RxdkVs.Package.Commands
         public const int RxdkTopMenu = 0x1000;
         public const int RxdkMainGroup = 0x1100;   // Build / Deploy / Run / Debug
         public const int RxdkConsoleGroup = 0x1200; // Reboot / Set IP / DXT
-        public const int RxdkProjectGroup = 0x1300; // New Project / New Prebuilt XBE
+        public const int RxdkProjectGroup = 0x1300; // New Project
         public const int RxdkToolsGroup = 0x1400;   // SDK folder, tools, docs, xbwatson…
         public const int RxdkSetupGroup = 0x1500;   // prerequisites / settings
 
@@ -24,7 +24,6 @@ namespace RxdkVs.Package.Commands
         public const int CmdRemoveDxt = 0x0106;          // rxdk.removeDxt
         public const int CmdRebootConsole = 0x0107;      // rxdk.rebootConsole
         public const int CmdDebug = 0x0108;              // rxdk.debug
-        public const int CmdDebugPrebuiltXbe = 0x0109;   // rxdk.debugPrebuiltXbe
         public const int CmdSetXboxIp = 0x010A;          // rxdk.setXboxIp
         public const int CmdShowToolWindow = 0x010B;     // rxdk.showSidebar
         public const int CmdOpenSdkDocs = 0x010C;        // rxdk.openSdkDocs
