@@ -24,6 +24,7 @@ namespace RxdkVs.Package.Commands
         public const int CmdRemoveDxt = 0x0106;          // rxdk.removeDxt
         public const int CmdRebootConsole = 0x0107;      // rxdk.rebootConsole
         public const int CmdDebug = 0x0108;              // rxdk.debug
+        public const int CmdInstallXboxNeighborhood = 0x0109; // rxdk.installXboxNeighborhood
         public const int CmdSetXboxIp = 0x010A;          // rxdk.setXboxIp
         public const int CmdShowToolWindow = 0x010B;     // rxdk.showSidebar
         public const int CmdOpenSdkDocs = 0x010C;        // rxdk.openSdkDocs

@@ -103,6 +103,7 @@ namespace RxdkVs.Package.Commands
             Add(CommandIds.CmdLaunchXbwatson, () => LaunchHostToolAsync("xbwatson"));
             Add(CommandIds.CmdLaunchXbNeighborhood, () => LaunchHostToolAsync("xbNeighborhood"));
             Add(CommandIds.CmdOpenXboxNeighborhood, OpenXboxNeighborhoodAsync);
+            Add(CommandIds.CmdInstallXboxNeighborhood, InstallXboxNeighborhoodAsync);
             Add(CommandIds.CmdCycleGlobalsScope, CycleGlobalsScopeAsync);
             Add(CommandIds.CmdSetBuildType, SetBuildTypeAsync);
             Add(CommandIds.CmdSetupPrerequisites, SetupPrerequisitesAsync);
@@ -491,6 +492,121 @@ namespace RxdkVs.Package.Commands
             {
                 await ShowInfoAsync($"Could not open Xbox Neighborhood: {ex.Message}");
             }
+        }
+
+        // RXDK-Tools GitHub repo + the installer asset that registers the Xbox Neighborhood
+        // Explorer shell namespace extension (Rxdk.XbShellExt.Shell.dll). Mirrors RXDK-VSCode's
+        // installXboxNeighborhood (xboxNeighborhoodShell.ts).
+        private const string RxdkToolsRepo = "Team-Resurgent/RXDK-Tools";
+        private const string XboxNeighborhoodSetupAsset = "XboxNeighborhood-Setup.exe";
+
+        // Download XboxNeighborhood-Setup.exe from the latest RXDK-Tools release and launch it
+        // interactively. The setup registers the Explorer shell namespace extension (needs
+        // elevation), so it self-elevates; "Open Xbox Neighborhood" becomes usable once the user
+        // finishes and refreshes. Windows-only (it's a Windows Explorer integration).
+        private async Task InstallXboxNeighborhoodAsync()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                await ShowErrorAsync("Xbox Neighborhood is Windows-only.");
+                return;
+            }
+
+            string dest;
+            try
+            {
+                await _cli.LogAsync($"[RXDK] Resolving {XboxNeighborhoodSetupAsset} from {RxdkToolsRepo}…");
+                // Run the network work off the UI thread (WebClient continuations stay off it too).
+                dest = await Task.Run(() => DownloadXboxNeighborhoodSetupAsync());
+                await _cli.LogAsync($"[RXDK] Downloaded the Xbox Neighborhood installer to {dest}");
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorAsync($"Could not download the Xbox Neighborhood installer: {ex.Message}");
+                return;
+            }
+
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            try
+            {
+                // UseShellExecute so the setup can self-elevate (UAC). Don't wait — it's interactive.
+                Process.Start(new ProcessStartInfo(dest) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorAsync($"Downloaded the installer but could not launch it: {ex.Message}");
+                return;
+            }
+
+            await _cli.LogAsync("[RXDK] Launched the Xbox Neighborhood installer.");
+            await ShowInfoAsync(
+                "The Xbox Neighborhood installer has launched. Finish the setup (it will elevate), " +
+                "then click Refresh in the RXDK window — \"Open Xbox Neighborhood\" becomes available " +
+                "once the shell extension is registered.");
+        }
+
+        // Resolve the XboxNeighborhood-Setup.exe asset on the latest RXDK-Tools release and download
+        // it to a temp file. Talks to the GitHub Releases API the same way the engine's GitHubReleases
+        // resolver does (User-Agent + versioned Accept header, honoring GITHUB_TOKEN/GH_TOKEN).
+        private static async Task<string> DownloadXboxNeighborhoodSetupAsync()
+        {
+            // .NET Framework 4.7+ negotiates TLS 1.2/1.3 by default (SystemDefault), so we don't
+            // touch the process-wide ServicePointManager.SecurityProtocol (banned here — it would
+            // change Visual Studio's own networking state).
+            var apiUrl = $"https://api.github.com/repos/{RxdkToolsRepo}/releases/latest";
+            string releaseJson;
+            using (var client = CreateGitHubWebClient())
+            {
+                releaseJson = await client.DownloadStringTaskAsync(apiUrl);
+            }
+
+            string downloadUrl = null;
+            using (var doc = System.Text.Json.JsonDocument.Parse(releaseJson))
+            {
+                if (doc.RootElement.TryGetProperty("assets", out var assets) &&
+                    assets.ValueKind == System.Text.Json.JsonValueKind.Array)
+                {
+                    foreach (var a in assets.EnumerateArray())
+                    {
+                        if (a.TryGetProperty("name", out var n) &&
+                            string.Equals(n.GetString(), XboxNeighborhoodSetupAsset, StringComparison.Ordinal) &&
+                            a.TryGetProperty("browser_download_url", out var u))
+                        {
+                            downloadUrl = u.GetString();
+                            break;
+                        }
+                    }
+                }
+            }
+            if (string.IsNullOrEmpty(downloadUrl))
+            {
+                throw new InvalidOperationException(
+                    $"the latest {RxdkToolsRepo} release has no asset \"{XboxNeighborhoodSetupAsset}\"");
+            }
+
+            var dest = Path.Combine(Path.GetTempPath(), $"XboxNeighborhood-Setup-{DateTime.UtcNow:yyyyMMddHHmmss}.exe");
+            using (var client = CreateGitHubWebClient())
+            {
+                await client.DownloadFileTaskAsync(downloadUrl, dest);
+            }
+            return dest;
+        }
+
+        // A WebClient carrying the headers GitHub's REST API and release-asset CDN expect.
+        private static System.Net.WebClient CreateGitHubWebClient()
+        {
+            var client = new System.Net.WebClient();
+            client.Headers.Add("User-Agent", "RXDK-VS20XX");
+            client.Headers.Add("Accept", "application/vnd.github+json");
+            client.Headers.Add("X-GitHub-Api-Version", "2022-11-28");
+            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN")
+                        ?? Environment.GetEnvironmentVariable("GH_TOKEN");
+            if (!string.IsNullOrEmpty(token))
+            {
+                client.Headers.Add("Authorization", "Bearer " + token);
+            }
+            return client;
         }
 
         // ---- Runtime / prerequisites / settings ----
