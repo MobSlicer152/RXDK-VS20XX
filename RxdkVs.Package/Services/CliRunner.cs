@@ -29,8 +29,11 @@ namespace RxdkVs.Package.Services
         private readonly AsyncPackage _package;
 
         // gcc/clang-style diagnostic:  path:line:col: error: message   (matches problemMatcher: ['$gcc'])
+        // The optional leading drive letter ("D:") is kept out of the colon split so ABSOLUTE Windows
+        // paths parse — without it clang's own warnings (emitted with absolute paths) never reached the
+        // Error List, and neither would the importer's per-file diagnostics.
         private static readonly Regex GccDiagnostic = new Regex(
-            @"^(?<file>[^:]+):(?<line>\d+):(?<col>\d+):\s*(?<sev>error|warning|note):\s*(?<msg>.*)$",
+            @"^(?<file>(?:[A-Za-z]:)?[^:]*):(?<line>\d+):(?<col>\d+):\s*(?<sev>error|warning|note):\s*(?<msg>.*)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         // Engine-level failures the CLI prints, e.g. "build failed: <reason>" / "error: <reason>".
