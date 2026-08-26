@@ -196,7 +196,7 @@ struct Hit
 };
 
 #define RAY_STEPS 256
-#define MAX_RAY_DIST 32.0
+#define MAX_RAY_DIST 16.0
 #define MIN_STEP 0.002
 #define HIT_EPS 0.005
 

@@ -171,7 +171,7 @@
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
-            <Border x:Name="DisabledVisualElement" Background="#FF212121" BorderBrush="#FF323232" BorderThickness="0,0,2,2" CornerRadius="3" IsHitTestVisible="false" Visibility="Collapsed"/>
+            <Border x:Name="DisabledVisualElement" Background="#FF612161" BorderBrush="#FF723272" BorderThickness="0,0,2,2" CornerRadius="3" IsHitTestVisible="false" Visibility="Collapsed"/>
             <ContentPresenter
                 x:Name="contentPresenter"
                 Content="{TemplateBinding Content}"
@@ -603,8 +603,8 @@
                         <Rectangle x:Name="Background" Fill="#00000000" Stroke="#00000000" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="1" />
                         <Rectangle x:Name="BackgroundOver" Fill="#00000000" Stroke="{StaticResource TextBoxPressBrush}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0"/>
                         <Rectangle x:Name="BackgroundPressed" Fill="#00000000" Stroke="{StaticResource btnPressStroke2}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0"/>
-                        <Rectangle x:Name="Highlight" Margin="1" Stroke="#99FFFFFF" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0" IsHitTestVisible="false"/>
-                        <Rectangle x:Name="DisabledElement" Fill="#FFFFFFFF" Opacity="0"/>
+                        <Rectangle x:Name="Highlight" Margin="1" Stroke="{StaticResource btnPressBorder}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0" IsHitTestVisible="false"/>
+                        <Rectangle x:Name="DisabledElement" Fill="Transparent" Opacity="0"/>
                         <ContentPresenter HorizontalAlignment="Center" x:Name="ContentPresenter" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -665,11 +665,11 @@
                         </Storyboard>
                     </ControlTemplate.Resources>
                     <Grid UseLayoutRounding="True">
-                        <Rectangle x:Name="Background" Fill="{StaticResource HScrollbarBkgNormFill}" Stroke="{StaticResource ScrollbarBkgNormStroke}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="1" />
-                        <Rectangle x:Name="BackgroundOver" Fill="{StaticResource HScrollbarBkgOverFill}" Stroke="{StaticResource TextBoxPressBrush}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0"/>
-                        <Rectangle x:Name="BackgroundPressed" Fill="{StaticResource HScrollbarBkgPressFill}" Stroke="{StaticResource btnPressStroke2}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0"/>
-                        <Rectangle x:Name="Highlight" Margin="1" Stroke="#99FFFFFF" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0" IsHitTestVisible="false"/>
-                        <Rectangle x:Name="DisabledElement" Fill="#FFFFFFFF" Opacity="0"/>
+                        <Rectangle x:Name="Background" Fill="{StaticResource TextBoxNorm}" Stroke="{StaticResource TextBoxNorm}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="1" />
+                        <Rectangle x:Name="BackgroundOver" Fill="{StaticResource TextBoxOver}" Stroke="{StaticResource TextBoxPressBrush}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0"/>
+                        <Rectangle x:Name="BackgroundPressed" Fill="{StaticResource BtnPressFill}" Stroke="{StaticResource btnPressStroke2}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0"/>
+                        <Rectangle x:Name="Highlight" Margin="1" Stroke="{StaticResource btnPressBorder}" StrokeThickness="1" RadiusX="0.5" RadiusY="0.5" Opacity="0" IsHitTestVisible="false"/>
+                        <Rectangle x:Name="DisabledElement" Fill="{StaticResource btnPressBorder}" Opacity="0"/>
                         <ContentPresenter HorizontalAlignment="Center" x:Name="ContentPresenter" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -734,27 +734,27 @@
                         </Storyboard>
                     </ControlTemplate.Resources>
                     <Grid Margin="0,0,0,0" x:Name="Grid" UseLayoutRounding="true">
-                        <Rectangle x:Name="Background" Fill="#00000000" Stroke="#00000000" RadiusX="1.5" RadiusY="1.5"/>
-                        <Rectangle x:Name="BackgroundOver" Fill="#00000000" Stroke="{StaticResource TextBoxPressBrush}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
-                        <Rectangle x:Name="BackgroundPressed" Fill="#00000000" Stroke="{StaticResource btnPressStroke2}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
+                        <Rectangle x:Name="Background" Fill="{StaticResource TextBoxNorm}" Stroke="{StaticResource TextBoxNorm}" RadiusX="1.5" RadiusY="1.5"/>
+                        <Rectangle x:Name="BackgroundOver" Fill="{StaticResource TextBoxOver}" Stroke="{StaticResource TextBoxPressBrush}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
+                        <Rectangle x:Name="BackgroundPressed" Fill="{StaticResource TextBoxPressBrush}" Stroke="{StaticResource btnPressStroke2}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
                         <Rectangle x:Name="BorderHighlight" Width="11" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Rectangle.Stroke>
                                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                    <GradientStop Color="#003F3F3F" Offset="0"/>
-                                    <GradientStop Color="#593F3F3F" Offset="1"/>
+                                    <GradientStop Color="#008F3F8F" Offset="0"/>
+                                    <GradientStop Color="#598F3F8F" Offset="1"/>
                                 </LinearGradientBrush>
                             </Rectangle.Stroke>
                         </Rectangle>
-                        <!--<Border Margin="0,4,0,10" Width="9" Height="2" Background="{StaticResource VThumbDivetNormFill}" BorderBrush="{StaticResource VThumbDivetNormStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Border Margin="0,0,0,0" Width="9" Height="2" Background="{StaticResource VThumbDivetNormFill}" BorderBrush="{StaticResource VThumbDivetNormStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <Border Margin="0,10,0,4" Width="9" Height="2" Background="{StaticResource VThumbDivetNormFill}" BorderBrush="{StaticResource VThumbDivetNormStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <Border x:Name="BorderOver" Margin="0,4,0,10" Width="9" Height="2" Background="{StaticResource VThumbDivetOverFill}" BorderBrush="{StaticResource VThumbDivetOverStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderOver1" Margin="0,0,0,0" Width="9" Height="2" Background="{StaticResource VThumbDivetOverFill}" BorderBrush="{StaticResource VThumbDivetOverStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderOver2" Margin="0,10,0,4" Width="9" Height="2" Background="{StaticResource VThumbDivetOverFill}" BorderBrush="{StaticResource VThumbDivetOverStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderPress" Margin="0,4,0,10" Width="9" Height="2" Background="{StaticResource VThumbDivetPressFill}" BorderBrush="{StaticResource VThumbDivetPressStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderPress1" Margin="0,0,0,0" Width="9" Height="2" Background="{StaticResource VThumbDivetPressFill}" BorderBrush="{StaticResource VThumbDivetPressStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderPress2" Margin="0,10,0,4" Width="9" Height="2" Background="{StaticResource VThumbDivetPressFill}" BorderBrush="{StaticResource VThumbDivetPressStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>-->
-                        <Rectangle x:Name="Highlight" Margin="1" Stroke="#FF1F1F1F" RadiusX="0.5" RadiusY="0.5" Opacity="0.6" IsHitTestVisible="false" />
+                        <Border Margin="0,4,0,10" Width="9" Height="2" Background="{StaticResource TextBoxNorm}" BorderBrush="{StaticResource btnPressStroke1}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Margin="0,0,0,0" Width="9" Height="2" Background="{StaticResource TextBoxNorm}" BorderBrush="{StaticResource btnPressStroke1}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Border Margin="0,10,0,4" Width="9" Height="2" Background="{StaticResource TextBoxNorm}" BorderBrush="{StaticResource btnPressStroke1}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Border x:Name="BorderOver" Margin="0,4,0,10" Width="9" Height="2" Background="{StaticResource TextBoxOver}" BorderBrush="{StaticResource selectedStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderOver1" Margin="0,0,0,0" Width="9" Height="2" Background="{StaticResource TextBoxOver}" BorderBrush="{StaticResource selectedStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderOver2" Margin="0,10,0,4" Width="9" Height="2" Background="{StaticResource TextBoxOver}" BorderBrush="{StaticResource selectedStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderPress" Margin="0,4,0,10" Width="9" Height="2" Background="{StaticResource BtnPressFill}" BorderBrush="{StaticResource btnPressBorder}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderPress1" Margin="0,0,0,0" Width="9" Height="2" Background="{StaticResource BtnPressFill}" BorderBrush="{StaticResource btnPressBorder}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderPress2" Margin="0,10,0,4" Width="9" Height="2" Background="{StaticResource BtnPressFill}" BorderBrush="{StaticResource btnPressBorder}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Rectangle x:Name="Highlight" Margin="1" Stroke="#FF6F1F6F" RadiusX="0.5" RadiusY="0.5" Opacity="0.6" IsHitTestVisible="false" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True"/>
@@ -814,27 +814,27 @@
                         </Storyboard>
                     </ControlTemplate.Resources>
                     <Grid Margin="0,0,0,0" x:Name="Grid" UseLayoutRounding="true">
-                        <Rectangle x:Name="Background" Fill="{StaticResource HScrollbarBkgNormFill}" Stroke="{StaticResource ScrollbarBkgNormStroke}" RadiusX="1.5" RadiusY="1.5"/>
-                        <Rectangle x:Name="BackgroundOver" Fill="{StaticResource HScrollbarBkgOverFill}" Stroke="{StaticResource TextBoxPressBrush}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
-                        <Rectangle x:Name="BackgroundPressed" Fill="{StaticResource HScrollbarBkgPressFill}" Stroke="{StaticResource btnPressStroke2}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
+                        <Rectangle x:Name="Background" Fill="{StaticResource TextBoxNorm}" Stroke="{StaticResource TextBoxNorm}" RadiusX="1.5" RadiusY="1.5"/>
+                        <Rectangle x:Name="BackgroundOver" Fill="{StaticResource TextBoxOver}" Stroke="{StaticResource TextBoxPressBrush}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
+                        <Rectangle x:Name="BackgroundPressed" Fill="{StaticResource TextBoxPressBrush}" Stroke="{StaticResource btnPressStroke2}" RadiusX="1.5" RadiusY="1.5" Opacity="0"/>
                         <Rectangle x:Name="BorderHighlight" Width="10" Height="11" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Rectangle.Stroke>
                                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                    <GradientStop Color="#00FFFFFF" Offset="0"/>
-                                    <GradientStop Color="#59FFFFFF" Offset="1"/>
+                                    <GradientStop Color="#008F3F8F" Offset="0"/>
+                                    <GradientStop Color="#598F3F8F" Offset="1"/>
                                 </LinearGradientBrush>
                             </Rectangle.Stroke>
                         </Rectangle>
-                        <Border Margin="4,0,10,0" Width="2" Height="9" Background="{StaticResource HThumbDivetNormFill}" BorderBrush="{StaticResource VThumbDivetNormStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Border Margin="0,0,0,0" Width="2" Height="9" Background="{StaticResource HThumbDivetNormFill}" BorderBrush="{StaticResource VThumbDivetNormStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <Border Margin="10,0,4,0" Width="2" Height="9" Background="{StaticResource HThumbDivetNormFill}" BorderBrush="{StaticResource VThumbDivetNormStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <Border x:Name="BorderOver" Margin="4,0,10,0" Width="2" Height="9" Background="{StaticResource HThumbDivetOverFill}" BorderBrush="{StaticResource VThumbDivetOverStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderOver1" Margin="0,0,0,0" Width="2" Height="9" Background="{StaticResource HThumbDivetOverFill}" BorderBrush="{StaticResource VThumbDivetOverStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderOver2" Margin="10,0,4,0" Width="2" Height="9" Background="{StaticResource HThumbDivetOverFill}" BorderBrush="{StaticResource VThumbDivetOverStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderPress" Margin="4,0,10,0" Width="2" Height="9" Background="{StaticResource HThumbDivetPressFill}" BorderBrush="{StaticResource VThumbDivetPressStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderPress1" Margin="0,0,0,0" Width="2" Height="9" Background="{StaticResource HThumbDivetPressFill}" BorderBrush="{StaticResource VThumbDivetPressStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
-                        <Border x:Name="BorderPress2" Margin="10,0,4,0" Width="2" Height="9" Background="{StaticResource HThumbDivetPressFill}" BorderBrush="{StaticResource VThumbDivetPressStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
-                        <Rectangle x:Name="Highlight" Margin="1" Stroke="#FF1F1F1F" RadiusX="0.5" RadiusY="0.5" Opacity="0.6" IsHitTestVisible="false" />
+                        <Border Margin="4,0,10,0" Width="2" Height="9" Background="{StaticResource TextBoxNorm}" BorderBrush="{StaticResource btnPressStroke1}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Margin="0,0,0,0" Width="2" Height="9" Background="{StaticResource TextBoxNorm}" BorderBrush="{StaticResource btnPressStroke1}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Border Margin="10,0,4,0" Width="2" Height="9" Background="{StaticResource TextBoxNorm}" BorderBrush="{StaticResource btnPressStroke1}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Border x:Name="BorderOver" Margin="4,0,10,0" Width="2" Height="9" Background="{StaticResource TextBoxOver}" BorderBrush="{StaticResource selectedStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderOver1" Margin="0,0,0,0" Width="2" Height="9" Background="{StaticResource TextBoxOver}" BorderBrush="{StaticResource selectedStroke}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderOver2" Margin="10,0,4,0" Width="2" Height="9" Background="{StaticResource TextBoxOver}" BorderBrush="{StaticResource selectedStroke}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderPress" Margin="4,0,10,0" Width="2" Height="9" Background="{StaticResource BtnPressFill}" BorderBrush="{StaticResource btnPressBorder}" BorderThickness="1,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderPress1" Margin="0,0,0,0" Width="2" Height="9" Background="{StaticResource BtnPressFill}" BorderBrush="{StaticResource btnPressBorder}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Border x:Name="BorderPress2" Margin="10,0,4,0" Width="2" Height="9" Background="{StaticResource BtnPressFill}" BorderBrush="{StaticResource btnPressBorder}" BorderThickness="1,1,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0"/>
+                        <Rectangle x:Name="Highlight" Margin="1" Stroke="#FF6F1F6F" RadiusX="0.5" RadiusY="0.5" Opacity="0.6" IsHitTestVisible="false" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True"/>

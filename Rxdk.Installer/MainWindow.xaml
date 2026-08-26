@@ -14,13 +14,19 @@
         MouseLeftButtonDown="Window_StartDrag"
         MouseMove="Window_Drag"
         MouseLeftButtonUp="Window_ReleaseDrag"
-        GotFocus="Window_GotFocus"
-        LostFocus="Window_LostFocus"
+        Activated="Window_Activated"
+        Deactivated="Window_Deactivated"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         TextElement.FontFamily="./Resources/#Orbitron"
         TextOptions.TextRenderingMode="Aliased"
         TextElement.FontSize="12">
+    <d:Window.Background>
+        <LinearGradientBrush StartPoint="0.5,0.0" EndPoint="0.5,1.0">
+            <GradientStop Color="Purple" Offset="0.0" />
+            <GradientStop Color="Goldenrod" Offset="1.25" />
+        </LinearGradientBrush>
+    </d:Window.Background>
     <Window.Resources>
         <ResourceDictionary Source="/WindowsStyle.xaml" />
     </Window.Resources>
@@ -84,7 +90,7 @@
                 </Image>
                 <StackPanel Effect="{StaticResource Shadow}">
                     <Label Name="Thanks" Content="THANKS TO" FontSize="10" HorizontalAlignment="Center" MinHeight="12" />
-                    <Label Name="Contributors" Content="EqUiNoX and HoRnEyDvL" FontSize="12" HorizontalAlignment="Center" MinHeight="14" />
+                    <Label Name="Contributors" Content="EqUiNoX, HoRnEyDvL, AND MobSlicer152" FontSize="12" HorizontalAlignment="Center" MinHeight="14" />
                 </StackPanel>
             </StackPanel>
 
@@ -100,14 +106,12 @@
             <StackPanel Margin="10">
                 <Label Content="Start menu folder" Effect="{StaticResource Shadow}" />
                 <TextBox Name="StartMenuFolder" Text="RXDK" HorizontalAlignment="Left" Width="460" CaretBrush="White" Margin="5,10" Effect="{StaticResource Shadow}" />
-                <CheckBox Name="CreateStartMenuFolder"  Margin="5,0" Content="Create start menu folder" IsChecked="True" Effect="{StaticResource Shadow}" />
+                <CheckBox Name="CreateStartMenuFolder" Margin="5,0" Content="Create start menu folder" IsChecked="True" Effect="{StaticResource Shadow}" />
             </StackPanel>
 
             <StackPanel Margin="10">
                 <Label Content="Components" Effect="{StaticResource Shadow}" />
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox Name="InstallVsExtension" Content="Install Visual Studio extension" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
-                </StackPanel>
+                <CheckBox Name="InstallVsExtension" Content="Install Visual Studio extension" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
                 <CheckBox Name="InstallDocs" Content="Install documentation" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
                 <CheckBox Name="InstallSamples" Content="Install samples" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
             </StackPanel>
@@ -119,8 +123,8 @@
             </StackPanel>-->
 
             <StackPanel Margin="10,0" Orientation="Horizontal">
-                <Button Name="Install" Content="Install" Margin="5" Width="230" Effect="{StaticResource Shadow}" />
-                <Button Name="Cancel" Content="Cancel" Margin="5" Width="230" Effect="{StaticResource Shadow}" />
+                <Button Name="Install" Content="Install" Click="Install_Click" Margin="5" Width="230" Effect="{StaticResource Shadow}" />
+                <Button Name="Cancel" Content="Cancel" Click="Cancel_Click" Margin="5" Width="230" Effect="{StaticResource Shadow}" />
             </StackPanel>
 
             <StackPanel Margin="10,0,10,10">
@@ -129,11 +133,11 @@
                     <Label Name="ProgressText" HorizontalAlignment="Center" Margin="8,0" VerticalAlignment="Center" Effect="{StaticResource Shadow}" />
                 </Grid>
                 <TextBox Name="InstallLog" IsReadOnly="True" Height="90" Margin="5" Effect="{StaticResource Shadow}"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                         ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" />
             </StackPanel>
 
             <StackPanel Margin="10,5">
-                <!--<StackPanel Orientation="Horizontal" Width="480">
+                <StackPanel Orientation="Horizontal" Width="480" Effect="{StaticResource Shadow}">
                     <Label Name="Music" VerticalAlignment="Center" HorizontalAlignment="Left" Width="295" MinHeight="10" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Image Source="/Resources/quiet.png" Width="20" Height="20" />
@@ -146,12 +150,14 @@
                             <Image Source="/Resources/pause.png" Margin="0" />
                         </Button>
                     </StackPanel>
-                </StackPanel> -->
+                </StackPanel>
             </StackPanel>
 
-            <StackPanel Margin="10,5">
+            <StackPanel Margin="10">
                 <TextBlock HorizontalAlignment="Center" Effect="{StaticResource Shadow}">
-                    <Hyperlink Foreground="{StaticResource LinkBrush}" TextDecorations="None" NavigateUri="https://discord.com/invite/VcdSfajQGK">JOiN US ON DiSCORD</Hyperlink>
+                    <Hyperlink Foreground="{StaticResource LinkBrush}" TextDecorations="None" NavigateUri="https://discord.com/invite/VcdSfajQGK">
+                        JOiN US ON DiSCORD
+                    </Hyperlink>
                 </TextBlock>
             </StackPanel>
         </StackPanel>

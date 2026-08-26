@@ -33,7 +33,6 @@
     <ItemGroup>
         <Effect Include="Resources\BackgroundShader.fx" />
         <!--<PackageReference Include="Microsoft.Direct3D.DXC" Version="1.9.2607.13" GeneratePathProperty="true" />-->
-        <ProjectReference Include="..\Rxdk.Engine\Rxdk.Engine.csproj" />
         <Resource Include="$(IntermediateOutputPath)Resources\BackgroundShader.ps" Condition="Exists('$(IntermediateOutputPath)Resources\BackgroundShader.ps')">
             <Link>Resources\BackgroundShader.ps</Link>
         </Resource>
@@ -42,7 +41,7 @@
 
     <Target Name="EffectCompile" BeforeTargets="PrepareResources" Condition="'@(Effect)' != ''" Inputs="@(Effect)" Outputs="$(IntermediateOutputPath)%(Effect.RelativeDir)%(Effect.FileName).ps">
         <MakeDir Directories="$(IntermediateOutputPath)%(Effect.RelativeDir)" />
-        <Exec Command="&quot;C:\Program Files (x86)\Windows Kits\10\bin\$(TargetPlatformVersion)\x64\fxc.exe&quot; /nologo /T ps_3_0 /E main /Od /Fo &quot;$(IntermediateOutputPath)%(Effect.RelativeDir)%(Effect.FileName).ps&quot; &quot;%(Effect.Identity)&quot;" />
+        <Exec Command="&quot;C:\Program Files (x86)\Windows Kits\10\bin\$(TargetPlatformVersion)\x64\fxc.exe&quot; /nologo /T ps_3_0 /Od /E main /Fo &quot;$(IntermediateOutputPath)%(Effect.RelativeDir)%(Effect.FileName).ps&quot; &quot;%(Effect.Identity)&quot;" />
     </Target>
 
 </Project>
