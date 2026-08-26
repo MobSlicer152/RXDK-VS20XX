@@ -195,7 +195,7 @@ struct Hit
     float3 n;
 };
 
-#define RAY_STEPS 64
+#define RAY_STEPS 256
 #define MAX_RAY_DIST 32.0
 #define MIN_STEP 0.002
 #define HIT_EPS 0.005
@@ -307,19 +307,18 @@ float4 Render(float2 uv)
 {
     float2 aspectScale = float2(aspect, -1.0);
     float2 ray = (uv * 2.0 - 1.0) * aspectScale;
-
+    
     float shift = time * 10;
     float3 eye = float3(0, 1.5, -5 + shift);
 
     Hit hit;
-
     if (CastRay(eye, normalize(float3(ray, 1)), hit))
     {
         return CalcLight(hit);
     }
 
     float sun = Circle(ray, float2(0.0, 0.3), 0.3);
-    if (sun < 0.0)
+    if (sun < 0.0 && int(uv.y * 100) % 5 != 0)
     {
         float p = (1.0 - uv.y) * 5 - 2;
         return lerp(float4(0.8, 0.9, 0.0, 1.0), float4(1.0, 0.7, 0.0, 1.0), p);
@@ -328,8 +327,7 @@ float4 Render(float2 uv)
     float gradient = Circle(ray, float2(0.0, 0.5), 0.01);
     float alpha = saturate(gradient + 0.4);
 
-    float3 sky = lerp(float3(0.5, 0.0, 0.6), float3(0.6, 0.6, 0.0), uv.y);
-
+    float3 sky = lerp(float3(0.5, 0.0, 0.6), float3(0.65, 0.6, 0.0), uv.y);
     return float4(sky, alpha);
 }
 
