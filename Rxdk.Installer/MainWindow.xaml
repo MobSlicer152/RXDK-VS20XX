@@ -14,6 +14,8 @@
         MouseLeftButtonDown="Window_StartDrag"
         MouseMove="Window_Drag"
         MouseLeftButtonUp="Window_ReleaseDrag"
+        GotFocus="Window_GotFocus"
+        LostFocus="Window_LostFocus"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         TextElement.FontFamily="./Resources/#Orbitron"
@@ -89,7 +91,7 @@
             <StackPanel Margin="10">
                 <Label Content="Install path" Effect="{StaticResource Shadow}" />
                 <StackPanel Orientation="Horizontal" Margin="5,10" HorizontalAlignment="Stretch">
-                    <TextBox Name="InstallPath" Width="380" VerticalContentAlignment="Center" CaretBrush="White" Effect="{StaticResource Shadow}" />
+                    <TextBox Name="InstallPath" Text="C:\Program Files\RXDK" Width="380" VerticalContentAlignment="Center" CaretBrush="White" Effect="{StaticResource Shadow}" />
                     <Button Name="InstallBrowse" Width="80" Content="Browse" Margin="5,0,0,0" HorizontalAlignment="Right" Effect="{StaticResource Shadow}" />
                 </StackPanel>
                 <!--"<CheckBox Margin="5,0" Name="CreateDesktopShortcut" Content="Create desktop shortcut" IsChecked="True" Effect="{StaticResource Shadow}" />-->
@@ -97,21 +99,24 @@
 
             <StackPanel Margin="10">
                 <Label Content="Start menu folder" Effect="{StaticResource Shadow}" />
-                <TextBox Name="StartMenuFolder" HorizontalAlignment="Left" Width="460" CaretBrush="White" Margin="5,10" Effect="{StaticResource Shadow}" />
+                <TextBox Name="StartMenuFolder" Text="RXDK" HorizontalAlignment="Left" Width="460" CaretBrush="White" Margin="5,10" Effect="{StaticResource Shadow}" />
                 <CheckBox Name="CreateStartMenuFolder"  Margin="5,0" Content="Create start menu folder" IsChecked="True" Effect="{StaticResource Shadow}" />
             </StackPanel>
 
             <StackPanel Margin="10">
                 <Label Content="Components" Effect="{StaticResource Shadow}" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Name="InstallVsExtension" Content="Install Visual Studio extension" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
+                </StackPanel>
                 <CheckBox Name="InstallDocs" Content="Install documentation" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
                 <CheckBox Name="InstallSamples" Content="Install samples" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
             </StackPanel>
 
-            <StackPanel Margin="10" Effect="{StaticResource Shadow}">
+            <!--<StackPanel Margin="10" Effect="{StaticResource Shadow}">
                 <Label Content="Other" />
                 <CheckBox Name="RegisterUninstall" Content="Register uninstall info" Margin="5,5,0,0" IsChecked="True" Effect="{StaticResource Shadow}" />
                 <CheckBox Name="KeepIncomplete" Content="Keep files after a failed installation" Margin="5,5,0,0" IsChecked="False" Effect="{StaticResource Shadow}" />
-            </StackPanel>
+            </StackPanel>-->
 
             <StackPanel Margin="10,0" Orientation="Horizontal">
                 <Button Name="Install" Content="Install" Margin="5" Width="230" Effect="{StaticResource Shadow}" />

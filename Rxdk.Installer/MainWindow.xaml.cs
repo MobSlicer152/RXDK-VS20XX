@@ -58,5 +58,15 @@ namespace Rxdk.Installer
             dragging = false;
             ReleaseMouseCapture();
         }
+
+        private void Window_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Background.Fill = new SolidColorBrush(new Color() { R = 0, G = 0, B = 0, A = 1 });
+        }
+
+        private void Window_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Background.Fill = Brushes.Black;
+        }
     }
 }
