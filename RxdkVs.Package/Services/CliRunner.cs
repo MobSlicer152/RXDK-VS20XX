@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -28,8 +29,11 @@ namespace RxdkVs.Package.Services
         private readonly AsyncPackage _package;
 
         // gcc/clang-style diagnostic:  path:line:col: error: message   (matches problemMatcher: ['$gcc'])
+        // The optional leading drive letter ("D:") is kept out of the colon split so ABSOLUTE Windows
+        // paths parse — without it clang's own warnings (emitted with absolute paths) never reached the
+        // Error List, and neither would the importer's per-file diagnostics.
         private static readonly Regex GccDiagnostic = new Regex(
-            @"^(?<file>[^:]+):(?<line>\d+):(?<col>\d+):\s*(?<sev>error|warning|note):\s*(?<msg>.*)$",
+            @"^(?<file>(?:[A-Za-z]:)?[^:]*):(?<line>\d+):(?<col>\d+):\s*(?<sev>error|warning|note):\s*(?<msg>.*)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         // Engine-level failures the CLI prints, e.g. "build failed: <reason>" / "error: <reason>".
@@ -219,12 +223,67 @@ namespace RxdkVs.Package.Services
                 Environment.ExpandEnvironmentVariables(@"%ProgramData%\RXDK\dotnet"),
                 System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet"),
             };
+            // Prefer a root that actually carries a .NET 8 shared runtime (so an auto-installed
+            // ~/.dotnet wins over a Program Files\dotnet that lacks net8); fall back to first existing.
+            string firstExisting = null;
             foreach (var c in candidates)
             {
-                if (System.IO.Directory.Exists(c))
+                if (!System.IO.Directory.Exists(c)) continue;
+                if (firstExisting == null) firstExisting = c;
+                if (HasNetCoreApp8(c)) { psi.EnvironmentVariables["DOTNET_ROOT"] = c; return; }
+            }
+            if (firstExisting != null) psi.EnvironmentVariables["DOTNET_ROOT"] = firstExisting;
+        }
+
+        private static bool HasNetCoreApp8(string dotnetRoot)
+        {
+            try
+            {
+                var shared = System.IO.Path.Combine(dotnetRoot, "shared", "Microsoft.NETCore.App");
+                return System.IO.Directory.Exists(shared) &&
+                       System.IO.Directory.GetDirectories(shared).Any(d =>
+                           System.IO.Path.GetFileName(d).StartsWith("8.", StringComparison.Ordinal));
+            }
+            catch { return false; }
+        }
+
+        /// <summary>Write a line to the "RXDK" output pane (for callers that stream their own steps).</summary>
+        public Task LogAsync(string text) => WriteLineAsync(text);
+
+        /// <summary>
+        /// Run an arbitrary process, streaming stdout/stderr into the "RXDK" pane. Unlike RunAsync it
+        /// does no CLI resolution / Error-List parsing — used for bootstrap steps (e.g. installing the
+        /// .NET runtime) that must run without the CLI. Returns the exit code.
+        /// </summary>
+        public async Task<int> RunProcessAsync(string fileName, string arguments, string workingDirectory, CancellationToken cancellationToken = default)
+        {
+            await WriteLineAsync($"[RXDK] > {fileName} {arguments}");
+            var psi = new ProcessStartInfo
+            {
+                FileName = fileName,
+                Arguments = arguments,
+                WorkingDirectory = workingDirectory ?? Environment.CurrentDirectory,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8,
+            };
+            using (var process = new Process { StartInfo = psi, EnableRaisingEvents = true })
+            {
+                var tcs = new TaskCompletionSource<int>();
+                process.Exited += (_, __) => tcs.TrySetResult(process.ExitCode);
+                process.OutputDataReceived += (_, e) => { if (e.Data != null) _ = WriteLineAsync(e.Data); };
+                process.ErrorDataReceived += (_, e) => { if (e.Data != null) _ = WriteLineAsync(e.Data); };
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                using (cancellationToken.Register(() => TryKill(process)))
                 {
-                    psi.EnvironmentVariables["DOTNET_ROOT"] = c;
-                    break;
+                    var exitCode = await tcs.Task;
+                    await WriteLineAsync($"[RXDK] exit code {exitCode}");
+                    return exitCode;
                 }
             }
         }

@@ -42,6 +42,16 @@ $Cli        = Join-Path $EngineDir 'Rxdk.Cli.exe'
 $Dap        = Join-Path $EngineDir 'Rxdk.Dap.exe'
 $SamplesSln = Join-Path $Repo 'samples\RXDK-Samples.sln'
 $VsixProj   = Join-Path $Repo 'RxdkVs.Package\RxdkVs.Package.csproj'
+# The net8 build engine (Rxdk.Cli/Rxdk.Dap/Rxdk.Engine) is the RXDK-Tools submodule.
+$EngineSrc  = Join-Path $Repo 'external\RXDK-Tools\src'
+
+# Ensure the engine submodule is present and, so a locally-built VSIX bundles the newest engine,
+# fast-forwarded to the tip of RXDK-Tools' default branch (mirrors the CI "latest tools" step).
+function Update-EngineSubmodule {
+    Info "Updating engine submodule (external/RXDK-Tools) to latest tools"
+    & git -C $Repo submodule update --init --remote --recursive external/RXDK-Tools
+    if ($LASTEXITCODE -ne 0) { throw "git submodule update failed for external/RXDK-Tools" }
+}
 
 function Info($m)  { Write-Host "==> $m" -ForegroundColor Cyan }
 function Ok($m)    { Write-Host "OK  $m" -ForegroundColor Green }
@@ -65,6 +75,7 @@ function Get-SampleName {
 # ---- commands ----
 
 function Invoke-Publish {
+    Update-EngineSubmodule
     Info "Publishing Rxdk.Cli + Rxdk.Dap (net8, framework-dependent) -> $EngineDir"
     # A running VS / debug session can lock the exes; warn rather than fail cryptically.
     foreach ($p in 'Rxdk.Cli', 'Rxdk.Dap') {
@@ -73,7 +84,7 @@ function Invoke-Publish {
         }
     }
     foreach ($proj in 'Rxdk.Cli', 'Rxdk.Dap') {
-        $csproj = Join-Path $Repo "$proj\$proj.csproj"
+        $csproj = Join-Path $EngineSrc "$proj\$proj.csproj"
         dotnet publish $csproj -c Release -o $EngineDir --no-self-contained -v q
         if ($LASTEXITCODE -ne 0) { throw "publish failed for $proj" }
     }
@@ -176,12 +187,24 @@ function Invoke-Templates {
 }
 
 function Invoke-Vsix {
+    Update-EngineSubmodule
     Invoke-Templates
     Info "Building RxdkVs.Package VSIX"
     $msb = Get-MSBuild
     & $msb -nologo -v:m -restore "-p:Configuration=Debug" $VsixProj
     if ($LASTEXITCODE -ne 0) { throw "VSIX build failed" }
-    Ok "VSIX built -> RxdkVs.Package\bin\Debug\RxdkVs.Package.vsix"
+    $built = Get-ChildItem (Join-Path $Repo 'RxdkVs.Package\bin\Debug') -Filter 'rxdk-vs-*.vsix' -EA SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    Ok ("VSIX built -> {0}" -f ($(if ($built) { $built.FullName } else { 'RxdkVs.Package\bin\Debug\RxdkVs.Package.vsix' })))
+}
+
+# The install-capable VSIX: prefer the product-branded rxdk-vs-<version>.vsix, else the raw one.
+function Get-BuiltVsix {
+    $dir = Join-Path $Repo 'RxdkVs.Package\bin\Debug'
+    $branded = Get-ChildItem $dir -Filter 'rxdk-vs-*.vsix' -EA SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($branded) { return $branded.FullName }
+    return (Join-Path $dir 'RxdkVs.Package.vsix')
 }
 
 function Get-VsixInstaller {
@@ -191,6 +214,17 @@ function Get-VsixInstaller {
     $exe = Join-Path $root 'Common7\IDE\VSIXInstaller.exe'
     if (-not (Test-Path $exe)) { throw "VSIXInstaller.exe not found ($exe)." }
     return $exe
+}
+
+function Get-VsInstanceIds {
+    # The VSIX targets [17.0,19.0), so install/uninstall across EVERY instance in that range
+    # (VS 2022 + VS 2026), not just -latest -- otherwise the older IDE keeps a stale extension.
+    $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+    if (-not (Test-Path $vswhere)) { throw "vswhere.exe not found ($vswhere)." }
+    $ids = & $vswhere -all -prerelease -version '[17.0,19.0)' -property instanceId
+    $ids = @($ids | Where-Object { $_ })
+    if ($ids.Count -eq 0) { throw "No Visual Studio 2022/2026 instance found via vswhere." }
+    return $ids
 }
 
 function Get-ExtensionId {
@@ -211,21 +245,31 @@ function Invoke-Uninstall {
     Assert-VsClosed
     $installer = Get-VsixInstaller
     $id = Get-ExtensionId
-    Info "Uninstalling extension $id"
-    & $installer "/uninstall:$id" /quiet | Out-Null
-    # 0 = ok; ~2003 = not installed. Either is fine for a reinstall flow.
-    if ($LASTEXITCODE -eq 0) { Ok "Uninstalled." } else { Warn "Nothing to uninstall (or code $LASTEXITCODE) - continuing." }
+    # Per-instance (not one batched /instanceIds call): a batch aborts if the extension is absent
+    # from any listed instance (code 2003), which would skip the instances that DO have it.
+    foreach ($iid in Get-VsInstanceIds) {
+        Info "Uninstalling extension $id from $iid"
+        & $installer "/uninstall:$id" "/instanceIds:$iid" /quiet | Out-Null
+        # 0 = ok; ~2003 = not installed on this instance. Either is fine for a reinstall flow.
+        if ($LASTEXITCODE -eq 0) { Ok "  uninstalled from $iid" }
+        else { Warn "  nothing to uninstall from $iid (code $LASTEXITCODE) - continuing" }
+    }
 }
 
 function Invoke-Install {
     Assert-VsClosed
     $installer = Get-VsixInstaller
-    $vsix = Join-Path $Repo 'RxdkVs.Package\bin\Debug\RxdkVs.Package.vsix'
+    $vsix = Get-BuiltVsix
     if (-not (Test-Path $vsix)) { throw "VSIX not built yet - run: ./scripts/dev.ps1 vsix" }
-    Info "Installing $vsix"
-    & $installer $vsix /quiet | Out-Null
-    if ($LASTEXITCODE -eq 0) { Ok "Installed. Start Visual Studio to use it." }
-    else { throw "VSIXInstaller failed (code $LASTEXITCODE)." }
+    $failed = @()
+    foreach ($iid in Get-VsInstanceIds) {
+        Info "Installing $vsix -> $iid"
+        & $installer "/instanceIds:$iid" $vsix /quiet | Out-Null
+        if ($LASTEXITCODE -eq 0) { Ok "  installed to $iid" }
+        else { $failed += "$iid (code $LASTEXITCODE)" }
+    }
+    if ($failed.Count -gt 0) { throw "VSIXInstaller failed for: $($failed -join '; ')" }
+    Ok "Installed. Start Visual Studio to use it."
 }
 
 function Invoke-Reinstall {

@@ -88,15 +88,25 @@ namespace RxdkVs.Package.Services
                 ? "Rxdk.Dap"
                 : "Rxdk.Cli";
 
+            // The engine now lives in the RXDK-Tools submodule (external\RXDK-Tools\src\<proj>);
+            // keep the pre-submodule repo-root layout too so an older tree still resolves.
+            var relDirs = new[]
+            {
+                Path.Combine("external", "RXDK-Tools", "src", projectName),
+                projectName,
+            };
             var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             for (var i = 0; i < 8 && dir != null; i++)
             {
-                foreach (var cfg in new[] { "Debug", "Release" })
+                foreach (var rel in relDirs)
                 {
-                    var candidate = Path.Combine(dir, projectName, "bin", cfg, "net8.0", exeName);
-                    if (File.Exists(candidate))
+                    foreach (var cfg in new[] { "Debug", "Release" })
                     {
-                        return candidate;
+                        var candidate = Path.Combine(dir, rel, "bin", cfg, "net8.0", exeName);
+                        if (File.Exists(candidate))
+                        {
+                            return candidate;
+                        }
                     }
                 }
                 dir = Path.GetDirectoryName(dir);

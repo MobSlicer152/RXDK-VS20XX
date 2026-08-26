@@ -35,6 +35,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          # The net8 build engine (Rxdk.Cli + Rxdk.Dap) lives in the RXDK-Tools submodule
+          # under external/RXDK-Tools; the VSIX bundles it via the PublishRxdkEngine target.
+          submodules: recursive
+
+      # Bundle the LATEST tools, not just the committed pin: fast-forward the engine submodule
+      # to the tip of RXDK-Tools' default branch before building, so a freshly-published VSIX
+      # always ships the newest build engine.
+      - name: Update engine submodule to latest tools
+        run: git submodule update --remote --recursive external/RXDK-Tools
 
       # Puts VS 2022's MSBuild on PATH. The extension is a classic (non-SDK) VSSDK
       # csproj built with MSBuild -- NOT `dotnet build`. The VSSDK build targets and
@@ -69,9 +79,11 @@ jobs:
         id: vsix
         run: |
           $ErrorActionPreference = 'Stop'
-          $vsix = Get-ChildItem -Path RxdkVs.Package/bin/Release -Filter *.vsix -Recurse |
+          # The build emits the product-branded rxdk-vs-<version>.vsix beside the raw
+          # RxdkVs.Package.vsix; publish the branded one.
+          $vsix = Get-ChildItem -Path RxdkVs.Package/bin/Release -Filter rxdk-vs-*.vsix -Recurse |
             Sort-Object LastWriteTime -Descending | Select-Object -First 1
-          if (-not $vsix) { throw 'VSIX not found after build' }
+          if (-not $vsix) { throw 'rxdk-vs-*.vsix not found after build' }
           "path=$($vsix.FullName)"  >> $env:GITHUB_OUTPUT
           "name=$($vsix.Name)"      >> $env:GITHUB_OUTPUT
           $mb = [math]::Round($vsix.Length / 1MB, 2)

@@ -97,11 +97,6 @@ namespace RxdkVs.Package.Services
                 AddTask("rxdk: deploy", "deploy");
                 AddTask("rxdk: reboot", "reboot");
             }
-            else if (manifest.IsPrebuilt)
-            {
-                // Prebuilt XBE: deploy the existing artifacts; no compile.
-                AddTask("rxdk: deploy", "deploy");
-            }
             else
             {
                 AddTask("rxdk: build", "build");
@@ -120,44 +115,20 @@ namespace RxdkVs.Package.Services
         private static string WriteLaunch(string projectRoot, ManifestView manifest, string cliPath)
         {
             var name = manifest.Name;
-            object config;
-
-            if (manifest.IsPrebuilt)
+            object config = new Dictionary<string, object>
             {
-                var xbeLeaf = Path.GetFileName(manifest.PrebuiltXbe ?? $"{name}.xbe");
-                var remote = string.IsNullOrEmpty(manifest.PrebuiltRemoteName) ? name : manifest.PrebuiltRemoteName;
-                config = Compact(new Dictionary<string, object>
-                {
-                    ["type"] = "xbox",
-                    ["request"] = "launch",
-                    ["name"] = $"Debug {name}",
-                    ["project"] = "rxdk.project.json",
-                    ["xbe"] = manifest.PrebuiltXbe,
-                    ["xbePath"] = $@"xe:\{remote}\{xbeLeaf}",
-                    ["program"] = manifest.PrebuiltExe,
-                    ["pdb"] = manifest.PrebuiltPdb,
-                    ["map"] = manifest.PrebuiltMap,
-                    ["srcRoot"] = manifest.PrebuiltSrcRoot,
-                    ["reboot"] = true,
-                });
-            }
-            else
-            {
-                config = new Dictionary<string, object>
-                {
-                    ["type"] = "xbox",
-                    ["request"] = "launch",
-                    ["name"] = $"Debug {name}",
-                    ["project"] = "rxdk.project.json",
-                    // Build+deploy before attach. Rxdk.Dap performs deploy/launch itself; we run
-                    // the build task here (VS launches preLaunchTask by label, same as VS Code).
-                    ["preLaunchTask"] = "rxdk: build",
-                    ["program"] = $@"${{workspaceRoot}}\out\{name}.exe",
-                    ["pdb"] = $@"${{workspaceRoot}}\out\{name}.pdb",
-                    ["xbePath"] = $@"xe:\{name}\{name}.xbe",
-                    ["reboot"] = false,
-                };
-            }
+                ["type"] = "xbox",
+                ["request"] = "launch",
+                ["name"] = $"Debug {name}",
+                ["project"] = "rxdk.project.json",
+                // Build+deploy before attach. Rxdk.Dap performs deploy/launch itself; we run
+                // the build task here (VS launches preLaunchTask by label, same as VS Code).
+                ["preLaunchTask"] = "rxdk: build",
+                ["program"] = $@"${{workspaceRoot}}\out\{name}.exe",
+                ["pdb"] = $@"${{workspaceRoot}}\out\{name}.pdb",
+                ["xbePath"] = $@"xe:\{name}\{name}.xbe",
+                ["reboot"] = false,
+            };
 
             var doc = new
             {
@@ -268,16 +239,6 @@ namespace RxdkVs.Package.Services
                     Defines = GetStringArray(root, "defines"),
                     ProjectReferences = GetStringArray(root, "projectReferences"),
                 };
-
-                if (root.TryGetProperty("prebuilt", out var pb) && pb.ValueKind == JsonValueKind.Object)
-                {
-                    m.PrebuiltXbe = GetString(pb, "xbe");
-                    m.PrebuiltPdb = GetString(pb, "pdb");
-                    m.PrebuiltMap = GetString(pb, "map");
-                    m.PrebuiltExe = GetString(pb, "exe");
-                    m.PrebuiltSrcRoot = GetString(pb, "srcRoot");
-                    m.PrebuiltRemoteName = GetString(pb, "remoteName");
-                }
                 return m;
             }
         }
@@ -294,14 +255,6 @@ namespace RxdkVs.Package.Services
             public List<string> Defines = new List<string>();
             public List<string> ProjectReferences = new List<string>();
 
-            public string PrebuiltXbe;
-            public string PrebuiltPdb;
-            public string PrebuiltMap;
-            public string PrebuiltExe;
-            public string PrebuiltSrcRoot;
-            public string PrebuiltRemoteName;
-
-            public bool IsPrebuilt => !string.IsNullOrEmpty(PrebuiltXbe);
             public bool IsDxt => string.Equals(Type, "dxt", StringComparison.OrdinalIgnoreCase);
             public bool IsLibrary => string.Equals(Type, "library", StringComparison.OrdinalIgnoreCase);
 
@@ -309,7 +262,7 @@ namespace RxdkVs.Package.Services
                 || s.EndsWith(".cxx", StringComparison.OrdinalIgnoreCase)
                 || s.EndsWith(".cc", StringComparison.OrdinalIgnoreCase));
 
-            public bool NeedsIntelliSense => !IsPrebuilt && Sources.Any(s =>
+            public bool NeedsIntelliSense => Sources.Any(s =>
                 new[] { ".c", ".cpp", ".cxx", ".cc", ".h", ".hpp" }
                     .Any(ext => s.EndsWith(ext, StringComparison.OrdinalIgnoreCase)));
         }
@@ -332,12 +285,6 @@ namespace RxdkVs.Package.Services
                 }
             }
             return list;
-        }
-
-        private static Dictionary<string, object> Compact(Dictionary<string, object> d)
-        {
-            return d.Where(kv => kv.Value != null && !(kv.Value is string s && s.Length == 0))
-                    .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         private static string WriteJson(string path, object doc)

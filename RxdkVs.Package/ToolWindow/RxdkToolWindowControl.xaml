@@ -118,6 +118,7 @@
             <Button Style="{StaticResource Act}" Content="Launch xbWatson"               Click="OnLaunchXbwatson" />
             <Button Style="{StaticResource Act}" Content="Xbox Neighborhood (App)"        Click="OnLaunchNeighborhoodApp" />
             <Button Style="{StaticResource Act}" Content="Xbox Neighborhood (Explorer)"   Click="OnOpenXboxNeighborhood" />
+            <Button Style="{StaticResource Act}" Content="Install Xbox Neighborhood"       Click="OnInstallXboxNeighborhood" />
             <Button Style="{StaticResource Act}" Content="Cycle Globals Visibility (Title / +Constants / All)" Click="OnCycleGlobals" />
 
             <!-- Project -->
@@ -126,10 +127,10 @@
 
             <!-- Setup -->
             <TextBlock Text="SETUP" Style="{StaticResource Section}" />
+            <!-- One-click: installs C++ build tools, the Xbox platform, and the CLI-managed
+                 components (Zig/tools/SDK/docs), skipping whatever is already present. The
+                 individual installers remain available via the RXDK command menu. -->
             <Button Style="{StaticResource Act}" Content="Install Prerequisites"       Click="OnCompleteSetup" />
-            <Button Style="{StaticResource Act}" Content="Install C++ Build Tools (v143)" Click="OnInstallBuildTools" />
-            <Button Style="{StaticResource Act}" Content="Install Xbox Platform (VS)"      Click="OnInstallXboxPlatform" />
-            <Button Style="{StaticResource Act}" Content="Install .NET 8 Runtime"      Click="OnInstallDotNet" />
             <Button Style="{StaticResource Act}" Content="Settings"                Click="OnSettings" />
             <Button Style="{StaticResource Act}" Content="Refresh"                 Click="OnRefresh" />
 

@@ -45,6 +45,13 @@
         <Strings><ButtonText>RXDK Window</ButtonText></Strings>
       </Button>
 
+      <!-- Download + launch XboxNeighborhood-Setup.exe (registers the Explorer shell namespace
+           extension). Also surfaced by the tool window's TOOLS section. -->
+      <Button guid="guidRxdkCmdSet" id="CmdInstallXboxNeighborhood" priority="0x0110" type="Button">
+        <Parent guid="guidRxdkCmdSet" id="RxdkMainGroup" />
+        <Strings><ButtonText>Install Xbox Neighborhood</ButtonText></Strings>
+      </Button>
+
       <!-- Project context menu: Deploy (all RXDK Xbox projects) + Remove DXT (DXT projects only).
            DynamicVisibility + DefaultInvisible so BeforeQueryStatus decides per selection. -->
       <Button guid="guidRxdkCmdSet" id="CmdDeployProject" priority="0x0100" type="Button">
@@ -97,7 +104,7 @@
       <IDSymbol name="CmdRemoveDxt" value="0x0106" />
       <IDSymbol name="CmdRebootConsole" value="0x0107" />
       <IDSymbol name="CmdDebug" value="0x0108" />
-      <IDSymbol name="CmdDebugPrebuiltXbe" value="0x0109" />
+      <IDSymbol name="CmdInstallXboxNeighborhood" value="0x0109" />
       <IDSymbol name="CmdSetXboxIp" value="0x010A" />
       <IDSymbol name="CmdShowToolWindow" value="0x010B" />
       <IDSymbol name="CmdOpenSdkDocs" value="0x010C" />

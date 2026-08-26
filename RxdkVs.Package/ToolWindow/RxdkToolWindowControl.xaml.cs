@@ -72,13 +72,12 @@ namespace RxdkVs.Package.ToolWindow
         private void OnLaunchXbwatson(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdLaunchXbwatson);
         private void OnLaunchNeighborhoodApp(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdLaunchXbNeighborhood);
         private void OnOpenXboxNeighborhood(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdOpenXboxNeighborhood);
+        private void OnInstallXboxNeighborhood(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallXboxNeighborhood);
         private void OnCycleGlobals(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdCycleGlobalsScope);
         // Project
         private void OnImportProject(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdImportProject);
-        // Setup
-        private void OnInstallDotNet(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallDotNet);
-        private void OnInstallBuildTools(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallBuildTools);
-        private void OnInstallXboxPlatform(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdInstallXboxPlatform);
+        // Setup — one button orchestrates all installers; the individual commands
+        // (CmdInstallBuildTools/CmdInstallXboxPlatform/CmdInstallDotNet) remain on the RXDK menu.
         private void OnCompleteSetup(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdSetupPrerequisites);
         private void OnSettings(object sender, RoutedEventArgs e) => Exec(CommandIds.CmdOpenSettings);
         private void OnRefresh(object sender, RoutedEventArgs e) => _ = RefreshAsync();
@@ -146,10 +145,13 @@ namespace RxdkVs.Package.ToolWindow
             public string Name;
             public string Current;   // "-" when not installed
             public string Available; // "-" when unknown/unreachable
+            // The live version is newer than this extension can use: its update is withheld until the
+            // extension itself is updated (the CLI reports this as a 4th "blocked" column).
+            public bool Blocked;
             public bool Installed => !string.IsNullOrEmpty(Current) && Current != "-";
             public bool AvailableKnown => !string.IsNullOrEmpty(Available) && Available != "-";
             public bool UpdateAvailable =>
-                Installed && AvailableKnown &&
+                !Blocked && Installed && AvailableKnown &&
                 !string.Equals(Norm(Current), Norm(Available), StringComparison.OrdinalIgnoreCase);
             private static string Norm(string v) => (v ?? string.Empty).Trim().TrimStart('v', 'V');
         }
@@ -159,7 +161,9 @@ namespace RxdkVs.Package.ToolWindow
         {
             var rows = new List<ComponentRow>();
             string output = null;
-            try { output = await RunCliCaptureAsync("versions", timeoutMs: 30000); }
+            // Pass the extension version as the ceiling so the CLI marks any component whose live
+            // version is newer as "blocked" (update withheld until the extension is updated).
+            try { output = await RunCliCaptureAsync($"versions --max-version {ExtensionInfo.GetVersion()}", timeoutMs: 30000); }
             catch { /* rendered as unavailable below */ }
 
             if (!string.IsNullOrEmpty(output))
@@ -168,7 +172,13 @@ namespace RxdkVs.Package.ToolWindow
                 {
                     var parts = raw.TrimEnd('\r').Split('\t');
                     if (parts.Length >= 3)
-                        rows.Add(new ComponentRow { Name = parts[0].Trim(), Current = parts[1].Trim(), Available = parts[2].Trim() });
+                        rows.Add(new ComponentRow
+                        {
+                            Name = parts[0].Trim(),
+                            Current = parts[1].Trim(),
+                            Available = parts[2].Trim(),
+                            Blocked = parts.Length >= 4 && parts[3].Trim() == "1",
+                        });
                 }
             }
 
@@ -209,7 +219,9 @@ namespace RxdkVs.Package.ToolWindow
             {
                 var row = new DockPanel { Margin = new Thickness(0, 3, 0, 3) };
 
-                var actionable = !r.Installed || r.UpdateAvailable;
+                // Blocked = the live version is newer than this extension can use, so no install/update
+                // button is offered (the ceiling is the extension version).
+                var actionable = !r.Blocked && (!r.Installed || r.UpdateAvailable);
                 anyActionable |= actionable;
                 if (actionable)
                 {
@@ -229,7 +241,9 @@ namespace RxdkVs.Package.ToolWindow
                 }
 
                 string status;
-                if (!r.Installed)
+                if (r.Blocked)
+                    status = $"{r.Available} available · update the RXDK extension first";
+                else if (!r.Installed)
                     status = r.AvailableKnown ? $"not installed · latest {r.Available}" : "not installed";
                 else if (r.UpdateAvailable)
                     status = $"{r.Current} → {r.Available}";
@@ -290,13 +304,18 @@ namespace RxdkVs.Package.ToolWindow
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             var cli = new CliRunner(_package);
             var failed = false;
+            var gated = false;
+            var maxVersion = ExtensionInfo.GetVersion();
             foreach (var verb in verbs)
             {
                 SetStatus($"Running {verb}…");
                 try
                 {
-                    // CliRunner returns the CLI's exit code (non-zero = failure); it doesn't throw.
-                    if (await cli.RunAsync(new[] { verb }, Environment.CurrentDirectory) != 0)
+                    // Pass the extension version so the engine refuses to pull a component newer than the
+                    // extension can use. CliRunner returns the CLI's exit code; 3 = gated, other != 0 = failure.
+                    var rc = await cli.RunAsync(new[] { verb, "--max-version", maxVersion }, Environment.CurrentDirectory);
+                    if (rc == 3) { gated = true; SetStatus("Update the RXDK extension first."); break; }
+                    if (rc != 0)
                     {
                         failed = true;
                         SetStatus($"{verb} failed — see the RXDK output window.");
@@ -307,7 +326,18 @@ namespace RxdkVs.Package.ToolWindow
             }
             SetStatus("Refreshing versions…");
             await LoadComponentVersionsAsync();
-            if (failed)
+            if (gated)
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                VsShellUtilities.ShowMessageBox(_package,
+                    "A newer RXDK component is available but needs a newer RXDK extension than the one " +
+                    "loaded. Update the RXDK for Visual Studio extension first, then update the component. " +
+                    "This keeps the extension, host tools, SDK, and docs on a compatible version.",
+                    "RXDK", OLEMSGICON.OLEMSGICON_INFO, OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                SetStatus("Ready.");
+            }
+            else if (failed)
             {
                 SetStatus("Update failed — a tool may be in use. Restart Visual Studio and try again.");
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -425,7 +455,7 @@ namespace RxdkVs.Package.ToolWindow
             row1.Children.Add(vcprojBox);
             root.Children.Add(row1);
 
-            root.Children.Add(new TextBlock { Text = "Output folder:", Margin = new Thickness(0, 0, 0, 4) });
+            root.Children.Add(new TextBlock { Text = "Project root (the project is created in a child folder named after it):", Margin = new Thickness(0, 0, 0, 4) });
             var outBox = new TextBox();
             var outBrowse = new Button { Content = "Browse…", Width = 78, Margin = new Thickness(6, 0, 0, 0) };
             var row2 = new DockPanel();
@@ -443,8 +473,8 @@ namespace RxdkVs.Package.ToolWindow
 
             root.Children.Add(new TextBlock
             {
-                Text = "The RXDK project (.vcxproj + property pages) is written to the output folder. " +
-                       "By default sources are referenced in place; check the box above to copy them in.",
+                Text = "The RXDK project is created in <project root>\\<project name>. Sources are copied in " +
+                       "unless that folder is the project's own folder (then it's an in-place import).",
                 TextWrapping = TextWrapping.Wrap, Opacity = 0.7, FontSize = 11, Margin = new Thickness(0, 8, 0, 0),
             });
 
@@ -489,7 +519,7 @@ namespace RxdkVs.Package.ToolWindow
             {
                 if (string.IsNullOrWhiteSpace(vcprojBox.Text) || string.IsNullOrWhiteSpace(outBox.Text))
                 {
-                    System.Windows.MessageBox.Show(dialog, "Pick both a .vcproj and an output folder.", "RXDK");
+                    System.Windows.MessageBox.Show(dialog, "Pick both a .vcproj/.sln and a project root.", "RXDK");
                     return;
                 }
                 okd = true;

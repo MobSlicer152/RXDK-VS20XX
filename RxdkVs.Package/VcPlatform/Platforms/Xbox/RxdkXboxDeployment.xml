@@ -22,6 +22,7 @@
   <Rule.Categories>
     <Category Name="Media" DisplayName="Media" Description="Files collected with the title." />
     <Category Name="Packaging" DisplayName="Packaging" Description="Disc image output." />
+    <Category Name="Console" DisplayName="Console" Description="How files are copied to the devkit on deploy." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -39,5 +40,9 @@
   <BoolProperty Name="RxdkCreateIso" DisplayName="Create ISO Image"
                 Category="Packaging" Default="true"
                 Description="Pack the build output into an .iso with xdvdfs. Set to No to stop at the .xbe (plus staged deploy files)." />
+
+  <BoolProperty Name="RxdkForceCopy" DisplayName="Force Copy"
+                Category="Console" Default="false"
+                Description="No (default): incremental deploy — copy only files that are new or newer than the console copy (xbcp -d), so unchanged media is skipped for a faster redeploy. Yes: always re-copy every file regardless of timestamp." />
 
 </Rule>

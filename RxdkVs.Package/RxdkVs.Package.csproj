@@ -87,7 +87,9 @@
     <Compile Include="Commands\RxdkCommands.cs" />
     <Compile Include="Commands\StartDebugInterceptor.cs" />
     <Compile Include="Services\XboxDebugLauncher.cs" />
+    <Compile Include="Services\TitleOutputPane.cs" />
     <Compile Include="Services\CliRunner.cs" />
+    <Compile Include="Services\ExtensionInfo.cs" />
     <Compile Include="Services\EngineStager.cs" />
     <Compile Include="Services\ToolLocator.cs" />
     <Compile Include="Services\ProjectConfigGenerator.cs" />
@@ -190,8 +192,8 @@
   <Target Name="PublishRxdkEngine" BeforeTargets="GetVsixSourceItems" Condition="'$(BundleEngine)' == 'true'">
     <Message Importance="high" Text="RXDK: publishing net8 engine (Rxdk.Cli + Rxdk.Dap) into the VSIX under tools\ ..." />
     <RemoveDir Directories="$(EngineStageDir)" />
-    <Exec Command="dotnet publish &quot;$(MSBuildProjectDirectory)\..\Rxdk.Cli\Rxdk.Cli.csproj&quot; -c $(Configuration) --no-self-contained -o &quot;$(EngineStageDir.TrimEnd('\'))&quot; -v quiet -nologo" />
-    <Exec Command="dotnet publish &quot;$(MSBuildProjectDirectory)\..\Rxdk.Dap\Rxdk.Dap.csproj&quot; -c $(Configuration) --no-self-contained -o &quot;$(EngineStageDir.TrimEnd('\'))&quot; -v quiet -nologo" />
+    <Exec Command="dotnet publish &quot;$(MSBuildProjectDirectory)\..\external\RXDK-Tools\src\Rxdk.Cli\Rxdk.Cli.csproj&quot; -c $(Configuration) --no-self-contained -o &quot;$(EngineStageDir.TrimEnd('\'))&quot; -v quiet -nologo" />
+    <Exec Command="dotnet publish &quot;$(MSBuildProjectDirectory)\..\external\RXDK-Tools\src\Rxdk.Dap\Rxdk.Dap.csproj&quot; -c $(Configuration) --no-self-contained -o &quot;$(EngineStageDir.TrimEnd('\'))&quot; -v quiet -nologo" />
     <ItemGroup>
       <!-- Ship the runnable closure, not debug/build cruft. -->
       <_RxdkEngineFile Include="$(EngineStageDir)**\*" Exclude="$(EngineStageDir)**\*.pdb;$(EngineStageDir)**\*.xml" />

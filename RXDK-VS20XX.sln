@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rxdk.Engine", "Rxdk.Engine\Rxdk.Engine.csproj", "{F3BBD6E1-DC0F-4A0E-9E40-871AA1621432}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rxdk.Engine", "external\RXDK-Tools\src\Rxdk.Engine\Rxdk.Engine.csproj", "{F3BBD6E1-DC0F-4A0E-9E40-871AA1621432}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rxdk.Cli", "Rxdk.Cli\Rxdk.Cli.csproj", "{B15F0219-EEC5-4194-9ECB-D6A01665E0F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rxdk.Cli", "external\RXDK-Tools\src\Rxdk.Cli\Rxdk.Cli.csproj", "{B15F0219-EEC5-4194-9ECB-D6A01665E0F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rxdk.Dap", "Rxdk.Dap\Rxdk.Dap.csproj", "{D0B1C25A-2DF3-4AE0-9BDF-33BCAEF02A99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rxdk.Dap", "external\RXDK-Tools\src\Rxdk.Dap\Rxdk.Dap.csproj", "{D0B1C25A-2DF3-4AE0-9BDF-33BCAEF02A99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxdkVs.Package", "RxdkVs.Package\RxdkVs.Package.csproj", "{C5390B93-36FF-4DE6-9CA3-3776D9C709BB}"
 EndProject
